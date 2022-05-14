@@ -2,6 +2,7 @@ import tensorflow as tf
 from tflite_runtime.interpreter import Interpreter 
 import numpy as np
 import time
+import os
 
 def decode_audio(audio_binary):
   # Decode WAV-encoded audio files to `float32` tensors, normalized
@@ -59,37 +60,41 @@ def classify_audio(interpreter, spectrogram, top_k=1):
   ordered = np.argpartition(-output, 1)
   return [(i, output[i]) for i in ordered[:top_k]][0]
 
-data_folder = "/home/pi/Group_TFLite/"
+if __name__ == "main":
 
-model_path = data_folder + "group_model.tflite"
-label_path = data_folder + "group_labels.txt"
+  model_file = "group_model.tflite"
+  label_file = "group_labels.txt"
+  output_file = "output.wav"
 
-interpreter = Interpreter(model_path)
-print("Model Loaded Successfully.")
+  interpreter = Interpreter(model_file)
+  print("Model Loaded Successfully.")
 
-interpreter.allocate_tensors()
-_, height, width, _ = interpreter.get_input_details()[0]['shape']
-print("Audio Shape (", width, ",", height, ")")
+  interpreter.allocate_tensors()
+  _, height, width, _ = interpreter.get_input_details()[0]['shape']
+  print("Audio Shape (", width, ",", height, ")")
 
-# Load a waveform to be classified.
-AUTOTUNE = tf.data.AUTOTUNE
-file = tf.io.gfile.glob(data_folder + "test.wav")
-file_ds = tf.data.Dataset.from_tensor_slices(file)
-waveform_ds = decode_audio(file_ds)
+  # Load a waveform to be classified.
+  AUTOTUNE = tf.data.AUTOTUNE
+  file = tf.io.gfile.glob(output_file)
+  file_ds = tf.data.Dataset.from_tensor_slices(file)
+  waveform_ds = decode_audio(file_ds)
 
-# Convert waveform to Spectrogram
-spectrogram_ds = get_spectrogram(waveform_ds)
+  # Convert waveform to Spectrogram
+  spectrogram_ds = get_spectrogram(waveform_ds)
 
-# Classify the audio.
-time1 = time.time()
-label_id, prob = classify_audio(interpreter, spectrogram_ds)
-time2 = time.time()
-classification_time = np.round(time2-time1, 3)
-print("Classificaiton Time =", classification_time, "seconds.")
+  # Classify the audio.
+  time1 = time.time()
+  label_id, prob = classify_audio(interpreter, spectrogram_ds)
+  time2 = time.time()
+  classification_time = np.round(time2-time1, 3)
+  print("Classificaiton Time =", classification_time, "seconds.")
 
-# Read class labels.
-labels = load_labels(label_path)
+  # Read class labels.
+  labels = load_labels(label_file)
 
-# Return the classification label of the audio.
-classification_label = labels[label_id]
-print("Audio Label is :", classification_label, ", with Accuracy :", np.round(prob*100, 2), "%.")
+  # Return the classification label of the audio.
+  classification_label = labels[label_id]
+  print("Audio Label is :", classification_label, ", with Accuracy :", np.round(prob*100, 2), "%.")
+  
+  # Delete output.wav file
+  os.remove(output_file)
