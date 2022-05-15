@@ -95,6 +95,5 @@ if __name__ == "main":
   # Return the classification label of the audio.
   classification_label = labels[label_id]
   print("Audio Label is :", classification_label, ", with Accuracy :", np.round(prob*100, 2), "%.")
-  
-  # Delete output.wav file
-  os.remove(output_file)
+
+  time.sleep(3)
