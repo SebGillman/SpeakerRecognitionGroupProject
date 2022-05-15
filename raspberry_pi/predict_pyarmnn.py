@@ -87,9 +87,8 @@ if __name__ == "main":
     output_tensors = ann.make_output_tensors(output_binding_info)
 
     runtime.EnqueueWorkload(0, input_tensors, output_tensors)
-    results = ann.workload_tensors_to_ndarray(output_tensors)
-    print(results[0])
-    label_id = np.argmax(results)
+    results = np.argsort(ann.workload_tensors_to_ndarray(output_tensors))[::-1]
+    label_id = results[0]
 
     # Read class labels.
     labels = load_labels("group_labels.txt")
