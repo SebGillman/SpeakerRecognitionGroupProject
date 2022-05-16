@@ -1,6 +1,7 @@
 import pyarmnn as ann
 import numpy as np
 import tensorflow as tf
+import time
 
 print('Working with Arm NN version ' + ann.ARMNN_VERSION)
 
@@ -44,16 +45,6 @@ def load_labels(path):
 
 if __name__ == "main":
 
-    #Load a waveform
-    AUTOTUNE = tf.data.AUTOTUNE
-    file = tf.io.gfile.glob("output.wav")
-    file_ds = tf.data.Dataset.from_tensor_slices(file)
-    waveform_ds = decode_audio(file_ds)
-
-    # Convert waveform to Spectrogram
-    spectrogram_ds = get_spectrogram(waveform_ds)
-
-
     # ONNX, Caffe and TF parsers also exist.
     parser = ann.ITfLiteParser()
     network = parser.CreateNetworkFromBinaryFile("./group_model.tflite")
@@ -76,23 +67,37 @@ if __name__ == "main":
     # Load the optimized network into the runtime.
     net_id, _ = runtime.LoadNetwork(opt_network)
     print("Loaded network, id={net_id}")
-    # Create an inputTensor for inference.
-    input_tensors = ann.make_input_tensors([input_binding_info], [spectrogram_ds])
 
-    # Get output binding information for an output layer by using the layer name.
-    output_names = parser.GetSubgraphOutputTensorNames(graph_id)
-    output_binding_info = []
-    for i in output_names:
-        output_binding_info.append(parser.GetNetworkOutputBindingInfo(0, output_names[0]))
-    output_tensors = ann.make_output_tensors(output_binding_info)
-
-    runtime.EnqueueWorkload(0, input_tensors, output_tensors)
-    results = np.argsort(ann.workload_tensors_to_ndarray(output_tensors))[::-1]
-    label_id = results[0]
-
-    # Read class labels.
+     # Read class labels.
     labels = load_labels("group_labels.txt")
 
-    classification_label = labels[label_id]
-    print("Audio Label is :", classification_label)
+    while(1):
+      #Load a waveform
+      AUTOTUNE = tf.data.AUTOTUNE
+      file = tf.io.gfile.glob("output.wav")
+      file_ds = tf.data.Dataset.from_tensor_slices(file)
+      waveform_ds = decode_audio(file_ds)
+
+      # Convert waveform to Spectrogram
+      spectrogram_ds = get_spectrogram(waveform_ds)
+
+      # Create an inputTensor for inference.
+      input_tensors = ann.make_input_tensors([input_binding_info], [spectrogram_ds])
+
+      # Get output binding information for an output layer by using the layer name.
+      output_names = parser.GetSubgraphOutputTensorNames(graph_id)
+      output_binding_info = []
+      for i in output_names:
+          output_binding_info.append(parser.GetNetworkOutputBindingInfo(0, output_names[0]))
+      output_tensors = ann.make_output_tensors(output_binding_info)
+
+      runtime.EnqueueWorkload(0, input_tensors, output_tensors)
+      results = np.argsort(ann.workload_tensors_to_ndarray(output_tensors))[::-1]
+      label_id = results[0]
+
+      classification_label = labels[label_id]
+      print("Audio Label is :", classification_label)
+
+      # Classify every 0.5 seconds
+      time.sleep(0.5)
 

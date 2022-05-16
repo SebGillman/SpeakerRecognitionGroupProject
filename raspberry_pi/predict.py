@@ -73,27 +73,35 @@ if __name__ == "main":
   _, height, width, _ = interpreter.get_input_details()[0]['shape']
   print("Audio Shape (", width, ",", height, ")")
 
-  # Load a waveform to be classified.
   AUTOTUNE = tf.data.AUTOTUNE
-  file = tf.io.gfile.glob(output_file)
-  file_ds = tf.data.Dataset.from_tensor_slices(file)
-  waveform_ds = decode_audio(file_ds)
-
-  # Convert waveform to Spectrogram
-  spectrogram_ds = get_spectrogram(waveform_ds)
-
-  # Classify the audio.
-  time1 = time.time()
-  label_id, prob = classify_audio(interpreter, spectrogram_ds)
-  time2 = time.time()
-  classification_time = np.round(time2-time1, 3)
-  print("Classificaiton Time =", classification_time, "seconds.")
 
   # Read class labels.
   labels = load_labels(label_file)
 
-  # Return the classification label of the audio.
-  classification_label = labels[label_id]
-  print("Audio Label is :", classification_label, ", with Accuracy :", np.round(prob*100, 2), "%.")
+  while(1):
+    # Load a waveform to be classified.
+    file = tf.io.gfile.glob(output_file)
+    file_ds = tf.data.Dataset.from_tensor_slices(file)
+    waveform_ds = decode_audio(file_ds)
 
-  time.sleep(3)
+    # Convert waveform to Spectrogram
+    spectrogram_ds = get_spectrogram(waveform_ds)
+
+    # Classify the audio.
+    time1 = time.time()
+    label_id, prob = classify_audio(interpreter, spectrogram_ds)
+    time2 = time.time()
+    classification_time = np.round(time2-time1, 3)
+    print("Classificaiton Time =", classification_time, "seconds.")
+
+    # Return the classification label and probability of the audio.
+    classification_label = labels[label_id]
+    prob_label = np.round(prob, 2)
+
+    # The person speaking isn't in the dataset
+    if prob_label < 0.3:
+      classification_label = "Other"
+    
+    print("Audio Label is: ", classification_label, ", with Accuracy: ", prob_label)
+
+    time.sleep(0.5)

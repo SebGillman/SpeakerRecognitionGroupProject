@@ -41,5 +41,3 @@ while(1):
     wf.writeframes(b''.join(frames))
     wf.close()
 
-    time.sleep(1)
-
