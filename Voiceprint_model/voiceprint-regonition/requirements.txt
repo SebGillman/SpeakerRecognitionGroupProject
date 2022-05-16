@@ -9,4 +9,4 @@ Training enviroment:
 Tensorflow == 2.4.0
 Cuda == 11.0
 Cudnn == 8.2.1
-Model train on gpu: RTX 3060, for dataset from the originial source, zhaishell files + our project's audio files (about 30gb), eta time is 1-2 days
+Model train on gpu: RTX 3060, for dataset from the originial source, zhaishell files + our project's audio files (about 15gb), eta time is 1-2 days
