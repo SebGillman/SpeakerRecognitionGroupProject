@@ -8,6 +8,11 @@ print("1")
 import numpy as np
 import tensorflow as tf
 
+from tensorflow.keras import models
+from tensorflow.keras import layers
+from tensorflow.keras.layers import Dense, Flatten
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.optimizers import Adam
 print("2")
 #from utils.reader import load_audio
 print("2.1")
@@ -22,14 +27,31 @@ add_arg = functools.partial(add_arguments, argparser=parser)
 add_arg('audio_db',         str,    'audio_db',               'path to our audio database')
 add_arg('input_shape',      str,    '(257, 257, 1)',          'shape of input data')
 add_arg('threshold',        float,   0.7,                     'threshold of verification')
-add_arg('model_path',       str,    'models/infer_model.h5',  'path to model')
+add_arg('model_path',       str,    'models/infer_model',  'path to model')
 args = parser.parse_args()
 
 print_arguments(args)
 
 # Load model
-model = tf.keras.models.load_model(args.model_path)
-model = tf.keras.models.Model(inputs=model.input, outputs=model.get_layer('batch_normalization').output)
+
+custom_model = True
+if custom_model:
+  model = models.Sequential()
+  model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=((124,129,3))))
+  model.add(layers.BatchNormalization())
+  model.add(layers.MaxPooling2D((2, 2)))
+  model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+  model.add(layers.BatchNormalization())
+  model.add(layers.MaxPooling2D((2, 2)))
+  model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+  model.add(layers.BatchNormalization())
+  model.add(layers.Flatten())
+  model.add(layers.Dense(64, activation='relu'))
+  model.add(layers.Dense(5, activation='softmax'))
+  model._name = "custom"
+
+#model = tf.keras.models.load_weights('/models/infer_model_weights')
+#model = tf.keras.models.Model(inputs=model.input, outputs=model.get_layer('batch_normalization').output)
 
 
 # obtain average
