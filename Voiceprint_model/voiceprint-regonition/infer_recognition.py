@@ -1,14 +1,21 @@
+print("0")
 import argparse
 import functools
 import os
 import shutil
 
+print("1")
 import numpy as np
 import tensorflow as tf
 
-from utils.reader import load_audio
+print("2")
+#from utils.reader import load_audio
+print("2.1")
 from utils.record import RecordAudio
+print("2.2")
 from utils.utility import add_arguments, print_arguments
+
+print("Finished imports")
 
 parser = argparse.ArgumentParser(description=__doc__)
 add_arg = functools.partial(add_arguments, argparser=parser)
@@ -79,6 +86,7 @@ def register(path, user_name):
 
 
 if __name__ == '__main__':
+    print("Entered main")
     load_audio_db(args.audio_db)
     record_audio = RecordAudio()
 

@@ -1,8 +1,14 @@
+print("1")
+
 import tensorflow as tf
-from tflite_runtime.interpreter import Interpreter 
+print("1.1")
+from tflite_runtime.interpreter import Interpreter
+print("1.2") 
 import numpy as np
 import time
 import os
+
+print("2")
 
 def decode_audio(audio_binary):
   # Decode WAV-encoded audio files to `float32` tensors, normalized
@@ -60,11 +66,13 @@ def classify_audio(interpreter, spectrogram, top_k=1):
   ordered = np.argpartition(-output, 1)
   return [(i, output[i]) for i in ordered[:top_k]][0]
 
-if __name__ == "main":
+print("Before main")
+if (True):
+  print("Entered main")
 
   model_file = "group_model.tflite"
-  label_file = "group_labels.txt"
-  output_file = "output.wav"
+  label_file = "pi_group_labels.txt"
+  output_file = "./local_data/26-May-2022-15-31-14-689615.wav"
 
   interpreter = Interpreter(model_file)
   print("Model Loaded Successfully.")
@@ -73,7 +81,7 @@ if __name__ == "main":
   _, height, width, _ = interpreter.get_input_details()[0]['shape']
   print("Audio Shape (", width, ",", height, ")")
 
-  AUTOTUNE = tf.data.AUTOTUNE
+  AUTOTUNE = tf.data.experimental.AUTOTUNE
 
   # Read class labels.
   labels = load_labels(label_file)

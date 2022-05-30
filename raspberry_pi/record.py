@@ -2,13 +2,16 @@ import pyaudio
 import wave
 from os.path import exists
 import time
+import sounddevice as sd
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
-CHANNELS = 2
-RATE = 44100
+CHANNELS = 1
+RATE = 16000
 RECORD_SECONDS = 3
 WAVE_OUTPUT_FILENAME = "output.wav"
+
+print("Querying devices: {}".format(sd.query_devices()))
 
 while(1):
 
@@ -17,6 +20,7 @@ while(1):
     stream = p.open(format=FORMAT,
                     channels=CHANNELS,
                     rate=RATE,
+		    input_device_index = 0,
                     input=True,
                     frames_per_buffer=CHUNK)
 
