@@ -8,6 +8,7 @@ import tensorflow as tf
 
 from utils.reader import load_audio
 from utils.record import RecordAudio
+from utils.recordconst import RecordAudioConst
 from utils.utility import add_arguments, print_arguments
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -81,9 +82,10 @@ def register(path, user_name):
 if __name__ == '__main__':
     load_audio_db(args.audio_db)
     record_audio = RecordAudio()
+    record_audio_const = RecordAudioConst()
 
     while True:
-        select_fun = int(input("Please type in number to choose function，type in 0 to register new member，type in 1 to do voice regonition："))
+        select_fun = int(input("Please type in number to choose function，type in 0 to register new member，type in 1 to do voice regonition, else type in 2 to do continuous recognition："))
         if select_fun == 0:
             audio_path = record_audio.record()
             name = input("Please type in your name as new member：")
@@ -96,5 +98,19 @@ if __name__ == '__main__':
                 print("The one currently speaking is：%s，with a similarity of：%f" % (name, p))
             else:
                 print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
+        elif select_fun == 2:
+            print("Recording has started, press Ctrl+C to quit")
+            keypress=False
+            try:
+                while True:
+                    audio_path = record_audio_const.recordconst()
+                    name, p = recognition(audio_path)
+                    if p > args.threshold:
+                        print("The one currently speaking is：%s，with a similarity of：%f" % (name, p))
+                    else:
+                        print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
+            except KeyboardInterrupt:
+                pass
+            
         else:
             print('Please type correct content')
