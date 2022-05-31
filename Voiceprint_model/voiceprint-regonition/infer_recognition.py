@@ -8,7 +8,6 @@ import tensorflow as tf
 
 from utils.reader import load_audio
 from utils.record import RecordAudio
-from utils.recordconst import RecordAudioConst
 from utils.utility import add_arguments, print_arguments
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -82,7 +81,6 @@ def register(path, user_name):
 if __name__ == '__main__':
     load_audio_db(args.audio_db)
     record_audio = RecordAudio()
-    record_audio_const = RecordAudioConst()
 
     while True:
         select_fun = int(input("Please type in number to choose function，type in 0 to register new member，type in 1 to do voice regonition, else type in 2 to do continuous recognition："))
@@ -103,7 +101,7 @@ if __name__ == '__main__':
             keypress=False
             try:
                 while True:
-                    audio_path = record_audio_const.recordconst()
+                    audio_path = record_audio.recordconst()
                     name, p = recognition(audio_path)
                     if p > args.threshold:
                         print("The one currently speaking is：%s，with a similarity of：%f" % (name, p))
