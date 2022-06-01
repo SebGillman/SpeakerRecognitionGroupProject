@@ -3,12 +3,13 @@ import functools
 import os
 import shutil
 
+import librosa
 import numpy as np
-import tensorflow as tf
+import pyaudio
+import tflite_runtime.interpreter as tflite
 
 from utils.reader import load_audio
-#from utils.record import RecordAudio
-from utils.record_sd import RecordAudio
+from utils.record import RecordAudio
 from utils.utility import add_arguments, print_arguments
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -16,15 +17,15 @@ add_arg = functools.partial(add_arguments, argparser=parser)
 add_arg('audio_db',         str,    'audio_db',               'path to our audio database')
 add_arg('input_shape',      str,    '(257, 257, 1)',          'shape of input data')
 add_arg('threshold',        float,   0.7,                     'threshold of verification')
-add_arg('model_path',       str,    'models/infer_model.h5',  'path to model')
+add_arg('model_path',       str,    '/models/layers_model.tflite',  'path to model')
 args = parser.parse_args()
 
 print_arguments(args)
 
 # Load model
-model = tf.keras.models.load_model(args.model_path)
-model = tf.keras.models.Model(inputs=model.input, outputs=model.get_layer('batch_normalization').output)
-
+model = tflite.Interpreter(args.model_path)
+# model = tf.keras.models.load_model(args.model_path)
+# model = tf.keras.models.Model(inputs=model.input, outputs=model.get_layer('batch_normalization').output)
 
 # obtain average
 input_shape = eval(args.input_shape)
@@ -36,14 +37,12 @@ model.summary()
 person_feature = []
 person_name = []
 
-
 # predict the audio
 def infer(audio_path):
     data = load_audio(audio_path, mode='infer', spec_len=input_shape[1])
     data = data[np.newaxis, :]
     feature = model.predict(data)
     return feature
-
 
 # Load the database and print out the list of members
 def load_audio_db(audio_db_path):
@@ -55,7 +54,6 @@ def load_audio_db(audio_db_path):
         person_name.append(name)
         person_feature.append(feature)
         print("Loaded %s audio." % name)
-
 
 # Voicprint recognition
 def recognition(path):
@@ -69,7 +67,6 @@ def recognition(path):
             name = person_name[i]
     return name, pro
 
-
 # Register new member
 def register(path, user_name):
     save_path = os.path.join(args.audio_db, user_name + os.path.basename(path)[-4:])
@@ -78,38 +75,24 @@ def register(path, user_name):
     person_name.append(user_name)
     person_feature.append(feature)
 
-
 if __name__ == '__main__':
     load_audio_db(args.audio_db)
     record_audio = RecordAudio()
 
     while True:
-        select_fun = int(input("Please type in number to choose function，type in 0 to register new member，type in 1 to do voice regonition, else type in 2 to do continuous recognition："))
-        if select_fun == 0:
+        select_flag = int(input("Please type in number to choose function，type in 0 to register new member，type in 1 to do voice regonition："))
+        if select_flag == 0:
             audio_path = record_audio.record()
             name = input("Please type in your name as new member：")
             if name == '': continue
             register(audio_path, name)
-        elif select_fun == 1:
+        elif select_flag == 1:
             audio_path = record_audio.record()
             name, p = recognition(audio_path)
             if p > args.threshold:
                 print("The one currently speaking is：%s，with a similarity of：%f" % (name, p))
             else:
                 print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
-        elif select_fun == 2:
-            print("Recording has started, press Ctrl+C to quit")
-            keypress=False
-            try:
-                while True:
-                    audio_path = record_audio.recordconst()
-                    name, p = recognition(audio_path)
-                    if p > args.threshold:
-                        print("The one currently speaking is：%s，with a similarity of：%f" % (name, p))
-                    else:
-                        print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
-            except KeyboardInterrupt:
-                pass
-            
         else:
             print('Please type correct content')
+
