@@ -63,3 +63,7 @@ def test_reader(data_list_path, batch_size, spec_len=257):
 
     test_dataset = ds.batch(batch_size=batch_size)
     return test_dataset
+
+if (1):
+    audio_file = "../audio_db/Adam_Hello_1.wav"
+    print(load_audio(audio_file))

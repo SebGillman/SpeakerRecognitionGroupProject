@@ -10,6 +10,9 @@ from utils.reader import load_audio
 from utils.record import RecordAudio
 from utils.utility import add_arguments, print_arguments
 
+print('Tensorflow version: {}'.format(tf.__version__))
+print('Numpy version: {}'.format(np.__version__))
+
 parser = argparse.ArgumentParser(description=__doc__)
 add_arg = functools.partial(add_arguments, argparser=parser)
 add_arg('audio_db',         str,    'audio_db',               'path to our audio database')
@@ -78,7 +81,7 @@ def register(path, user_name):
     person_feature.append(feature)
 
 
-if __name__ == '__main__':
+if (1):
     load_audio_db(args.audio_db)
     record_audio = RecordAudio()
 

@@ -60,7 +60,7 @@ def classify_audio(interpreter, spectrogram, top_k=1):
   ordered = np.argpartition(-output, 1)
   return [(i, output[i]) for i in ordered[:top_k]][0]
 
-if __name__ == "main":
+if (1):
 
   model_file = "group_model.tflite"
   label_file = "group_labels.txt"
@@ -104,4 +104,4 @@ if __name__ == "main":
     
     print("Audio Label is: ", classification_label, ", with Accuracy: ", prob_label)
 
-    time.sleep(0.5)
+    time.sleep(1)
