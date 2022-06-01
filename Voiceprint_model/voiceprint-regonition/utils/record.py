@@ -26,7 +26,7 @@ class RecordAudio:
         :param record_seconds: record time, default setting will be 3s
         :return: file path of the audio recordings
         """
-        i = input("press enter to start recording，record time 3 second：")
+        i = input("press ENTER to start recordinG (record time is 3 seconds) ")
         print("[RECORDER] Listening ......")
         frames = []
         for i in range(0, int(self.rate / self.chunk * record_seconds)):
