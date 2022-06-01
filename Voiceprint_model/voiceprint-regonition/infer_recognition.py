@@ -7,8 +7,8 @@ import numpy as np
 import tensorflow as tf
 
 from utils.reader import load_audio
-#from utils.record import RecordAudio
-from utils.record_sd import RecordAudio
+from utils.record import RecordAudio
+#from utils.record_sd import RecordAudio
 from utils.utility import add_arguments, print_arguments
 
 parser = argparse.ArgumentParser(description=__doc__)

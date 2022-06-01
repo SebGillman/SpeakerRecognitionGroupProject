@@ -7,12 +7,12 @@ class RecordAudio:
         # record parameters
         self.API_KEY = ""
         self.wave_length = 3
-        self.sample_rate = 16000
+        self.sample_rate = 44100
 
         # self.frames = []
         self.keep_going = True
 
-    def record(self, output_path="audio/temp.wav"):
+    def record(self, output_path="audio_db/temp.wav"):
         """
         Terms meaning
         :param output_path: path of save recording, with file format wav
