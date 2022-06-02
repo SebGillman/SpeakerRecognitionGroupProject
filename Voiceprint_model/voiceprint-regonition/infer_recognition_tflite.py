@@ -35,10 +35,6 @@ print("Audio Shape (", width, ",", height, ")")
 # obtain average
 input_shape = eval(args.input_shape)
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 6c141b6ac5731050e29e0bb4ecb6000e0dec500b
 person_feature = []
 person_name = []
 
