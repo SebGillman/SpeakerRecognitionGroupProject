@@ -97,7 +97,7 @@ if __name__ == '__main__':
     
     try:
         while True:
-            print('\n------------------------------------------------------------------')
+	    print('\n------------------------------------------------------------------')
 	    select_fun = int(input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do voice recognition,\n type in 2 to do continuous recognition.\n"))
             if select_fun == 0:
                 audio_path = record_audio.record()
