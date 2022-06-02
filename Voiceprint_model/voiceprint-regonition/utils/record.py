@@ -49,13 +49,13 @@ class RecordAudio:
         :param record_seconds: record time, default setting will be 3s
         :return: file path of the audio recordings
         """
-        print("\n[RECORDER] Listening ......")
+        # print("\n[RECORDER] Listening ......")
         frames = []
         for i in range(0, int(self.rate / self.chunk * record_seconds)):
             data = self.stream.read(self.chunk, exception_on_overflow = False)
             frames.append(data)
 
-        print("[RECORDER] Recording finished!")
+        # print("[RECORDER] Recording finished!")
         wf = wave.open(output_path, 'wb')
         wf.setnchannels(self.channels)
         wf.setsampwidth(self.p.get_sample_size(self.format))
