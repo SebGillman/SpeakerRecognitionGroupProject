@@ -107,6 +107,7 @@ if __name__ == '__main__':
                     print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
             elif select_fun == 2:
                 print("\nRecording has started, press Ctrl+C to quit")
+                print("[RECORDER] Listening ......")
                 keypress=False
                 try:
                     while True:
@@ -116,9 +117,9 @@ if __name__ == '__main__':
                         time2 = time.time()
                         if p > args.threshold:
                             print("The one currently speaking is %s with a similarity of %f" % (name, p))
-                            print('Classification time = ', np.round(time2-time1, 3), ' seconds.')
+                            print('Classification time = ', np.round(time2-time1, 3), ' seconds. \n')
                         else:
-                            print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
+                            print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment \n")
                 except KeyboardInterrupt:
                     pass
 
