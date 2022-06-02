@@ -11,7 +11,6 @@ from tflite_runtime.interpreter import Interpreter
 
 from utils.reader import load_audio
 from utils.record import RecordAudio
-#from utils.record_sd import RecordAudio
 from utils.utility import add_arguments, print_arguments
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -93,12 +92,11 @@ if __name__ == '__main__':
     record_audio = RecordAudio()
 
     print('\n \n \n')
-    print('------------------------------------------------------------------')
-    
+
     try:
         while True:
-	    print('\n------------------------------------------------------------------')
-	    select_fun = int(input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do voice recognition,\n type in 2 to do continuous recognition.\n"))
+            print('\n------------------------------------------------------------------')
+            select_fun = int(input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do voice recognition,\n type in 2 to do continuous recognition.\n"))
             if select_fun == 0:
                 audio_path = record_audio.record()
                 name = input("Please type in your name as new member: ")
@@ -111,11 +109,11 @@ if __name__ == '__main__':
                 time2 = time.time()
                 print('Classification time = ', np.round(time2-time1, 3), ' seconds.')
                 if p > args.threshold:
-                    print("The one currently speaking is %s with a similarity of %f \n" % (name, p))
+                    print("The one currently speaking is %s with a similarity of %f" % (name, p))
                 else:
-                    print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment \n")
+                    print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
             elif select_fun == 2:
-                print("Recording has started, press Ctrl+C to quit")
+                print("\nRecording has started, press Ctrl+C to quit")
                 keypress=False
                 try:
                     while True:
@@ -125,9 +123,9 @@ if __name__ == '__main__':
                         time2 = time.time()
                         print('Classification time = ', np.round(time2-time1, 3), ' seconds.')
                         if p > args.threshold:
-                            print("The one currently speaking is %s with a similarity of %f \n" % (name, p))
+                            print("The one currently speaking is %s with a similarity of %f" % (name, p))
                         else:
-                            print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment \n")
+                            print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
                 except KeyboardInterrupt:
                     pass
 

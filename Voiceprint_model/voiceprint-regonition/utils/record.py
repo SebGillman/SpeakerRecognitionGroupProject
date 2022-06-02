@@ -26,8 +26,8 @@ class RecordAudio:
         :param record_seconds: record time, default setting will be 3s
         :return: file path of the audio recordings
         """
-        i = input("press ENTER to start recording (recording time is 3 seconds) ")
-        print("[RECORDER] Listening ......")
+        i = input("\nPress ENTER to start recording (recording time is 3 seconds) ")
+        print("\n[RECORDER] Listening ......")
         frames = []
         for i in tqdm(range(0, int(self.rate / self.chunk * record_seconds))):
             data = self.stream.read(self.chunk,exception_on_overflow = False)
@@ -49,7 +49,7 @@ class RecordAudio:
         :param record_seconds: record time, default setting will be 3s
         :return: file path of the audio recordings
         """
-        print("[RECORDER] Listening ......")
+        print("\n[RECORDER] Listening ......")
         frames = []
         for i in range(0, int(self.rate / self.chunk * record_seconds)):
             data = self.stream.read(self.chunk, exception_on_overflow = False)
