@@ -94,41 +94,44 @@ if __name__ == '__main__':
 
     print('\n \n \n')
     print('------------------------------------------------------------------')
+    
+    try:
+        while True:
+            select_fun = int(input("Please type in number to choose function: type in 0 to register new member, type in 1 to do voice recognition, else type in 2 to do continuous recognition."))
+            if select_fun == 0:
+                audio_path = record_audio.record()
+                name = input("Please type in your name as new member ")
+                if name == '': continue
+                register(audio_path, name)
+            elif select_fun == 1:
+                audio_path = record_audio.record()
+                time1 = time.time()
+                name, p = recognition(audio_path)
+                time2 = time.time()
+                print('Classification time = ', np.round(time2-time1, 3), ' seconds.')
+                if p > args.threshold:
+                    print("The one currently speaking is %s with a similarity of %f" % (name, p))
+                else:
+                    print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
+            elif select_fun == 2:
+                print("Recording has started, press Ctrl+C to quit")
+                keypress=False
+                try:
+                    while True:
+                        audio_path = record_audio.recordconst()
+                        time1 = time.time()
+                        name, p = recognition(audio_path)
+                        time2 = time.time()
+                        print('Classification time = ', np.round(time2-time1, 3), ' seconds.')
+                        if p > args.threshold:
+                            print("The one currently speaking is %s with a similarity of %f" % (name, p))
+                        else:
+                            print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
+                except KeyboardInterrupt:
+                    pass
 
-    while True:
-        select_fun = int(input("Please type in number to choose function: type in 0 to register new member, type in 1 to do voice recognition, else type in 2 to do continuous recognition."))
-        if select_fun == 0:
-            audio_path = record_audio.record()
-            name = input("Please type in your name as new member ")
-            if name == '': continue
-            register(audio_path, name)
-        elif select_fun == 1:
-            audio_path = record_audio.record()
-            time1 = time.time()
-            name, p = recognition(audio_path)
-            time2 = time.time()
-            print('Classification time = ', np.round(time2-time1, 3), ' seconds.')
-            if p > args.threshold:
-                print("The one currently speaking is %s with a similarity of %f" % (name, p))
             else:
-                print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
-        elif select_fun == 2:
-            print("Recording has started, press Ctrl+C to quit")
-            keypress=False
-            try:
-                while True:
-                    audio_path = record_audio.recordconst()
-                    time1 = time.time()
-                    name, p = recognition(audio_path)
-                    time2 = time.time()
-                    print('Classification time = ', np.round(time2-time1, 3), ' seconds.')
-                    if p > args.threshold:
-                        print("The one currently speaking is %s with a similarity of %f" % (name, p))
-                    else:
-                        print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
-            except KeyboardInterrupt:
-                pass
-            
-        else:
-            print('Please type either 0, 1 or 2')
-
+                print('Please type either 0, 1 or 2')
+                
+    except KeyboardInterrupt:
+        pass
