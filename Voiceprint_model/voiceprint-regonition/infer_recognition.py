@@ -107,7 +107,7 @@ if __name__ == '__main__':
                     print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
             elif select_fun == 2:
                 print("\nRecording has started, press Ctrl+C to quit")
-                print("[RECORDER] Listening ......")
+                print("[RECORDER] Listening ...... \n")
                 keypress=False
                 try:
                     while True:
