@@ -2,6 +2,7 @@ import argparse
 import functools
 import os
 import shutil
+import time
 
 import numpy as np
 import tensorflow as tf
@@ -83,6 +84,9 @@ if __name__ == '__main__':
     load_audio_db(args.audio_db)
     record_audio = RecordAudio()
 
+    print('\n \n \n')
+    print('------------------------------------------------------')
+
     while True:
         select_fun = int(input("Please type in number to choose function: type in 0 to register new member, type in 1 to do voice recognition, else type in 2 to do continuous recognition."))
         if select_fun == 0:
@@ -92,7 +96,10 @@ if __name__ == '__main__':
             register(audio_path, name)
         elif select_fun == 1:
             audio_path = record_audio.record()
+            time1 = time.time()
             name, p = recognition(audio_path)
+            time2 = time.time()
+            print('Clasification time = ', np.round(time2-time1, 3), ' seconds.')
             if p > args.threshold:
                 print("The one currently speaking is: %s: with a similarity of %f" % (name, p))
             else:
@@ -103,7 +110,10 @@ if __name__ == '__main__':
             try:
                 while True:
                     audio_path = record_audio.recordconst()
+                    time1 = time.time()
                     name, p = recognition(audio_path)
+                    time2 = time.time()
+                    print('Classification time = ', np.round(time2-time1, 3), ' seconds.')
                     if p > args.threshold:
                         print("The one currently speaking is %s with a similarity of %f" % (name, p))
                     else:

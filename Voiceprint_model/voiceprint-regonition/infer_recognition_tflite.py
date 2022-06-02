@@ -2,6 +2,7 @@ import argparse
 import functools
 import os
 import shutil
+import time
 
 import numpy as np
 import tensorflow as tf
@@ -30,20 +31,8 @@ interpreter.allocate_tensors()
 _, height, width, _ = interpreter.get_input_details()[0]['shape']
 print("Audio Shape (", width, ",", height, ")")
 
-"""
-# Load model
-model = tf.keras.models.load_model(args.model_path)
-model = tf.keras.models.Model(inputs=model.input, outputs=model.get_layer('batch_normalization').output)
-"""
-
 # obtain average
 input_shape = eval(args.input_shape)
-
-"""
-# print out the model
-model.build(input_shape=input_shape)
-model.summary()
-"""
 
 person_feature = []
 person_name = []
@@ -55,8 +44,10 @@ def infer(audio_path):
     data = data[np.newaxis, :]
 
     input_details = interpreter.get_input_details()
+
     interpreter.set_tensor(input_details[0]['index'], data)
     interpreter.invoke()
+
     output_details = interpreter.get_output_details()[0]
     output = np.squeeze(interpreter.get_tensor(output_details['index']))
 
@@ -110,7 +101,10 @@ if __name__ == '__main__':
             register(audio_path, name)
         elif select_fun == 1:
             audio_path = record_audio.record()
+            time1 = time.time()
             name, p = recognition(audio_path)
+            time2 = time.time()
+            print('Classification time = ', np.round(time2-time1, 3), ' seconds.')
             if p > args.threshold:
                 print("The one currently speaking is %s with a similarity of %f" % (name, p))
             else:
@@ -121,7 +115,10 @@ if __name__ == '__main__':
             try:
                 while True:
                     audio_path = record_audio.recordconst()
+                    time1 = time.time()
                     name, p = recognition(audio_path)
+                    time2 = time.time()
+                    print('Classification time = ', np.round(time2-time1, 3), ' seconds.')
                     if p > args.threshold:
                         print("The one currently speaking is %s with a similarity of %f" % (name, p))
                     else:
