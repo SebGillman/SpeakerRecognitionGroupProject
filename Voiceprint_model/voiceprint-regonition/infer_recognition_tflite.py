@@ -24,7 +24,7 @@ args = parser.parse_args()
 print_arguments(args)
 
 interpreter = Interpreter(args.model_path)
-print("Model Loaded Successfully.")
+print("TFLite Model Loaded Successfully.")
 
 interpreter.allocate_tensors()
 _, height, width, _ = interpreter.get_input_details()[0]['shape']

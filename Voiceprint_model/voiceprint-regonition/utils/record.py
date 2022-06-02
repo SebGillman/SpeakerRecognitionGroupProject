@@ -1,7 +1,7 @@
 import wave
 
 import pyaudio
-
+from tqdm import tqdm
 
 class RecordAudio:
     def __init__(self):
@@ -29,7 +29,7 @@ class RecordAudio:
         i = input("press ENTER to start recordinG (record time is 3 seconds) ")
         print("[RECORDER] Listening ......")
         frames = []
-        for i in range(0, int(self.rate / self.chunk * record_seconds)):
+        for i in tqdm(range(0, int(self.rate / self.chunk * record_seconds))):
             data = self.stream.read(self.chunk,exception_on_overflow = False)
             frames.append(data)
 
@@ -52,7 +52,7 @@ class RecordAudio:
         print("[RECORDER] Listening ......")
         frames = []
         for i in range(0, int(self.rate / self.chunk * record_seconds)):
-            data = self.stream.read(self.chunk)
+            data = self.stream.read(self.chunk, exception_on_overflow = False)
             frames.append(data)
 
         print("[RECORDER] Recording finished!")
