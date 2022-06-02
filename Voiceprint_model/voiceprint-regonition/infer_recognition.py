@@ -84,17 +84,17 @@ if __name__ == '__main__':
     record_audio = RecordAudio()
 
     while True:
-        select_fun = int(input("Please type in number to choose function，type in 0 to register new member，type in 1 to do voice regonition, else type in 2 to do continuous recognition："))
+        select_fun = int(input("Please type in number to choose function: type in 0 to register new member, type in 1 to do voice recognition, else type in 2 to do continuous recognition."))
         if select_fun == 0:
             audio_path = record_audio.record()
-            name = input("Please type in your name as new member：")
+            name = input("Please type in your name as new member: ")
             if name == '': continue
             register(audio_path, name)
         elif select_fun == 1:
             audio_path = record_audio.record()
             name, p = recognition(audio_path)
             if p > args.threshold:
-                print("The one currently speaking is：%s，with a similarity of：%f" % (name, p))
+                print("The one currently speaking is: %s: with a similarity of %f" % (name, p))
             else:
                 print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
         elif select_fun == 2:
@@ -105,11 +105,11 @@ if __name__ == '__main__':
                     audio_path = record_audio.recordconst()
                     name, p = recognition(audio_path)
                     if p > args.threshold:
-                        print("The one currently speaking is：%s，with a similarity of：%f" % (name, p))
+                        print("The one currently speaking is %s with a similarity of %f" % (name, p))
                     else:
                         print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
             except KeyboardInterrupt:
                 pass
             
         else:
-            print('Please type correct content')
+            print('Please type either 0, 1 or 2.')
