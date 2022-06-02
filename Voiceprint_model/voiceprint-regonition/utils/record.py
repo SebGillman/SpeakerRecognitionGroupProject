@@ -42,7 +42,7 @@ class RecordAudio:
         wf.close()
         return output_path
 
-    def recordconst(self, output_path="audio_db/temp.wav", record_seconds=3):
+    def recordconst(self, output_path="audio_db/temp.wav", record_seconds=0.5):
         """
         Terms meaning
         :param output_path: path of save recording, with file format wav
