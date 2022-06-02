@@ -23,6 +23,7 @@ args = parser.parse_args()
 
 print_arguments(args)
 
+# Load Model
 interpreter = Interpreter(args.model_path)
 print("TFLite Model Loaded Successfully.")
 
@@ -30,24 +31,12 @@ interpreter.allocate_tensors()
 _, height, width, _ = interpreter.get_input_details()[0]['shape']
 print("Audio Shape (", width, ",", height, ")")
 
-"""
-# Load model
-model = tf.keras.models.load_model(args.model_path)
-model = tf.keras.models.Model(inputs=model.input, outputs=model.get_layer('batch_normalization').output)
-"""
-
 # obtain average
 input_shape = eval(args.input_shape)
 
-"""
-# print out the model
-model.build(input_shape=input_shape)
-model.summary()
-"""
 
 person_feature = []
 person_name = []
-
 
 # predict the audio
 def infer(audio_path):
