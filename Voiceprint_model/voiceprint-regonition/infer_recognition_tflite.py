@@ -92,9 +92,6 @@ if __name__ == '__main__':
     load_audio_db(args.audio_db)
     record_audio = RecordAudio()
 
-    print('\n \n \n')
-    print('------------------------------------------------------------------')
-
     while True:
         select_fun = int(input("Please type in number to choose function: type in 0 to register new member, type in 1 to do voice recognition, else type in 2 to do continuous recognition."))
         if select_fun == 0:
@@ -113,7 +110,7 @@ if __name__ == '__main__':
             else:
                 print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
         elif select_fun == 2:
-            print("Recording has started, press Ctrl+C to quit")
+            print("Recording has started, press Ctr+C to quit")
             keypress=False
             try:
                 while True:
