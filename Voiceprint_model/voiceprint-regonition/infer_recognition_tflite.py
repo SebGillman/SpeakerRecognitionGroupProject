@@ -2,6 +2,7 @@ import argparse
 import functools
 import os
 import shutil
+import time
 
 import numpy as np
 import tensorflow as tf
@@ -34,7 +35,10 @@ print("Audio Shape (", width, ",", height, ")")
 # obtain average
 input_shape = eval(args.input_shape)
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6c141b6ac5731050e29e0bb4ecb6000e0dec500b
 person_feature = []
 person_name = []
 
@@ -44,8 +48,10 @@ def infer(audio_path):
     data = data[np.newaxis, :]
 
     input_details = interpreter.get_input_details()
+
     interpreter.set_tensor(input_details[0]['index'], data)
     interpreter.invoke()
+
     output_details = interpreter.get_output_details()[0]
     output = np.squeeze(interpreter.get_tensor(output_details['index']))
 
@@ -90,18 +96,24 @@ if __name__ == '__main__':
     load_audio_db(args.audio_db)
     record_audio = RecordAudio()
 
+    print('\n \n \n')
+    print('------------------------------------------------------------------')
+
     while True:
-        select_fun = int(input("Please type in number to choose function，type in 0 to register new member，type in 1 to do voice regonition, else type in 2 to do continuous recognition："))
+        select_fun = int(input("Please type in number to choose function: type in 0 to register new member, type in 1 to do voice recognition, else type in 2 to do continuous recognition."))
         if select_fun == 0:
             audio_path = record_audio.record()
-            name = input("Please type in your name as new member：")
+            name = input("Please type in your name as new member ")
             if name == '': continue
             register(audio_path, name)
         elif select_fun == 1:
             audio_path = record_audio.record()
+            time1 = time.time()
             name, p = recognition(audio_path)
+            time2 = time.time()
+            print('Classification time = ', np.round(time2-time1, 3), ' seconds.')
             if p > args.threshold:
-                print("The one currently speaking is：%s，with a similarity of：%f" % (name, p))
+                print("The one currently speaking is %s with a similarity of %f" % (name, p))
             else:
                 print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
         elif select_fun == 2:
@@ -110,14 +122,17 @@ if __name__ == '__main__':
             try:
                 while True:
                     audio_path = record_audio.recordconst()
+                    time1 = time.time()
                     name, p = recognition(audio_path)
+                    time2 = time.time()
+                    print('Classification time = ', np.round(time2-time1, 3), ' seconds.')
                     if p > args.threshold:
-                        print("The one currently speaking is：%s，with a similarity of：%f" % (name, p))
+                        print("The one currently speaking is %s with a similarity of %f" % (name, p))
                     else:
                         print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
             except KeyboardInterrupt:
                 pass
             
         else:
-            print('Please type correct content')
+            print('Please type either 0, 1 or 2')
 
