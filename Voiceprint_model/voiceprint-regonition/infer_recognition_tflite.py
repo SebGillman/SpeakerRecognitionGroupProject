@@ -107,9 +107,9 @@ if __name__ == '__main__':
                 time1 = time.time()
                 name, p = recognition(audio_path)
                 time2 = time.time()
-                print('Classification time = ', np.round(time2-time1, 3), ' seconds.')
                 if p > args.threshold:
                     print("The one currently speaking is %s with a similarity of %f" % (name, p))
+                    print('Classification time = ', np.round(time2-time1, 3), ' seconds.')
                 else:
                     print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
             elif select_fun == 2:
@@ -121,9 +121,9 @@ if __name__ == '__main__':
                         time1 = time.time()
                         name, p = recognition(audio_path)
                         time2 = time.time()
-                        print('Classification time = ', np.round(time2-time1, 3), ' seconds.')
                         if p > args.threshold:
                             print("The one currently speaking is %s with a similarity of %f" % (name, p))
+                            print('Classification time = ', np.round(time2-time1, 3), ' seconds.')
                         else:
                             print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
                 except KeyboardInterrupt:
