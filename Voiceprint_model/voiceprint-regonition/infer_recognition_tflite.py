@@ -3,6 +3,7 @@ import functools
 import os
 import shutil
 import time
+import sys
 
 import numpy as np
 import tensorflow as tf
@@ -18,7 +19,7 @@ add_arg = functools.partial(add_arguments, argparser=parser)
 add_arg('audio_db',         str,    'audio_db',               'path to our audio database')
 add_arg('input_shape',      str,    '(257, 257, 1)',          'shape of input data')
 add_arg('threshold',        float,   0.7,                     'threshold of verification')
-add_arg('model_path',       str,    'models/layers_model.tflite',  'path to model')
+add_arg('model_path',       str,    'models/infer_quantized_tflite_model.tflite',  'path to model')
 args = parser.parse_args()
 
 print_arguments(args)
@@ -26,7 +27,7 @@ print_arguments(args)
 # Load Model
 interpreter = Interpreter(args.model_path)
 interpreter.allocate_tensors()
-print("TFLite Model Loaded Successfully.")
+print("TFLite Quantized Model Loaded Successfully.")
 
 interpreter.allocate_tensors()
 _, height, width, _ = interpreter.get_input_details()[0]['shape']
@@ -107,7 +108,7 @@ if __name__ == '__main__':
     try:
         while True:
             print('\n------------------------------------------------------------------')
-            select_fun = int(input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do voice recognition,\n type in 2 to do continuous recognition.\n"))
+            select_fun = int(input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do voice recognition,\n type in 2 to do continuous recognition, \n type in 3 to exit the program. \n"))
             if select_fun == 0:
                 audio_path = record_audio.record()
                 name = input("Please type in your name as new member: ")
@@ -140,9 +141,11 @@ if __name__ == '__main__':
                             print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment \n")
                 except KeyboardInterrupt:
                     pass
-
+            elif(select_fun==3):
+                print('Exiting program...')
+                sys.exit()
             else:
-                print('Please type either 0, 1 or 2 \n')
+                print('Please type either 0, 1, 2 or 3 \n')
                 
     except KeyboardInterrupt:
         pass
