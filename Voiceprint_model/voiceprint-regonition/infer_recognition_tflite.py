@@ -25,6 +25,7 @@ print_arguments(args)
 
 # Load Model
 interpreter = Interpreter(args.model_path)
+interpreter.allocate_tensors()
 print("TFLite Model Loaded Successfully.")
 
 interpreter.allocate_tensors()
@@ -39,17 +40,27 @@ person_name = []
 
 # predict the audio
 def infer(audio_path):
+    time5 = time.time()
     data = load_audio(audio_path, mode='infer', spec_len=input_shape[1])
-    data = data[np.newaxis, :]
+    time6 = time.time()
+    stft_time = np.round(time6-time5, 3)
+    print('STFT time: {} seconds.'.format(stft_time))
 
-    input_details = interpreter.get_input_details()
+    data_tf = tf.convert_to_tensor(data[np.newaxis, :])
 
-    interpreter.set_tensor(input_details[0]['index'], data)
+    time3 = time.time()
+    output_details = interpreter.get_output_details()[0]
+    input_details = interpreter.get_input_details()[0]
+    #print('input details: {}'.format(input_details))
+    #print('output details: {}'.format(output_details))
+
+    interpreter.set_tensor(input_details['index'], data_tf)
     interpreter.invoke()
 
-    output_details = interpreter.get_output_details()[0]
-    output = np.squeeze(interpreter.get_tensor(output_details['index']))
-
+    output = interpreter.get_tensor(output_details['index'])
+    time4 = time.time()
+    predict_time = np.round(time4-time3, 3)
+    print("Prediction time = {} seconds.".format(predict_time))
     return output
 
 
