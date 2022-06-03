@@ -40,9 +40,20 @@ person_name = []
 
 # predict the audio
 def infer(audio_path):
+    time3=time.time()
     data = load_audio(audio_path, mode='infer', spec_len=input_shape[1])
+    time4 = time.time()
+    stft_time = np.round(time4-time3, 3)
+    print('STFT time: {}'.format(stft_time))
+
     data = data[np.newaxis, :]
+
+    time3 = time.time()
     feature = model.predict(data)
+    time4 = time.time()
+    prediction_time = np.round(time4-time3)
+    print('Model prediction time: {}'.format(prediction_time))
+
     return feature
 
 
@@ -100,9 +111,9 @@ if __name__ == '__main__':
                 time1 = time.time()
                 name, p = recognition(audio_path)
                 time2 = time.time()
+                print('Total Classification time = {} seconds'.format(np.round(time2-time1, 3)))
                 if p > args.threshold:
                     print("The one currently speaking is %s with a similarity of %f" % (name, p))
-                    print('Classification time = ', np.round(time2-time1, 3), ' seconds.')
                 else:
                     print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
             elif select_fun == 2:
@@ -115,9 +126,9 @@ if __name__ == '__main__':
                         time1 = time.time()
                         name, p = recognition(audio_path)
                         time2 = time.time()
+                        print('Classification time = {} seconds'.format(np.round(time2-time1, 3)))
                         if p > args.threshold:
                             print("The one currently speaking is %s with a similarity of %f" % (name, p))
-                            print('Classification time = ', np.round(time2-time1, 3), ' seconds. \n')
                         else:
                             print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment \n")
                 except KeyboardInterrupt:
