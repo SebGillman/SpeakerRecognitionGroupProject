@@ -21,7 +21,7 @@ parser = argparse.ArgumentParser(description=__doc__)
 add_arg = functools.partial(add_arguments, argparser=parser)
 add_arg('audio_db',         str,    'audio_db',               'path to our audio database')
 add_arg('input_shape',      str,    '(257, 257, 1)',          'shape of input data')
-add_arg('threshold',        float,   0.7,                     'threshold of verification')
+add_arg('threshold',        float,   0.85,                     'threshold of verification')
 add_arg('model_path',       str,    'models/infer_quantized_tflite_model.tflite',  'path to model')
 args = parser.parse_args()
 
@@ -125,7 +125,7 @@ if __name__ == '__main__':
     try:
         while True:
             print('\n------------------------------------------------------------------')
-            select_fun = input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do voice recognition,\n type in 2 to do continuous recognition, \n type in 3 to exit the program. \n")
+            select_fun = int(input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do voice recognition,\n type in 2 to do continuous recognition, \n type in 3 to exit the program. \n"))
 
             if select_fun == 0:
                 audio_path = record_audio.record()
@@ -136,7 +136,7 @@ if __name__ == '__main__':
 
             elif select_fun == 1:
                 # download 
-                cloud_db = input('\nPlease type 1 if you want to acess the cloud database, else type 0 to acess the local database \n')
+                cloud_db = bool(int(input('\nPlease type 1 if you want to acess the cloud database, else type 0 to acess the local database \n')))
                 if cloud_db:
                     time_1 = time.time()
                     wav_download = download_files(wav_bucket_name)
@@ -169,7 +169,7 @@ if __name__ == '__main__':
                     print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
                 else:
                     print('Please type either 0, 1\n')
-
+                    
                 # run inference 
                 print("\nRecording has started, press Ctrl+C to quit")
                 print("[RECORDER] Listening ...... \n")
