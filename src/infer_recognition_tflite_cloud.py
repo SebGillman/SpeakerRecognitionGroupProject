@@ -5,7 +5,6 @@ import os
 import shutil
 import time
 import sys
-import keyboard
 
 import numpy as np
 
@@ -15,6 +14,7 @@ from utils.reader import load_audio
 from utils.record import RecordAudio
 from utils.utility import add_arguments, print_arguments
 from AWS.s3_upload_file import upload_file
+from AWS.s3_download_file import upload_files
 
 parser = argparse.ArgumentParser(description=__doc__)
 add_arg = functools.partial(add_arguments, argparser=parser)
@@ -129,6 +129,12 @@ if __name__ == '__main__':
                 register(audio_path, name, cloud_db)
 
             elif select_fun == 1:
+                # download 
+                cloud_db = bool(int(input('\nPlease type 1 if you want to store your audio to the cloud, else type 0 \n')))
+                wav_download = upload_files(wav_bucket_name)
+
+
+                # run inference 
                 audio_path = record_audio.record()
                 time1 = time.time()
                 name, p = recognition(audio_path)
@@ -155,7 +161,7 @@ if __name__ == '__main__':
                         else:
                             print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment \n")
 
-                except keyboard.is_pressed('space'):
+                except KeyboardInterrupt:
                     pass
             elif(select_fun==3):
                 print('Exiting program...')
