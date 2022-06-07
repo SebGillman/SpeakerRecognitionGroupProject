@@ -142,6 +142,8 @@ if __name__ == '__main__':
                     wav_download = download_files(wav_bucket_name)
                     time_2 = time.time()
                     print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
+                else:
+                    print('Please type either 0, 1\n')
 
                 # run inference 
                 audio_path = record_audio.record(cloud_db)
@@ -165,7 +167,9 @@ if __name__ == '__main__':
                     wav_download = download_files(wav_bucket_name)
                     time_2 = time.time()
                     print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
-
+                else:
+                    print('Please type either 0, 1\n')
+                    
                 # run inference 
                 print("\nRecording has started, press Ctrl+C to quit")
                 print("[RECORDER] Listening ...... \n")
