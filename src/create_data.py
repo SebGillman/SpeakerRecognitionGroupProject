@@ -6,7 +6,6 @@ from tqdm import tqdm
 
 from utils.reader import load_audio
 
-
 # Create list
 def get_data_list(infodata_path, list_path, zhvoice_path):
     with open(infodata_path, 'r', encoding='utf-8') as f:

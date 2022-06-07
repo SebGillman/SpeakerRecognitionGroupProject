@@ -39,6 +39,7 @@ input_shape = eval(args.input_shape)
 person_feature = []
 person_name = []
 
+
 # predict the audio
 def infer(audio_path):
     time5 = time.time()

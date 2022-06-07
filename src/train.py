@@ -38,7 +38,6 @@ def save_model(model):
     infer_model.save(filepath=os.path.join(args.save_model_path, 'infer_model.h5'), include_optimizer=False)
     model.save_weights(filepath=os.path.join(args.save_model_path, 'model_weights.h5'))
 
-
 def create_model(input_shape):
     # Obtain model
     model = tf.keras.Sequential()
