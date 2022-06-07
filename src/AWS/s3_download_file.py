@@ -8,7 +8,8 @@ def download_files(bucket, local='./tmp'):
     os.makedirs(local)
 
     for obj in bucket.objects.all():
-        bucket.download_file(obj.key, obj.key) # save to same path
+
+        bucket.download_file(obj.key, local) # save to same path
 
 
     
