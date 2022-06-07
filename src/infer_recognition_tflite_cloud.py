@@ -5,7 +5,7 @@ import os
 import shutil
 import time
 import sys
-import pyautogui
+import keyboard
 
 import numpy as np
 
@@ -155,7 +155,7 @@ if __name__ == '__main__':
                         else:
                             print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment \n")
 
-                except pyautogui. press("space"):
+                except keyboard.is_pressed('space'):
                     pass
             elif(select_fun==3):
                 print('Exiting program...')
