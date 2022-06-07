@@ -44,12 +44,11 @@ wav_bucket_name = 'armgroupproject'
 stft_bucket_name = 'stft-data'
 
 # predict the audio
-def infer(audio_path, cloud_db = False):
+def infer(audio_path, message = True):
     time5 = time.time()
     data = load_audio(audio_path, mode='infer', spec_len=input_shape[1])
     time6 = time.time()
     stft_time = np.round(time6-time5, 3)
-    print('STFT time: {} seconds.'.format(stft_time))
 
     time3 = time.time()
     output_details = interpreter.get_output_details()[0]
@@ -61,7 +60,9 @@ def infer(audio_path, cloud_db = False):
     output = interpreter.get_tensor(output_details['index'])
     time4 = time.time()
     predict_time = np.round(time4-time3, 3)
-    print("Prediction time = {} seconds.".format(predict_time))
+    if message:
+        print('STFT time: {} seconds.'.format(stft_time))
+        print("Prediction time = {} seconds.".format(predict_time))
     return output
 
 
@@ -94,7 +95,8 @@ def recognition(path):
 def register(path, user_name, cloud_db=False):
     save_path = os.path.join(args.audio_db, user_name + os.path.basename(path)[-4:])
     shutil.move(path, save_path)
-    feature = infer(save_path)[0]
+    message = False
+    feature = infer(save_path, message)[0]
     person_name.append(user_name)
     person_feature.append(feature)
 
@@ -102,7 +104,7 @@ def register(path, user_name, cloud_db=False):
         wav_success_upload = upload_file(save_path, wav_bucket_name)
         if wav_success_upload:
              print('Successfully uploaded audio: {} to the cloud!'.format(user_name+'.wav'))
-             os.remove(audio_path)
+             os.remove(user_name+'.wav')
 
 
 if __name__ == '__main__':
@@ -115,7 +117,7 @@ if __name__ == '__main__':
         while True:
             print('\n------------------------------------------------------------------')
             select_fun = int(input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do voice recognition,\n type in 2 to do continuous recognition, \n type in 3 to exit the program. \n"))
-            cloud_db = bool(int(input('Please type 1 if you want to store your audio to the cloud, else type 0 \n')))
+            #cloud_db = bool(int(input('\nPlease type 1 if you want to store your audio to the cloud, else type 0 \n')))
             if select_fun == 0:
                 audio_path = record_audio.record()
                 name = input("Please type in your name as new member: ")
