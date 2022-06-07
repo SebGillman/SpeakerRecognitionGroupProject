@@ -14,7 +14,7 @@ from utils.reader import load_audio
 from utils.record import RecordAudio
 from utils.utility import add_arguments, print_arguments
 from AWS.s3_upload_file import upload_file
-from AWS.s3_download_file import upload_files
+from AWS.s3_download_file import download_files
 
 parser = argparse.ArgumentParser(description=__doc__)
 add_arg = functools.partial(add_arguments, argparser=parser)
@@ -136,8 +136,7 @@ if __name__ == '__main__':
             elif select_fun == 1:
                 # download 
                 cloud_db = bool(int(input('\nPlease type 1 if you want to store your audio to the cloud, else type 0 \n')))
-                wav_download = upload_files(wav_bucket_name)
-
+                wav_download = download_files(wav_bucket_name)
 
                 # run inference 
                 audio_path = record_audio.record()
