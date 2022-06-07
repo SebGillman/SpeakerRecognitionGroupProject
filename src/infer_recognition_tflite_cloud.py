@@ -91,10 +91,10 @@ def recognition(path, cloud_db=False):
         if dist > pro:
             pro = dist
             name = person_name[i]
-    """
+
     if cloud_db:
         os.rmdir('./tmp')
-    """
+
     return name, pro
 
 
@@ -136,7 +136,10 @@ if __name__ == '__main__':
             elif select_fun == 1:
                 # download 
                 cloud_db = bool(int(input('\nPlease type 1 if you want to acess the cloud database, else type 0 \n')))
+                time_1 = time.time()
                 wav_download = download_files(wav_bucket_name)
+                time_2 = time.time()
+                print('Download time = ', np.round(time_2-time_1, 3), ' seconds. \n')
 
                 # run inference 
                 audio_path = record_audio.record()
