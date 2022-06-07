@@ -44,7 +44,7 @@ class RecordAudio:
             wf.close()
 
         else:
-            output_path="audio_db/temp.wav"
+            #output_path="audio_db/temp.wav"
             i = input("\nPress ENTER to start recording (recording time is 3 seconds) ")
             print("\n[RECORDER] Listening ......")
             frames = []
@@ -62,7 +62,7 @@ class RecordAudio:
 
         return output_path
 
-    def recordconst(self, output_path="audio_db/temp.wav", record_seconds=0.5, cloud = False):
+    def recordconst(self,  record_seconds=0.5, cloud = False):
         """
         Terms meaning
         :param output_path: path of save recording, with file format wav
@@ -70,6 +70,7 @@ class RecordAudio:
         :return: file path of the audio recordings
         """
         if cloud:
+            output_path="tmp/temp.wav"
             frames = []
             for i in range(0, int(self.rate / self.chunk * record_seconds)):
                 data = self.stream.read(self.chunk, exception_on_overflow = False)
@@ -84,6 +85,7 @@ class RecordAudio:
             return output_path
 
         else:
+            output_path="audio_db/temp.wav"
             frames = []
             for i in range(0, int(self.rate / self.chunk * record_seconds)):
                 data = self.stream.read(self.chunk, exception_on_overflow = False)
