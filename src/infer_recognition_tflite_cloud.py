@@ -82,7 +82,7 @@ def load_audio_db(audio_db_path):
 
 
 # Voicprint recognition
-def recognition(path):
+def recognition(path, cloud_db=False):
     name = ''
     pro = 0
     feature = infer(path)[0]
@@ -91,7 +91,12 @@ def recognition(path):
         if dist > pro:
             pro = dist
             name = person_name[i]
+
+    if cloud_db:
+        os.remove('/tmp')
+    
     return name, pro
+
 
 
 # Register new member
@@ -137,7 +142,7 @@ if __name__ == '__main__':
                 # run inference 
                 audio_path = record_audio.record()
                 time1 = time.time()
-                name, p = recognition(audio_path)
+                name, p = recognition(audio_path, cloud_db)
                 time2 = time.time()
                 if p > args.threshold:
                     print("The one currently speaking is %s with a similarity of %f" % (name, p))
