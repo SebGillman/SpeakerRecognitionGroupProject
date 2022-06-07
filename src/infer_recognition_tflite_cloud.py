@@ -1,4 +1,5 @@
 import argparse
+from email import message
 import functools
 import os
 import shutil
@@ -69,10 +70,11 @@ def infer(audio_path, message = True):
 # Load the database and print out the list of members
 def load_audio_db(audio_db_path):
     audios = os.listdir(audio_db_path)
+    message = False
     for audio in audios:
         path = os.path.join(audio_db_path, audio)
         name = audio[:-4]
-        feature = infer(path)[0]
+        feature = infer(path, message)[0]
         person_name.append(name)
         person_feature.append(feature)
         print("Loaded %s audio." % name)
@@ -104,7 +106,7 @@ def register(path, user_name, cloud_db=False):
         wav_success_upload = upload_file(save_path, wav_bucket_name)
         if wav_success_upload:
              print('Successfully uploaded audio: {} to the cloud!'.format(user_name+'.wav'))
-             os.remove(user_name+'.wav')
+             os.remove('audio_db/'+user_name+'.wav')
 
 
 if __name__ == '__main__':
@@ -135,10 +137,6 @@ if __name__ == '__main__':
                     print('Classification time = ', np.round(time2-time1, 3), ' seconds. \n')
                 else:
                     print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment \n")
-                if cloud_db:
-                    success_upload = upload_file(audio_path, 'armgroupproject')
-                    if success_upload:
-                        print('Successfully uploaded file to the cloud!')
 
             elif select_fun == 2:
                 print("\nRecording has started, press Ctrl+C to quit")
@@ -155,10 +153,7 @@ if __name__ == '__main__':
                             print('Classification time = ', np.round(time2-time1, 3), ' seconds. \n')
                         else:
                             print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment \n")
-                        if cloud_db:
-                            success_upload = upload_file(audio_path, 'armgroupproject')
-                            if success_upload:
-                                print('Successfully uploaded file to the cloud!')
+
                 except KeyboardInterrupt:
                     pass
             elif(select_fun==3):
