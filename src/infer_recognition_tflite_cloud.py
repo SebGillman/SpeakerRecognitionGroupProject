@@ -165,7 +165,7 @@ if __name__ == '__main__':
                     wav_download = download_files(wav_bucket_name)
                     time_2 = time.time()
                     print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
-                    
+
                 # run inference 
                 print("\nRecording has started, press Ctrl+C to quit")
                 print("[RECORDER] Listening ...... \n")
