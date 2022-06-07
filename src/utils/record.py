@@ -70,13 +70,11 @@ class RecordAudio:
         :return: file path of the audio recordings
         """
         if cloud:
-            # print("\n[RECORDER] Listening ......")
             frames = []
             for i in range(0, int(self.rate / self.chunk * record_seconds)):
                 data = self.stream.read(self.chunk, exception_on_overflow = False)
                 frames.append(data)
 
-            # print("[RECORDER] Recording finished!")
             wf = wave.open(output_path, 'wb')
             wf.setnchannels(self.channels)
             wf.setsampwidth(self.p.get_sample_size(self.format))
@@ -86,18 +84,17 @@ class RecordAudio:
             return output_path
 
         else:
-            # print("\n[RECORDER] Listening ......")
             frames = []
             for i in range(0, int(self.rate / self.chunk * record_seconds)):
                 data = self.stream.read(self.chunk, exception_on_overflow = False)
                 frames.append(data)
 
-            # print("[RECORDER] Recording finished!")
             wf = wave.open(output_path, 'wb')
             wf.setnchannels(self.channels)
             wf.setsampwidth(self.p.get_sample_size(self.format))
             wf.setframerate(self.rate)
             wf.writeframes(b''.join(frames))
             wf.close()
-            return output_path
+        
+        return output_path
 

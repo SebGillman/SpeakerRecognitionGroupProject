@@ -144,7 +144,7 @@ if __name__ == '__main__':
                     print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
 
                 # run inference 
-                audio_path = record_audio.record()
+                audio_path = record_audio.record(cloud_db)
                 time1 = time.time()
                 name, p = recognition(audio_path, cloud_db)
                 time2 = time.time()
@@ -162,15 +162,15 @@ if __name__ == '__main__':
                     wav_download = download_files(wav_bucket_name)
                     time_2 = time.time()
                     print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
-                    
+
                 print("\nRecording has started, press Ctrl+C to quit")
                 print("[RECORDER] Listening ...... \n")
                 keypress=False
                 try:
                     while True:
-                        audio_path = record_audio.recordconst()
+                        audio_path = record_audio.recordconst(cloud_db)
                         time1 = time.time()
-                        name, p = recognition(audio_path)
+                        name, p = recognition(audio_path, cloud_db)
                         time2 = time.time()
                         if p > args.threshold:
                             print("The one currently speaking is %s with a similarity of %f" % (name, p))
