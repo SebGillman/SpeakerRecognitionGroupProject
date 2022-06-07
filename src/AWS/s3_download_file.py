@@ -1,7 +1,7 @@
 import boto3
 import os
 
-def download_files(bucket, local='/tmp'):
+def download_files(bucket, local='./tmp'):
 
     s3=boto3.client('s3')
     os.makedirs(local)
