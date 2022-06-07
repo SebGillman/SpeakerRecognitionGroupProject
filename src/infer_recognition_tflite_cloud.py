@@ -5,6 +5,7 @@ import os
 import shutil
 import time
 import sys
+import pyautogui
 
 import numpy as np
 
@@ -106,7 +107,7 @@ def register(path, user_name, cloud_db=False):
         wav_success_upload = upload_file(save_path, wav_bucket_name)
         if wav_success_upload:
              print('Successfully uploaded audio: {} to the cloud!'.format(user_name+'.wav'))
-             os.remove('audio_db/'+user_name+'.wav')
+             os.remove('audio_db/'+user_name+'.wav') # removes file from the local database
 
 
 if __name__ == '__main__':
@@ -154,7 +155,7 @@ if __name__ == '__main__':
                         else:
                             print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment \n")
 
-                except KeyboardInterrupt:
+                except pyautogui. press("space"):
                     pass
             elif(select_fun==3):
                 print('Exiting program...')
