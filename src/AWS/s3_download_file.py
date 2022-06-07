@@ -4,7 +4,9 @@ import os
 def download_files(bucket, local='./tmp'):
     # s3=boto3.client('s3')
     s3_client = boto3.client('s3')
-
+    s3_resource = boto3.resource('s3')
+    bucket = s3_resource.Bucket(bucket) 
+    
     for obj in bucket.objects.all():
         source = obj.key
         destination = os.path.join(local, source)
