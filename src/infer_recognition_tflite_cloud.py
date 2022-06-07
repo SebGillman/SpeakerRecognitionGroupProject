@@ -93,7 +93,7 @@ def recognition(path, cloud_db=False):
             name = person_name[i]
 
     if cloud_db:
-        os.remove('/tmp')
+        os.rmdir('/tmp')
     
     return name, pro
 
@@ -135,7 +135,7 @@ if __name__ == '__main__':
 
             elif select_fun == 1:
                 # download 
-                cloud_db = bool(int(input('\nPlease type 1 if you want to store your audio to the cloud, else type 0 \n')))
+                cloud_db = bool(int(input('\nPlease type 1 if you want to acess the cloud database, else type 0 \n')))
                 wav_download = download_files(wav_bucket_name)
 
                 # run inference 
