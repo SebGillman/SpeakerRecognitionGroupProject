@@ -5,6 +5,7 @@ import os
 import shutil
 import time
 import sys
+import shutil
 
 import numpy as np
 
@@ -93,7 +94,7 @@ def recognition(path, cloud_db=False):
             name = person_name[i]
 
     if cloud_db:
-        os.rmdir('./tmp')
+        shutil.rmtree('./tmp')
 
     return name, pro
 
@@ -139,7 +140,7 @@ if __name__ == '__main__':
                 time_1 = time.time()
                 wav_download = download_files(wav_bucket_name)
                 time_2 = time.time()
-                print('Download time = ', np.round(time_2-time_1, 3), ' seconds. \n')
+                print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
 
                 # run inference 
                 audio_path = record_audio.record()
