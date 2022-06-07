@@ -44,7 +44,7 @@ class RecordAudio:
             wf.close()
 
         else:
-            #output_path="audio_db/temp.wav"
+            output_path="audio_db/tmp.wav"
             i = input("\nPress ENTER to start recording (recording time is 3 seconds) ")
             print("\n[RECORDER] Listening ......")
             frames = []
