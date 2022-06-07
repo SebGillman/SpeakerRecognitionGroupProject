@@ -102,6 +102,7 @@ def register(path, user_name, cloud_db=False):
         wav_success_upload = upload_file(save_path, wav_bucket_name)
         if wav_success_upload:
              print('Successfully uploaded audio: {} to the cloud!'.format(user_name+'.wav'))
+             os.remove(audio_path)
 
 
 if __name__ == '__main__':
@@ -120,6 +121,7 @@ if __name__ == '__main__':
                 name = input("Please type in your name as new member: ")
                 if name == '': continue
                 register(audio_path, name, cloud_db)
+
             elif select_fun == 1:
                 audio_path = record_audio.record()
                 time1 = time.time()
@@ -127,13 +129,14 @@ if __name__ == '__main__':
                 time2 = time.time()
                 if p > args.threshold:
                     print("The one currently speaking is %s with a similarity of %f" % (name, p))
-                    print('Classification time = ', np.round(time2-time1, 3), ' seconds.')
+                    print('Classification time = ', np.round(time2-time1, 3), ' seconds. \n')
                 else:
-                    print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
+                    print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment \n")
                 if cloud_db:
                     success_upload = upload_file(audio_path, 'armgroupproject')
                     if success_upload:
                         print('Successfully uploaded file to the cloud!')
+
             elif select_fun == 2:
                 print("\nRecording has started, press Ctrl+C to quit")
                 print("[RECORDER] Listening ...... \n")
