@@ -8,10 +8,9 @@ def download_files(bucket, local='./tmp'):
     bucket = s3_resource.Bucket(bucket) 
 
     for obj in bucket.objects.all():
-        if not os.path.exists(os.path.dirname(local)):
-            os.makedirs(os.path.dirname(local))
+        os.makedirs(os.path.dirname(local))
         bucket.download_file(obj.key, obj.key) # save to same path
-        
+
 
     
 
