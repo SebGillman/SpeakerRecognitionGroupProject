@@ -15,13 +15,13 @@ def download_files(bucket, local='./tmp'):
             if not response.get('IsTruncated'):
                 break
             continuation_token = response.get('NextContinuationToken')
-            
+
     s3_client = boto3.client('s3')
     
     all_s3_objects_gen = get_all_s3_objects(s3_client, Bucket=bucket)
 
     for obj in all_s3_objects_gen:
-        source = obj.key
+        source = obj['Key']
         destination = os.path.join(local, source)
         if not os.path.exists(os.path.dirname(destination)):
             os.makedirs(os.path.dirname(destination))
