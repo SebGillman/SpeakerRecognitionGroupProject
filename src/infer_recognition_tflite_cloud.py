@@ -21,7 +21,7 @@ parser = argparse.ArgumentParser(description=__doc__)
 add_arg = functools.partial(add_arguments, argparser=parser)
 add_arg('audio_db',         str,    'audio_db',               'path to our audio database')
 add_arg('input_shape',      str,    '(257, 257, 1)',          'shape of input data')
-add_arg('threshold',        float,   0.7,                     'threshold of verification')
+add_arg('threshold',        float,   0.85,                     'threshold of verification')
 add_arg('model_path',       str,    'models/infer_quantized_tflite_model.tflite',  'path to model')
 args = parser.parse_args()
 
@@ -124,7 +124,7 @@ if __name__ == '__main__':
 
     try:
         while True:
-            print('\n------------------------------------------------------------------')
+            print('\n----------------------------------------------------------------------------------------------')
             select_fun = int(input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do voice recognition,\n type in 2 to do continuous recognition, \n type in 3 to exit the program. \n"))
 
             if select_fun == 0:
