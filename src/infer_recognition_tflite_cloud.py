@@ -137,10 +137,11 @@ if __name__ == '__main__':
             elif select_fun == 1:
                 # download 
                 cloud_db = bool(int(input('\nPlease type 1 if you want to acess the cloud database, else type 0 \n')))
-                time_1 = time.time()
-                wav_download = download_files(wav_bucket_name)
-                time_2 = time.time()
-                print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
+                if cloud_db:
+                    time_1 = time.time()
+                    wav_download = download_files(wav_bucket_name)
+                    time_2 = time.time()
+                    print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
 
                 # run inference 
                 audio_path = record_audio.record()
@@ -154,6 +155,14 @@ if __name__ == '__main__':
                     print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment \n")
 
             elif select_fun == 2:
+                # download 
+                cloud_db = bool(int(input('\nPlease type 1 if you want to acess the cloud database, else type 0 \n')))
+                if cloud_db:
+                    time_1 = time.time()
+                    wav_download = download_files(wav_bucket_name)
+                    time_2 = time.time()
+                    print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
+                    
                 print("\nRecording has started, press Ctrl+C to quit")
                 print("[RECORDER] Listening ...... \n")
                 keypress=False

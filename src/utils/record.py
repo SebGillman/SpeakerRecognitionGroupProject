@@ -62,25 +62,42 @@ class RecordAudio:
 
         return output_path
 
-    def recordconst(self, output_path="audio_db/temp.wav", record_seconds=0.5):
+    def recordconst(self, output_path="audio_db/temp.wav", record_seconds=0.5, cloud = False):
         """
         Terms meaning
         :param output_path: path of save recording, with file format wav
         :param record_seconds: record time, default setting will be 3s
         :return: file path of the audio recordings
         """
-        # print("\n[RECORDER] Listening ......")
-        frames = []
-        for i in range(0, int(self.rate / self.chunk * record_seconds)):
-            data = self.stream.read(self.chunk, exception_on_overflow = False)
-            frames.append(data)
+        if cloud:
+            # print("\n[RECORDER] Listening ......")
+            frames = []
+            for i in range(0, int(self.rate / self.chunk * record_seconds)):
+                data = self.stream.read(self.chunk, exception_on_overflow = False)
+                frames.append(data)
 
-        # print("[RECORDER] Recording finished!")
-        wf = wave.open(output_path, 'wb')
-        wf.setnchannels(self.channels)
-        wf.setsampwidth(self.p.get_sample_size(self.format))
-        wf.setframerate(self.rate)
-        wf.writeframes(b''.join(frames))
-        wf.close()
-        return output_path
+            # print("[RECORDER] Recording finished!")
+            wf = wave.open(output_path, 'wb')
+            wf.setnchannels(self.channels)
+            wf.setsampwidth(self.p.get_sample_size(self.format))
+            wf.setframerate(self.rate)
+            wf.writeframes(b''.join(frames))
+            wf.close()
+            return output_path
+
+        else:
+            # print("\n[RECORDER] Listening ......")
+            frames = []
+            for i in range(0, int(self.rate / self.chunk * record_seconds)):
+                data = self.stream.read(self.chunk, exception_on_overflow = False)
+                frames.append(data)
+
+            # print("[RECORDER] Recording finished!")
+            wf = wave.open(output_path, 'wb')
+            wf.setnchannels(self.channels)
+            wf.setsampwidth(self.p.get_sample_size(self.format))
+            wf.setframerate(self.rate)
+            wf.writeframes(b''.join(frames))
+            wf.close()
+            return output_path
 
