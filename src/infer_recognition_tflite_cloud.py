@@ -13,6 +13,7 @@ from utils.reader import load_audio
 from utils.record import RecordAudio
 from utils.utility import add_arguments, print_arguments
 from AWS.s3_upload_file import upload_file
+from AWS.s3_stft_to_jpeg import stft_to_jpeg
 
 parser = argparse.ArgumentParser(description=__doc__)
 add_arg = functools.partial(add_arguments, argparser=parser)
@@ -62,7 +63,8 @@ def infer(audio_path, cloud_db = False):
     time4 = time.time()
     predict_time = np.round(time4-time3, 3)
     print("Prediction time = {} seconds.".format(predict_time))
-    return output
+
+    return output, data
 
 
 # Load the database and print out the list of members
@@ -77,31 +79,31 @@ def load_audio_db(audio_db_path):
         print("Loaded %s audio." % name)
 
 
-# Voicprint recognition
+# Voiceprint recognition
 def recognition(path):
     name = ''
     pro = 0
-    feature = infer(path)[0]
+    feature, data = infer(path, cloud_db)[0]
     for i, person_f in enumerate(person_feature):
         dist = np.dot(feature, person_f) / (np.linalg.norm(feature) * np.linalg.norm(person_f))
         if dist > pro:
             pro = dist
             name = person_name[i]
-    return name, pro
+    return name, pro, data
 
 
 # Register new member
 def register(path, user_name, cloud_db=False):
     save_path = os.path.join(args.audio_db, user_name + os.path.basename(path)[-4:])
     shutil.move(path, save_path)
-    feature = infer(save_path)[0]
+    feature, data = infer(save_path, cloud_db)[0]
     person_name.append(user_name)
     person_feature.append(feature)
 
     if cloud_db:
-        wav_success_upload = upload_file(save_path, wav_bucket_name)
-        if wav_success_upload:
-             print('Successfully uploaded audio: {} to the cloud!'.format(user_name+'.wav'))
+        stft_success_upload = stft_to_jpeg(data, user_name)
+        if stft_success_upload:
+             print('Successfully uploaded STFT: {} to the cloud!'.format(user_name+'.jpeg'))
 
 
 if __name__ == '__main__':
@@ -112,17 +114,20 @@ if __name__ == '__main__':
     try:
         while True:
             print('\n------------------------------------------------------------------')
+            cloud_db = 0
             select_fun = int(input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do voice recognition,\n type in 2 to do continuous recognition, \n type in 3 to exit the program. \n"))
-            cloud_db = bool(int(input('Please type 1 if you want to send audio data to the cloud \n')))
+            if select_fun != 3:
+                cloud_db = int(input('Please type 1 if you want to send data to the cloud \n'))
             if select_fun == 0:
                 audio_path = record_audio.record()
                 name = input("Please type in your name as new member: ")
                 if name == '': continue
                 register(audio_path, name, cloud_db)
+
             elif select_fun == 1:
                 audio_path = record_audio.record()
                 time1 = time.time()
-                name, p = recognition(audio_path)
+                name, p, data = recognition(audio_path)
                 time2 = time.time()
                 if p > args.threshold:
                     print("The one currently speaking is %s with a similarity of %f" % (name, p))
@@ -130,10 +135,11 @@ if __name__ == '__main__':
                 else:
                     print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
                 if cloud_db:
-                    success_upload = upload_file(audio_path, 'armgroupproject')
-                    if success_upload:
-                        print('Successfully uploaded file to the cloud!')
+                    stft_success_upload = stft_to_jpeg(data, name)
+                    if stft_success_upload:
+                        print('Successfully uploaded STFT to the cloud!')
             elif select_fun == 2:
+
                 print("\nRecording has started, press Ctrl+C to quit")
                 print("[RECORDER] Listening ...... \n")
                 keypress=False
@@ -149,9 +155,9 @@ if __name__ == '__main__':
                         else:
                             print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment \n")
                         if cloud_db:
-                            success_upload = upload_file(audio_path, 'armgroupproject')
-                            if success_upload:
-                                print('Successfully uploaded file to the cloud!')
+                            stft_success_upload = stft_to_jpeg(data, name)
+                            if stft_success_upload:
+                                print('Successfully uploaded STFT to the cloud!')
                 except KeyboardInterrupt:
                     pass
             elif(select_fun==3):
@@ -162,3 +168,4 @@ if __name__ == '__main__':
                 
     except KeyboardInterrupt:
         pass
+
