@@ -6,13 +6,13 @@ import time
 import sys
 
 import numpy as np
-import tensorflow as tf
 
 from tflite_runtime.interpreter import Interpreter
 
 from utils.reader import load_audio
 from utils.record import RecordAudio
 from utils.utility import add_arguments, print_arguments
+from AWS.s3_upload_file import upload_file
 
 parser = argparse.ArgumentParser(description=__doc__)
 add_arg = functools.partial(add_arguments, argparser=parser)
@@ -39,23 +39,23 @@ input_shape = eval(args.input_shape)
 person_feature = []
 person_name = []
 
+# Cloud metadata
+wav_bucket_name = 'armgroupproject'
+stft_bucket_name = 'stft-data'
+
 # predict the audio
-def infer(audio_path):
+def infer(audio_path, cloud_db = False):
     time5 = time.time()
     data = load_audio(audio_path, mode='infer', spec_len=input_shape[1])
     time6 = time.time()
     stft_time = np.round(time6-time5, 3)
     print('STFT time: {} seconds.'.format(stft_time))
 
-    data_tf = tf.convert_to_tensor(data[np.newaxis, :])
-
     time3 = time.time()
     output_details = interpreter.get_output_details()[0]
     input_details = interpreter.get_input_details()[0]
-    #print('input details: {}'.format(input_details))
-    #print('output details: {}'.format(output_details))
 
-    interpreter.set_tensor(input_details['index'], data_tf)
+    interpreter.set_tensor(input_details['index'], data[np.newaxis, :])
     interpreter.invoke()
 
     output = interpreter.get_tensor(output_details['index'])
@@ -91,12 +91,17 @@ def recognition(path):
 
 
 # Register new member
-def register(path, user_name):
+def register(path, user_name, cloud_db=False):
     save_path = os.path.join(args.audio_db, user_name + os.path.basename(path)[-4:])
     shutil.move(path, save_path)
     feature = infer(save_path)[0]
     person_name.append(user_name)
     person_feature.append(feature)
+
+    if cloud_db:
+        wav_success_upload = upload_file(save_path, wav_bucket_name)
+        if wav_success_upload:
+             print('Successfully uploaded audio: {} to the cloud!'.format(user_name+'.wav'))
 
 
 if __name__ == '__main__':
@@ -109,11 +114,12 @@ if __name__ == '__main__':
         while True:
             print('\n------------------------------------------------------------------')
             select_fun = int(input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do voice recognition,\n type in 2 to do continuous recognition, \n type in 3 to exit the program. \n"))
+            cloud_db = bool(int(input('Please type 1 if you want to send audio data to the cloud \n')))
             if select_fun == 0:
                 audio_path = record_audio.record()
                 name = input("Please type in your name as new member: ")
                 if name == '': continue
-                register(audio_path, name)
+                register(audio_path, name, cloud_db)
             elif select_fun == 1:
                 audio_path = record_audio.record()
                 time1 = time.time()
@@ -124,6 +130,10 @@ if __name__ == '__main__':
                     print('Classification time = ', np.round(time2-time1, 3), ' seconds.')
                 else:
                     print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment")
+                if cloud_db:
+                    success_upload = upload_file(audio_path, 'armgroupproject')
+                    if success_upload:
+                        print('Successfully uploaded file to the cloud!')
             elif select_fun == 2:
                 print("\nRecording has started, press Ctrl+C to quit")
                 print("[RECORDER] Listening ...... \n")
@@ -139,6 +149,10 @@ if __name__ == '__main__':
                             print('Classification time = ', np.round(time2-time1, 3), ' seconds. \n')
                         else:
                             print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment \n")
+                        if cloud_db:
+                            success_upload = upload_file(audio_path, 'armgroupproject')
+                            if success_upload:
+                                print('Successfully uploaded file to the cloud!')
                 except KeyboardInterrupt:
                     pass
             elif(select_fun==3):
