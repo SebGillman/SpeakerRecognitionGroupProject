@@ -3,11 +3,24 @@ import os
 
 def download_files(bucket, local='./tmp'):
     # s3=boto3.client('s3')
+
+    def get_all_s3_objects(s3, **base_kwargs):
+        continuation_token = None
+        while True:
+            list_kwargs = dict(MaxKeys=1000, **base_kwargs)
+            if continuation_token:
+                list_kwargs['ContinuationToken'] = continuation_token
+            response = s3.list_objects_v2(**list_kwargs)
+            yield from response.get('Contents', [])
+            if not response.get('IsTruncated'):
+                break
+            continuation_token = response.get('NextContinuationToken')
+            
     s3_client = boto3.client('s3')
-    s3_resource = boto3.resource('s3')
-    bucket = s3_resource.Bucket(bucket) 
     
-    for obj in bucket.objects.all():
+    all_s3_objects_gen = get_all_s3_objects(s3_client, Bucket=bucket)
+
+    for obj in all_s3_objects_gen:
         source = obj.key
         destination = os.path.join(local, source)
         if not os.path.exists(os.path.dirname(destination)):
