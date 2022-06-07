@@ -6,10 +6,11 @@ def download_files(bucket, local='./tmp'):
     s3_resource = boto3.resource('s3')
     bucket = s3_resource.Bucket(bucket) 
     os.makedirs(local)
+    cur_path = os.getcwd()
 
     for obj in bucket.objects.all():
-
-        bucket.download_file(obj.key, local) # save to same path
+        file = bucket.download_file(obj.key, obj.key) # save to same path
+        os.path.join(cur_path, local, file)
 
 
     
