@@ -93,7 +93,7 @@ def recognition(path, cloud_db=False):
             name = person_name[i]
 
     if cloud_db:
-        os.rmdir('/tmp')
+        os.rmdir('./tmp')
     
     return name, pro
 
