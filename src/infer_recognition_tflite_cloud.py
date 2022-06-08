@@ -195,7 +195,7 @@ if __name__ == '__main__':
 
             elif(select_fun==3):
                 print('Exiting program...')
-                if os.path.exists(os.path.dirname('./tmp')):
+                if os.path.exists('./tmp'):
                     shutil.rmtree('./tmp')
                 else:
                     pass
