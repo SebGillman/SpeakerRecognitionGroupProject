@@ -70,7 +70,7 @@ def infer(audio_path, message = True):
 
 
 # Load the database and print out the list of members
-def load_audio_db(audio_db_path):
+def load_audio_db(audio_db_path, message = False):
     audios = os.listdir(audio_db_path)
     message = False
     for audio in audios:
@@ -79,7 +79,8 @@ def load_audio_db(audio_db_path):
         feature = infer(path, message)[0]
         person_name.append(name)
         person_feature.append(feature)
-        print("Loaded %s audio." % name)
+        if message:
+            print("Loaded %s audio." % name)
 
 
 # Voicprint recognition
@@ -120,7 +121,7 @@ def register(path, user_name, cloud_db=False):
 
 
 if __name__ == '__main__':
-    load_audio_db(args.audio_db)
+    load_audio_db(args.audio_db, message = True)
     record_audio = RecordAudio()
 
     print('\n \n \n')
@@ -143,9 +144,9 @@ if __name__ == '__main__':
                 if cloud_db:
                     time_1 = time.time()
                     wav_download = download_files(wav_bucket_name)
+                    load_audio_db("tmp")
                     time_2 = time.time()
                     print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
-                    load_audio_db("tmp")
 
 
                 # run inference 
@@ -168,6 +169,7 @@ if __name__ == '__main__':
                 if cloud_db:
                     time_1 = time.time()
                     wav_download = download_files(wav_bucket_name)
+                    load_audio_db("tmp")
                     time_2 = time.time()
                     print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
 
