@@ -93,9 +93,10 @@ def recognition(path, cloud_db=False):
             pro = dist
             name = person_name[i]
 
+    """
     if cloud_db:
         shutil.rmtree('./tmp')
-
+    """
     return name, pro
 
 
@@ -113,7 +114,7 @@ def register(path, user_name, cloud_db=False):
         wav_success_upload = upload_file(save_path, wav_bucket_name)
         if wav_success_upload:
              print('Successfully uploaded audio: {} to the cloud!'.format(user_name+'.wav'))
-             os.remove('audio_db/'+user_name+'.wav') # removes file from the local database
+             os.remove('tmp/'+user_name+'.wav') # removes file from the local database
 
 
 if __name__ == '__main__':

@@ -26,6 +26,7 @@ class RecordAudio:
         :param record_seconds: record time, default setting will be 3s
         :return: file path of the audio recordings
         """
+        print(cloud)
         if cloud:
             output_path="tmp/temp.wav"
             i = input("\nPress ENTER to start recording (recording time is 3 seconds) ")
