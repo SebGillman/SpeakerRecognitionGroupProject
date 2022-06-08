@@ -145,6 +145,8 @@ if __name__ == '__main__':
                     wav_download = download_files(wav_bucket_name)
                     time_2 = time.time()
                     print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
+                    load_audio_db("tmp")
+
 
                 # run inference 
                 audio_path = record_audio.record(cloud=cloud_db)
