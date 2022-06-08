@@ -26,13 +26,10 @@ class RecordAudio:
         :param record_seconds: record time, default setting will be 3s
         :return: file path of the audio recordings
         """
-        print(cloud)
         if cloud:
             output_path="tmp/temp.wav"
         else:
             output_path="audio_db/temp.wav"
-
-        print(output_path)
 
         i = input("\nPress ENTER to start recording (recording time is 3 seconds) ")
         print("\n[RECORDER] Listening ......")
@@ -58,13 +55,10 @@ class RecordAudio:
         :param record_seconds: record time, default setting will be 3s
         :return: file path of the audio recordings
         """
-        print(cloud)
         if cloud:
             output_path="tmp/temp.wav"
         else:
             output_path="audio_db/temp.wav"
-        
-        print(output_path)
 
         frames = []
         for i in range(0, int(self.rate / self.chunk * record_seconds)):
