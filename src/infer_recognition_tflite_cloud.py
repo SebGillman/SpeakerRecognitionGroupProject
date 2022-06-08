@@ -111,6 +111,8 @@ def register(path, user_name, cloud_db=False):
         wav_success_upload = upload_file(save_path, wav_bucket_name)
         if wav_success_upload:
              print('Successfully uploaded audio: {} to the cloud!'.format(user_name+'.wav'))
+
+             # delete file from 'audio_db' after upload --> other solution: save recording to different directory and then depending on cloud_db either join it with 'audio_db' or 'tmp'
              #os.remove('tmp/'+user_name+'.wav') # removes file from the local database
     else:
         print('Successfully saved audio: {} to the local database!'.format(user_name+'.wav'))
