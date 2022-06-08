@@ -197,7 +197,8 @@ if __name__ == '__main__':
                 print('Exiting program...')
                 if os.path.exists(os.path.dirname('./tmp')):
                     shutil.rmtree('./tmp')
-                else: continue
+                else:
+                    pass
                 sys.exit()
 
             else:
