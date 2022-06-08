@@ -114,7 +114,9 @@ def register(path, user_name, cloud_db=False):
         wav_success_upload = upload_file(save_path, wav_bucket_name)
         if wav_success_upload:
              print('Successfully uploaded audio: {} to the cloud!'.format(user_name+'.wav'))
-             os.remove('tmp/'+user_name+'.wav') # removes file from the local database
+             #os.remove('tmp/'+user_name+'.wav') # removes file from the local database
+    else:
+        print('Successfully saved audio: {} to the local database!'.format(user_name+'.wav'))
 
 
 if __name__ == '__main__':
@@ -132,12 +134,12 @@ if __name__ == '__main__':
                 audio_path = record_audio.record()
                 name = input("Please type in your name as new member: ")
                 if name == '': continue
-                cloud_db = bool(int(input('Please type 1 if you want to store your audio to the cloud, else type 0 to store it in the local database\n')))
+                cloud_db = bool(int(input('\nPlease type 1 if you want to store your audio to the cloud, else type 0 to store it in the local database\n')))
                 register(audio_path, name, cloud_db)
 
             elif select_fun == 1:
                 # download 
-                cloud_db = bool(int(input('\nPlease type 1 if you want to acess the cloud database, else type 0 to acess the local database \n')))
+                cloud_db = bool(int(input('\nPlease type 1 if you want to access the cloud database, else type 0 to access the local database \n')))
                 if cloud_db:
                     time_1 = time.time()
                     wav_download = download_files(wav_bucket_name)
@@ -160,7 +162,7 @@ if __name__ == '__main__':
 
             elif select_fun == 2:
                 # download 
-                cloud_db = bool(int(input('\nPlease type 1 if you want to acess the cloud database, else type 0 to acess the local database \n')))
+                cloud_db = bool(int(input('\nPlease type 1 if you want to access the cloud database, else type 0 to access the local database \n')))
                 if cloud_db:
                     time_1 = time.time()
                     wav_download = download_files(wav_bucket_name)
