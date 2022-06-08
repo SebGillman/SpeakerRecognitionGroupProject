@@ -125,14 +125,14 @@ if __name__ == '__main__':
 
     try:
         while True:
-            print('\n----------------------------------------------------------------------------------------------')
+            print('\n-----------------------------------------------------------------------------------------------------')
             select_fun = int(input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do voice recognition,\n type in 2 to do continuous recognition, \n type in 3 to exit the program. \n"))
 
             if select_fun == 0:
                 audio_path = record_audio.record()
                 name = input("Please type in your name as new member: ")
                 if name == '': continue
-                cloud_db = bool(int(input('Please type 1 if you want to store your audio to the cloud, else type 0 \n')))
+                cloud_db = bool(int(input('Please type 1 if you want to store your audio to the cloud, else type 0 to store it in the local database\n')))
                 register(audio_path, name, cloud_db)
 
             elif select_fun == 1:
