@@ -35,6 +35,7 @@ class RecordAudio:
         i = input("\nPress ENTER to start recording (recording time is 3 seconds) ")
         print("\n[RECORDER] Listening ......")
         frames = []
+        print(self.rate)
         print(int(self.rate / self.chunk * record_seconds))
         for i in tqdm(range(0, int(self.rate / self.chunk * record_seconds))):
             print("Entered for loop")
