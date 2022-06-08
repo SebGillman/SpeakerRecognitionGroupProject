@@ -120,8 +120,10 @@ if __name__ == '__main__':
     load_audio_db(args.audio_db, message = True)
     record_audio = RecordAudio()
 
-    print('\n \n \n')
+    flag = False
 
+    print('\n \n \n')
+    
     try:
         while True:
             print('\n-----------------------------------------------------------------------------------------------------')
@@ -137,11 +139,12 @@ if __name__ == '__main__':
             elif select_fun == 1:
                 # download 
                 cloud_db = bool(int(input('\nPlease type 1 if you want to access the cloud database, else type 0 to access the local database \n')))
-                if cloud_db:
+                if cloud_db and not flag:
                     time_1 = time.time()
                     wav_download = download_files(wav_bucket_name)
                     load_audio_db("tmp")
                     time_2 = time.time()
+                    flag = True
                     print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
 
 
@@ -162,11 +165,12 @@ if __name__ == '__main__':
             elif select_fun == 2:
                 # download 
                 cloud_db = bool(int(input('\nPlease type 1 if you want to access the cloud database, else type 0 to access the local database \n')))
-                if cloud_db:
+                if cloud_db and not flag:
                     time_1 = time.time()
                     wav_download = download_files(wav_bucket_name)
                     load_audio_db("tmp")
                     time_2 = time.time()
+                    flag = True
                     print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
 
                 # run inference 
