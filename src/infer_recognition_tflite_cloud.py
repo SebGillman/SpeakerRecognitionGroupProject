@@ -147,7 +147,6 @@ if __name__ == '__main__':
                     flag = True
                     print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
 
-
                 # run inference 
                 audio_path = record_audio.record(cloud=cloud_db)
                 time1 = time.time()
