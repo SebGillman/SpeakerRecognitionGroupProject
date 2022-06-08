@@ -155,7 +155,8 @@ if __name__ == '__main__':
                 else:
                     print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment \n")
 
-                os.remove('audio_db/temp.wav')
+                if not cloud_db:
+                    os.remove('audio_db/temp.wav')
 
             elif select_fun == 2:
                 # download 
@@ -172,7 +173,7 @@ if __name__ == '__main__':
                 keypress=False
                 try:
                     while True:
-                        audio_path = record_audio.recordconst(cloud_db)
+                        audio_path = record_audio.recordconst(cloud=cloud_db)
                         time1 = time.time()
                         name, p = recognition(audio_path)
                         time2 = time.time()
@@ -182,8 +183,8 @@ if __name__ == '__main__':
                         else:
                             print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment \n")
                 except KeyboardInterrupt:
-                    os.remove('audio_db/temp.wav')
-                    #else:
+                    if not cloud_db:
+                        os.remove('audio_db/temp.wav')
                     pass
 
             elif(select_fun==3):
