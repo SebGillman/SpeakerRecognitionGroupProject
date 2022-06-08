@@ -175,7 +175,7 @@ if __name__ == '__main__':
                     while True:
                         audio_path = record_audio.recordconst(cloud_db)
                         time1 = time.time()
-                        name, p = recognition(audio_path, cloud_db)
+                        name, p = recognition(audio_path)
                         time2 = time.time()
                         if p > args.threshold:
                             print("The one currently speaking is %s with a similarity of %f" % (name, p))
