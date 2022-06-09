@@ -28,7 +28,7 @@ def load_audio(audio_path, mode='train', win_length=400, sr=44100, hop_length=16
         plt.figure()
         librosa.display.specshow(mag, sr=sr)
         if name is not None:
-            file_name = 'spec_mag'+name+'.png'
+            file_name = name+'.png'
         else:
             file_name = 'spec_mag'+str(np.random.randint(10))+'.png'
         plt.savefig(file_name)
