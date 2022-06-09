@@ -9,7 +9,7 @@ class RecordAudio:
         self.chunk = 1024
         self.format = pyaudio.paInt16
         self.channels = 1
-        self.rate = 16000
+        self.rate = 44100
 
         # open audio
         self.p = pyaudio.PyAudio()
