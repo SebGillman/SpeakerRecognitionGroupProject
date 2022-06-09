@@ -50,7 +50,7 @@ stft_bucket_name = 'stft-data'
 # predict the audio
 def infer(audio_path, message = True, stft_cloud=True, name=None):
     time5 = time.time()
-    data = load_audio(audio_path, mode='infer', spec_len=input_shape[1], name=name)
+    data = load_audio(audio_path, mode='infer', spec_len=input_shape[1], name=name, stft_cloud=stft_cloud)
     time6 = time.time()
     stft_time = np.round(time6-time5, 3)
 
