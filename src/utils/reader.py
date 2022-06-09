@@ -6,7 +6,7 @@ import numpy as np
 
 
 # Load and pre-process audio file
-def load_audio(audio_path, mode='train', win_length=400, sr=44100, hop_length=160, n_fft=512, spec_len=257):
+def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=160, n_fft=512, spec_len=257):
     # Load audio
     wav, sr_ret = librosa.load(audio_path, sr=sr)
     if mode == 'train':
