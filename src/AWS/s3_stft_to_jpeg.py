@@ -12,7 +12,7 @@ def stft_to_jpeg(spec_mag, label, bucket_name='stft-data'):
         spec_mag_1 = spec_mag[:, :, 0]
     im = Image.fromarray(spec_mag_1)
 
-    file_name = label+'jpeg'
+    file_name = label+'.jpeg'
     im.save(file_name)
 
     if object_name is None:
