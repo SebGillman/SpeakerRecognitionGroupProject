@@ -54,11 +54,6 @@ def infer(audio_path, message = True, stft_cloud=True, name=None):
     time6 = time.time()
     stft_time = np.round(time6-time5, 3)
 
-    if stft_cloud:
-        stft_success_upload = stft_to_jpeg(data, 'testing')
-        if stft_success_upload:
-            print('Uploaded STFT to the cloud!')
-
     time3 = time.time()
     output_details = interpreter.get_output_details()[0]
     input_details = interpreter.get_input_details()[0]
