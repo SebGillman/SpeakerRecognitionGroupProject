@@ -21,7 +21,6 @@ print_arguments(args)
 model = tf.keras.models.load_model(args.model_path)
 model = tf.keras.models.Model(inputs=model.input, outputs=model.get_layer('batch_normalization').output)
 
-
 #  Calculate accuracy using cos similarity
 def cal_accuracy(y_score, y_true):
     y_score = np.asarray(y_score)

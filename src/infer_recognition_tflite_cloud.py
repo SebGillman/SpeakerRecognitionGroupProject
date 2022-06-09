@@ -1,9 +1,11 @@
 import argparse
+from email import message
 import functools
 import os
 import shutil
 import time
 import sys
+import shutil
 
 import numpy as np
 
@@ -13,12 +15,13 @@ from utils.reader import load_audio
 from utils.record import RecordAudio
 from utils.utility import add_arguments, print_arguments
 from AWS.s3_upload_file import upload_file
+from AWS.s3_download_file import download_files
 
 parser = argparse.ArgumentParser(description=__doc__)
 add_arg = functools.partial(add_arguments, argparser=parser)
 add_arg('audio_db',         str,    'audio_db',               'path to our audio database')
 add_arg('input_shape',      str,    '(257, 257, 1)',          'shape of input data')
-add_arg('threshold',        float,   0.7,                     'threshold of verification')
+add_arg('threshold',        float,   0.85,                     'threshold of verification')
 add_arg('model_path',       str,    'models/infer_quantized_tflite_model.tflite',  'path to model')
 args = parser.parse_args()
 
@@ -44,12 +47,11 @@ wav_bucket_name = 'armgroupproject'
 stft_bucket_name = 'stft-data'
 
 # predict the audio
-def infer(audio_path, cloud_db = False):
+def infer(audio_path, message = True):
     time5 = time.time()
     data = load_audio(audio_path, mode='infer', spec_len=input_shape[1])
     time6 = time.time()
     stft_time = np.round(time6-time5, 3)
-    print('STFT time: {} seconds.'.format(stft_time))
 
     time3 = time.time()
     output_details = interpreter.get_output_details()[0]
@@ -61,20 +63,24 @@ def infer(audio_path, cloud_db = False):
     output = interpreter.get_tensor(output_details['index'])
     time4 = time.time()
     predict_time = np.round(time4-time3, 3)
-    print("Prediction time = {} seconds.".format(predict_time))
+    if message:
+        print('STFT time: {} seconds.'.format(stft_time))
+        print("Prediction time = {} seconds.".format(predict_time))
     return output
 
 
 # Load the database and print out the list of members
-def load_audio_db(audio_db_path):
+def load_audio_db(audio_db_path, message = False):
     audios = os.listdir(audio_db_path)
+    message = False
     for audio in audios:
         path = os.path.join(audio_db_path, audio)
         name = audio[:-4]
-        feature = infer(path)[0]
+        feature = infer(path, message)[0]
         person_name.append(name)
         person_feature.append(feature)
-        print("Loaded %s audio." % name)
+        if message:
+            print("Loaded %s audio." % name)
 
 
 # Voicprint recognition
@@ -87,14 +93,17 @@ def recognition(path):
         if dist > pro:
             pro = dist
             name = person_name[i]
+
     return name, pro
+
 
 
 # Register new member
 def register(path, user_name, cloud_db=False):
     save_path = os.path.join(args.audio_db, user_name + os.path.basename(path)[-4:])
     shutil.move(path, save_path)
-    feature = infer(save_path)[0]
+    message = False
+    feature = infer(save_path, message)[0]
     person_name.append(user_name)
     person_feature.append(feature)
 
@@ -103,25 +112,45 @@ def register(path, user_name, cloud_db=False):
         if wav_success_upload:
              print('Successfully uploaded audio: {} to the cloud!'.format(user_name+'.wav'))
 
+             # delete file from 'audio_db' after upload --> other solution: save recording to different directory and then depending on cloud_db either join it with 'audio_db' or 'tmp'
+             #os.remove('tmp/'+user_name+'.wav') # removes file from the local database
+    else:
+        print('Successfully saved audio: {} to the local database!'.format(user_name+'.wav'))
+
 
 if __name__ == '__main__':
-    load_audio_db(args.audio_db)
+    load_audio_db(args.audio_db, message = True)
     record_audio = RecordAudio()
 
-    print('\n \n \n')
+    flag = False
 
+    print('\n \n \n')
+    
     try:
         while True:
-            print('\n------------------------------------------------------------------')
+            print('\n-----------------------------------------------------------------------------------------------------')
             select_fun = int(input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do voice recognition,\n type in 2 to do continuous recognition, \n type in 3 to exit the program. \n"))
-            cloud_db = bool(int(input('Please type 1 if you want to send audio data to the cloud \n')))
+
             if select_fun == 0:
                 audio_path = record_audio.record()
                 name = input("Please type in your name as new member: ")
                 if name == '': continue
+                cloud_db = bool(int(input('\nPlease type 1 if you want to store your audio to the cloud, else type 0 to store it in the local database\n')))
                 register(audio_path, name, cloud_db)
+
             elif select_fun == 1:
-                audio_path = record_audio.record()
+                # download 
+                cloud_db = bool(int(input('\nPlease type 1 if you want to access the cloud database, else type 0 to access the local database \n')))
+                if cloud_db and not flag:
+                    time_1 = time.time()
+                    wav_download = download_files(wav_bucket_name)
+                    load_audio_db("tmp")
+                    time_2 = time.time()
+                    flag = True
+                    print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
+
+                # run inference 
+                audio_path = record_audio.record(cloud=cloud_db)
                 time1 = time.time()
                 name, p = recognition(audio_path)
                 time2 = time.time()
@@ -130,17 +159,28 @@ if __name__ == '__main__':
                     print('Classification time = ', np.round(time2-time1, 3), ' seconds. \n')
                 else:
                     print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment \n")
-                if cloud_db:
-                    success_upload = upload_file(audio_path, 'armgroupproject')
-                    if success_upload:
-                        print('Successfully uploaded file to the cloud!')
+
+                if not cloud_db:
+                    os.remove('audio_db/temp.wav')
+
             elif select_fun == 2:
+                # download 
+                cloud_db = bool(int(input('\nPlease type 1 if you want to access the cloud database, else type 0 to access the local database \n')))
+                if cloud_db and not flag:
+                    time_1 = time.time()
+                    wav_download = download_files(wav_bucket_name)
+                    load_audio_db("tmp")
+                    time_2 = time.time()
+                    flag = True
+                    print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
+
+                # run inference 
                 print("\nRecording has started, press Ctrl+C to quit")
                 print("[RECORDER] Listening ...... \n")
                 keypress=False
                 try:
                     while True:
-                        audio_path = record_audio.recordconst()
+                        audio_path = record_audio.recordconst(cloud=cloud_db)
                         time1 = time.time()
                         name, p = recognition(audio_path)
                         time2 = time.time()
@@ -149,15 +189,19 @@ if __name__ == '__main__':
                             print('Classification time = ', np.round(time2-time1, 3), ' seconds. \n')
                         else:
                             print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment \n")
-                        if cloud_db:
-                            success_upload = upload_file(audio_path, 'armgroupproject')
-                            if success_upload:
-                                print('Successfully uploaded file to the cloud!')
                 except KeyboardInterrupt:
+                    if not cloud_db:
+                        os.remove('audio_db/temp.wav')
                     pass
+
             elif(select_fun==3):
                 print('Exiting program...')
+                if os.path.exists('./tmp'):
+                    shutil.rmtree('./tmp')
+                else:
+                    pass
                 sys.exit()
+
             else:
                 print('Please type either 0, 1, 2 or 3 \n')
                 

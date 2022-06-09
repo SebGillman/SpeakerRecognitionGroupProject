@@ -1,7 +1,7 @@
 import tensorflow as tf
 import pathlib
 
-# Quantize model and store it as quantized_tflite_model.tflite in models/
+# Quantize model and store it as quantized_tflite_model.tflite in "models/""
 tflite_model = tf.keras.models.load_model('models/infer_model.h5')
 converter = tf.lite.TFLiteConverter.from_keras_model(tflite_model)
 converter.optimizations = [tf.lite.Optimize.DEFAULT]

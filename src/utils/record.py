@@ -19,13 +19,18 @@ class RecordAudio:
                                   input=True,
                                   frames_per_buffer=self.chunk)
 
-    def record(self, output_path="audio_db/temp.wav", record_seconds=3):
+    def record(self, record_seconds=3, cloud = False):
         """
         Terms meaning
         :param output_path: path of save recording, with file format wav
         :param record_seconds: record time, default setting will be 3s
         :return: file path of the audio recordings
         """
+        if cloud:
+            output_path="tmp/temp.wav"
+        else:
+            output_path="audio_db/temp.wav"
+
         i = input("\nPress ENTER to start recording (recording time is 3 seconds) ")
         print("\n[RECORDER] Listening ......")
         frames = []
@@ -40,27 +45,32 @@ class RecordAudio:
         wf.setframerate(self.rate)
         wf.writeframes(b''.join(frames))
         wf.close()
+
         return output_path
 
-    def recordconst(self, output_path="audio_db/temp.wav", record_seconds=0.5):
+    def recordconst(self,  record_seconds=0.5, cloud = False):
         """
         Terms meaning
         :param output_path: path of save recording, with file format wav
         :param record_seconds: record time, default setting will be 3s
         :return: file path of the audio recordings
         """
-        # print("\n[RECORDER] Listening ......")
+        if cloud:
+            output_path="tmp/temp.wav"
+        else:
+            output_path="audio_db/temp.wav"
+
         frames = []
         for i in range(0, int(self.rate / self.chunk * record_seconds)):
             data = self.stream.read(self.chunk, exception_on_overflow = False)
             frames.append(data)
 
-        # print("[RECORDER] Recording finished!")
         wf = wave.open(output_path, 'wb')
         wf.setnchannels(self.channels)
         wf.setsampwidth(self.p.get_sample_size(self.format))
         wf.setframerate(self.rate)
         wf.writeframes(b''.join(frames))
         wf.close()
+        
         return output_path
 
