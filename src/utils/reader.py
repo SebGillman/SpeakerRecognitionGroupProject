@@ -7,9 +7,11 @@ from librosa.display import specshow
 import matplotlib.pyplot as plt
 import boto3
 import os
+import logging
+from botocore.exceptions import ClientError
 
 # Load and pre-process audio file
-def load_audio(audio_path, mode='train', win_length=400, sr=44100, hop_length=160, n_fft=512, spec_len=257, object_name=None):
+def load_audio(audio_path, mode='train', win_length=400, sr=44100, hop_length=160, n_fft=512, spec_len=257, object_name=None, stft_cloud=True, name=None):
     # Load audio
     wav, sr_ret = librosa.load(audio_path, sr=sr)
     if mode == 'train':
@@ -22,30 +24,34 @@ def load_audio(audio_path, mode='train', win_length=400, sr=44100, hop_length=16
     linear = librosa.stft(extended_wav, n_fft=n_fft, win_length=win_length, hop_length=hop_length)
     mag, _ = librosa.magphase(linear)
 
-    plt.figure()
-    librosa.display.specshow(mag, sr=sr)
-    file_name = 'spec_mag'+str(np.random.randint(10))+'.png'
-    plt.savefig(file_name)
+    if stft_cloud:
+        plt.figure()
+        librosa.display.specshow(mag, sr=sr)
+        if name is not None:
+            file_name = 'spec_mag'+name+'.png'
+        else:
+            file_name = 'spec_mag'+str(np.random.randint(10))+'.png'
+        plt.savefig(file_name)
 
-    if object_name is None:
-        object_name = os.path.basename(file_name)
+        if object_name is None:
+            object_name = os.path.basename(file_name)
 
-    # Upload the file
-    s3_client = boto3.client('s3')
-    try:
-        response = s3_client.upload_file(file_name, 'stft-data', object_name)
-    except ClientError as e:
-        logging.error(e)
-        success = False
-    success = True
+        # Upload the file
+        s3_client = boto3.client('s3')
+        try:
+            response = s3_client.upload_file(file_name, 'stft-data', object_name)
+        except ClientError as e:
+            logging.error(e)
+            success = False
+        success = True
 
-    if success:
-        print('Uploaded STFT to the cloud!')
+        if success:
+            print('Uploaded STFT to the cloud!')
 
-    if os.path.exists(file_name):
-        os.remove(file_name)
-    else:
-        print(file_name)
+        if os.path.exists(file_name):
+            os.remove(file_name)
+        else:
+            print(file_name)
 
     freq, freq_time = mag.shape
     assert freq_time >= spec_len, "speaking time should be greater than 1.3s"
