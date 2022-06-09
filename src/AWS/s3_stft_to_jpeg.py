@@ -8,7 +8,9 @@ from botocore.exceptions import ClientError
 
 def stft_to_jpeg(spec_mag, label, bucket_name='stft-data'):
     # Take a spectrogram and save as jpeg in s3 bucket
-    im = Image.fromarray(spec_mag)
+    if len(spec_mag.shape) > 2:
+        spec_mag_1 = spec_mag[:, :, 0]
+    im = Image.fromarray(spec_mag_1)
 
     file_name = label+'jpeg'
     im.save(file_name)
