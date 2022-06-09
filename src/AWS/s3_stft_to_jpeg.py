@@ -12,6 +12,9 @@ def stft_to_jpeg(spec_mag, label, bucket_name='stft-data'):
         spec_mag_1 = spec_mag[:, :, 0]
     im = Image.fromarray(spec_mag_1)
 
+    if im.mode != 'RGB':
+        im = im.convert('RGB')
+
     file_name = label+'.jpeg'
     im.save(file_name)
 
@@ -24,6 +27,14 @@ def stft_to_jpeg(spec_mag, label, bucket_name='stft-data'):
         response = s3_client.upload_file(file_name, bucket_name, object_name)
     except ClientError as e:
         logging.error(e)
-        return False
-    return True
+        success = False
+    success = True
+
+    if os.path.exists(file_name):
+        os.remove(file_name)
+    else:
+        print(file_name)
+
+    return success
+    
 
