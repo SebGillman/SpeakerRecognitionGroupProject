@@ -16,6 +16,7 @@ from utils.record import RecordAudio
 from utils.utility import add_arguments, print_arguments
 from AWS.s3_upload_file import upload_file
 from AWS.s3_download_file import download_files
+from AWS.s3_stft_to_jpeg import stft_to_jpeg
 
 parser = argparse.ArgumentParser(description=__doc__)
 add_arg = functools.partial(add_arguments, argparser=parser)
@@ -47,11 +48,16 @@ wav_bucket_name = 'armgroupproject'
 stft_bucket_name = 'stft-data'
 
 # predict the audio
-def infer(audio_path, message = True):
+def infer(audio_path, message = True, stft_cloud=True):
     time5 = time.time()
     data = load_audio(audio_path, mode='infer', spec_len=input_shape[1])
     time6 = time.time()
     stft_time = np.round(time6-time5, 3)
+
+    if stft_cloud:
+        stft_success_upload = stft_to_jpeg(data, 'test'+str(np.random.randint(10)))
+        if stft_success_upload:
+            print('Uploaded STFT to the cloud!')
 
     time3 = time.time()
     output_details = interpreter.get_output_details()[0]
