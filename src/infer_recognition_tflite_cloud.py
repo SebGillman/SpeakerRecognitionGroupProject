@@ -153,7 +153,7 @@ if __name__ == '__main__':
                 # run inference 
                 audio_path = record_audio.record(cloud=cloud_db)
                 time1 = time.time()
-                name, p = recognition(audio_path, mode='unlabelled')
+                name, p = recognition(audio_path, mode='unlabelled', cloud_db=cloud_db)
                 time2 = time.time()
                 if p > args.threshold:
                     print("The one currently speaking is %s with a similarity of %f" % (name, p))
