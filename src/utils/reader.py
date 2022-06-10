@@ -46,7 +46,7 @@ def load_audio(audio_path, mode='train', win_length=400, sr=44100, hop_length=16
         success = True
 
         if success:
-            print('Uploaded STFT to the cloud!')
+            print('Uploaded STFT: {} to the cloud!'.format(file_name))
 
         if os.path.exists(file_name):
             os.remove(file_name)
