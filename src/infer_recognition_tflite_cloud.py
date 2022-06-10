@@ -85,10 +85,10 @@ def load_audio_db(audio_db_path, message = False):
 
 
 # Voicprint recognition
-def recognition(path, mode='unlabelled'):
+def recognition(path, mode='unlabelled', cloud_db=False):
     name = ''
     pro = 0
-    feature = infer(path, mode)[0]
+    feature = infer(path, mode, stft_cloud=cloud_db)[0]
     for i, person_f in enumerate(person_feature):
         dist = np.dot(feature, person_f) / (np.linalg.norm(feature) * np.linalg.norm(person_f))
         if dist > pro:
@@ -183,7 +183,7 @@ if __name__ == '__main__':
                     while True:
                         audio_path = record_audio.recordconst(cloud=cloud_db)
                         time1 = time.time()
-                        name, p = recognition(audio_path, mode='unlabelled')
+                        name, p = recognition(audio_path, mode='unlabelled', cloud_db=cloud_db)
                         time2 = time.time()
                         if p > args.threshold:
                             print("The one currently speaking is %s with a similarity of %f" % (name, p))
