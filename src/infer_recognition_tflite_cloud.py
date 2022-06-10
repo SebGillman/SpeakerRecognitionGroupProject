@@ -88,7 +88,7 @@ def load_audio_db(audio_db_path, message = False):
 def recognition(path, mode='unlabelled', cloud_db=False):
     name = ''
     pro = 0
-    feature = infer(path, mode, stft_cloud=cloud_db)[0]
+    feature = infer(path, mode=mode, stft_cloud=cloud_db)[0]
     for i, person_f in enumerate(person_feature):
         dist = np.dot(feature, person_f) / (np.linalg.norm(feature) * np.linalg.norm(person_f))
         if dist > pro:
