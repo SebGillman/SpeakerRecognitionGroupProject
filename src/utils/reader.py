@@ -30,7 +30,7 @@ def load_audio(audio_path, mode='train', win_length=400, sr=44100, hop_length=16
         else:
             file_name = 'spec_mag'+str(np.random.randint(10))+'.png'
             
-        plt.figure(title=file_name)
+        plt.figure()
         librosa.display.specshow(mag, sr=sr, hop_length=hop_length, y_axis='log', x_axis='time')
         plt.savefig(file_name)
 
