@@ -16,7 +16,6 @@ from utils.record import RecordAudio
 from utils.utility import add_arguments, print_arguments
 from AWS.s3_upload_file import upload_file
 from AWS.s3_download_file import download_files
-from AWS.s3_stft_to_jpeg import stft_to_jpeg
 
 parser = argparse.ArgumentParser(description=__doc__)
 add_arg = functools.partial(add_arguments, argparser=parser)
@@ -46,11 +45,12 @@ person_name = []
 # Cloud metadata
 wav_bucket_name = 'armgroupproject'
 stft_bucket_name = 'stft-data'
+unlabelled_stft_bucket_name = 'unlabelled-stft-data'
 
 # predict the audio
-def infer(audio_path, message = True, stft_cloud=True, name=None):
+def infer(audio_path, message = True, stft_cloud=True, name=None, mode='infer'):
     time5 = time.time()
-    data = load_audio(audio_path, mode='infer', spec_len=input_shape[1], name=name, stft_cloud=stft_cloud)
+    data = load_audio(audio_path, mode=mode, spec_len=input_shape[1], name=name, stft_cloud=stft_cloud)
     time6 = time.time()
     stft_time = np.round(time6-time5, 3)
 
@@ -85,10 +85,10 @@ def load_audio_db(audio_db_path, message = False):
 
 
 # Voicprint recognition
-def recognition(path):
+def recognition(path, mode='unlabelled'):
     name = ''
     pro = 0
-    feature = infer(path)[0]
+    feature = infer(path, mode)[0]
     for i, person_f in enumerate(person_feature):
         dist = np.dot(feature, person_f) / (np.linalg.norm(feature) * np.linalg.norm(person_f))
         if dist > pro:
@@ -153,7 +153,7 @@ if __name__ == '__main__':
                 # run inference 
                 audio_path = record_audio.record(cloud=cloud_db)
                 time1 = time.time()
-                name, p = recognition(audio_path)
+                name, p = recognition(audio_path, mode='unlabelled')
                 time2 = time.time()
                 if p > args.threshold:
                     print("The one currently speaking is %s with a similarity of %f" % (name, p))
@@ -183,7 +183,7 @@ if __name__ == '__main__':
                     while True:
                         audio_path = record_audio.recordconst(cloud=cloud_db)
                         time1 = time.time()
-                        name, p = recognition(audio_path)
+                        name, p = recognition(audio_path, mode='unlabelled')
                         time2 = time.time()
                         if p > args.threshold:
                             print("The one currently speaking is %s with a similarity of %f" % (name, p))

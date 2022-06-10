@@ -27,6 +27,8 @@ def load_audio(audio_path, mode='train', win_length=400, sr=44100, hop_length=16
     if stft_cloud:
         if name is not None:
             file_name = name+'.png'
+        elif mode == 'unlabelled':
+            file_name = str(np.random.randint(1000))+'.png'
         else:
             file_name = audio_path+'.png'
 
@@ -40,7 +42,11 @@ def load_audio(audio_path, mode='train', win_length=400, sr=44100, hop_length=16
         # Upload the file
         s3_client = boto3.client('s3')
         try:
-            response = s3_client.upload_file(file_name, 'stft-data', object_name)
+            if mode == 'unlabelled':
+                bucket_name = 'unlabelled-stft-data'
+            else:
+                bucket_name = 'stft-data'
+            response = s3_client.upload_file(file_name, bucket_name, object_name)
         except ClientError as e:
             logging.error(e)
             success = False
