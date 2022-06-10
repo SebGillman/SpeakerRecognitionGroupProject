@@ -144,6 +144,7 @@ if __name__ == '__main__':
                 cloud_db = bool(int(input('\nPlease type 1 if you want to access the cloud database, else type 0 to access the local database \n')))
                 if cloud_db and not flag:
                     time_1 = time.time()
+                    print('Downloading database...')
                     wav_download = download_files(wav_bucket_name)
                     load_audio_db("tmp")
                     time_2 = time.time()
@@ -169,6 +170,7 @@ if __name__ == '__main__':
                 cloud_db = bool(int(input('\nPlease type 1 if you want to access the cloud database, else type 0 to access the local database \n')))
                 if cloud_db and not flag:
                     time_1 = time.time()
+                    print("Downloading database...")
                     wav_download = download_files(wav_bucket_name)
                     load_audio_db("tmp")
                     time_2 = time.time()
