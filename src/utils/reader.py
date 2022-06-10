@@ -25,12 +25,13 @@ def load_audio(audio_path, mode='train', win_length=400, sr=44100, hop_length=16
     mag, _ = librosa.magphase(linear)
 
     if stft_cloud:
-        plt.figure()
-        librosa.display.specshow(mag, sr=sr, hop_length=hop_length, y_axis='log', x_axis='time')
         if name is not None:
-            file_name = name+'.png'
+            file_name = audio_path+'.png'
         else:
             file_name = 'spec_mag'+str(np.random.randint(10))+'.png'
+            
+        plt.figure(title=file_name)
+        librosa.display.specshow(mag, sr=sr, hop_length=hop_length, y_axis='log', x_axis='time')
         plt.savefig(file_name)
 
         if object_name is None:
