@@ -48,7 +48,7 @@ stft_bucket_name = 'stft-data'
 unlabelled_stft_bucket_name = 'unlabelled-stft-data'
 
 # predict the audio
-def infer(audio_path, message = True, stft_cloud=True, name=None, mode='infer'):
+def infer(audio_path, message = True, stft_cloud=False, name=None, mode='infer'):
     time5 = time.time()
     data = load_audio(audio_path, mode=mode, spec_len=input_shape[1], name=name, stft_cloud=stft_cloud)
     time6 = time.time()
@@ -77,7 +77,7 @@ def load_audio_db(audio_db_path, message = False):
     for audio in audios:
         path = os.path.join(audio_db_path, audio)
         name = audio[:-4]
-        feature = infer(path, message)[0]
+        feature = infer(path, message, mode='load')[0]
         person_name.append(name)
         person_feature.append(feature)
         if message:
@@ -104,7 +104,7 @@ def register(path, user_name, cloud_db=False):
     save_path = os.path.join(args.audio_db, user_name + os.path.basename(path)[-4:])
     shutil.move(path, save_path)
     message = False
-    feature = infer(save_path, message, name=user_name)[0]
+    feature = infer(save_path, message, name=user_name, stft_cloud=cloud_db)[0]
     person_name.append(user_name)
     person_feature.append(feature)
 

@@ -11,7 +11,7 @@ import logging
 from botocore.exceptions import ClientError
 
 # Load and pre-process audio file
-def load_audio(audio_path, mode='train', win_length=400, sr=44100, hop_length=160, n_fft=512, spec_len=257, object_name=None, stft_cloud=True, name=None):
+def load_audio(audio_path, mode='train', win_length=400, sr=44100, hop_length=160, n_fft=512, spec_len=257, object_name=None, stft_cloud=False, name=None):
     # Load audio
     wav, sr_ret = librosa.load(audio_path, sr=sr)
     if mode == 'train':
@@ -24,7 +24,7 @@ def load_audio(audio_path, mode='train', win_length=400, sr=44100, hop_length=16
     linear = librosa.stft(extended_wav, n_fft=n_fft, win_length=win_length, hop_length=hop_length)
     mag, _ = librosa.magphase(linear)
 
-    if stft_cloud:
+    if stft_cloud and mode != 'load':
         if name is not None:
             file_name = name+'.png'
         elif mode == 'unlabelled':
@@ -44,7 +44,7 @@ def load_audio(audio_path, mode='train', win_length=400, sr=44100, hop_length=16
         try:
             if mode == 'unlabelled':
                 bucket_name = 'unlabelled-stft-data'
-            else:
+            elif mode == 'infer':
                 bucket_name = 'stft-data'
             response = s3_client.upload_file(file_name, bucket_name, object_name)
         except ClientError as e:
