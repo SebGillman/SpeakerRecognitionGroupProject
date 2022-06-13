@@ -9,7 +9,7 @@ class RecordAudio:
         self.chunk = 1024
         self.format = pyaudio.paInt16
         self.channels = 1
-        self.rate = 44100
+        self.rate = 16000
 
         # open audio
         self.p = pyaudio.PyAudio()
@@ -35,7 +35,8 @@ class RecordAudio:
         print("\n[RECORDER] Listening ......")
         frames = []
         for i in tqdm(range(0, int(self.rate / self.chunk * record_seconds))):
-            data = self.stream.read(self.chunk,exception_on_overflow = False)
+            data = self.stream.read(self.chunk,exception_on_overflow = False
+            print(data)
             frames.append(data)
 
         print("[RECORDER] Recording finished!")
