@@ -17,6 +17,9 @@ from utils.utility import add_arguments, print_arguments
 from AWS.s3_upload_file import upload_file
 from AWS.s3_download_file import download_files
 
+import matplotlib 
+matplotlib.use('Agg') 
+
 parser = argparse.ArgumentParser(description=__doc__)
 add_arg = functools.partial(add_arguments, argparser=parser)
 add_arg('audio_db',         str,    'audio_db',               'path to our audio database')
