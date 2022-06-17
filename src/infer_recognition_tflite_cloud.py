@@ -226,7 +226,7 @@ if __name__ == '__main__':
                 sys.exit()
 
             else:
-                print('Please type either 0, 1, 2 or 3 \n')
+                print('\nPlease type either 0, 1, 2 or 3 \n')
                 
     except KeyboardInterrupt:
         pass
