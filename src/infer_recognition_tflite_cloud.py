@@ -136,11 +136,18 @@ if __name__ == '__main__':
                 audio_path = record_audio.record()
                 name = input("Please type in your name as new member: ")
                 if name == '': continue
-                cloud_db = bool(int(input('\nPlease type 1 if you want to store your audio to the cloud, else type 0 to store it in the local database\n')))
+                while True:
+                    cloud_db=input('\nPlease type 1 if you want to store your audio to the cloud, else type 0 to store it in the local database\n')
+                    if cloud_db in [0,1]:
+                        break
+                    else:
+                        print('Not correct input')
+                cloud_db = bool(int(cloud_db))
                 register(audio_path, name, cloud_db)
 
             elif select_fun == 1:
                 # download 
+                
                 cloud_db = bool(int(input('\nPlease type 1 if you want to access the cloud database, else type 0 to access the local database \n')))
                 if cloud_db and not flag:
                     time_1 = time.time()
