@@ -9,7 +9,7 @@ class RecordAudio:
         self.chunk = 1024
         self.format = pyaudio.paInt16
         self.channels = 1
-        self.rate = 44100
+        self.rate = 16000
 
         # open audio
         self.p = pyaudio.PyAudio()
@@ -48,7 +48,7 @@ class RecordAudio:
 
         return output_path
 
-    def recordconst(self,  record_seconds=2, cloud = False):
+    def recordconst(self,  record_seconds=1.5, cloud = False):
         """
         Terms meaning
         :param output_path: path of save recording, with file format wav
