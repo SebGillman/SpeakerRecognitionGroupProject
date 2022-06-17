@@ -48,7 +48,7 @@ class RecordAudio:
 
         return output_path
 
-    def recordconst(self,  record_seconds=0.5, cloud = False):
+    def recordconst(self,  record_seconds=2, cloud = False):
         """
         Terms meaning
         :param output_path: path of save recording, with file format wav
