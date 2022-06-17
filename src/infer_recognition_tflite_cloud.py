@@ -156,7 +156,7 @@ if __name__ == '__main__':
                 time1 = time.time()
                 name, p = recognition(audio_path, mode='unlabelled', cloud_db=cloud_db)
                 time2 = time.time()
-                if p > args.threshold:
+                if p > args.threshold and name != "Noise":
                     print("The one currently speaking is %s with a similarity of %f" % (name, p))
                     print('Classification time = ', np.round(time2-time1, 3), ' seconds. \n')
                 else:
@@ -187,7 +187,7 @@ if __name__ == '__main__':
                         time1 = time.time()
                         name, p = recognition(audio_path, mode='unlabelled', cloud_db=cloud_db)
                         time2 = time.time()
-                        if p > args.threshold:
+                        if p > args.threshold and name != "Noise":
                             print("The one currently speaking is %s with a similarity of %f" % (name, p))
                             print('Classification time = ', np.round(time2-time1, 3), ' seconds. \n')
                         else:
