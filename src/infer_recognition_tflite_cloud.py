@@ -217,7 +217,7 @@ if __name__ == '__main__':
                         os.remove('audio_db/temp.wav')
                     pass
 
-            elif select_fun== '3':
+            elif select_fun == '3':
                 print('Exiting program...')
                 if os.path.exists('./tmp'):
                     shutil.rmtree('./tmp')
