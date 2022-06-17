@@ -8,7 +8,7 @@ DATA_DIR = './local_data/'  # File name to save
 API_KEY = ""
 MAX_COLLECTIONS = 100
 wave_length = 5  # Recording length (seconds)
-sample_rate = 44100  # Sampling frequency
+sample_rate = 16000  # Sampling frequency
 WAIT_TIME = 5
 
 keep_going = True
