@@ -130,9 +130,9 @@ if __name__ == '__main__':
     try:
         while True:
             print('\n-----------------------------------------------------------------------------------------------------')
-            select_fun = int(input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do voice recognition,\n type in 2 to do continuous recognition, \n type in 3 to exit the program. \n"))
+            select_fun = input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do voice recognition,\n type in 2 to do continuous recognition, \n type in 3 to exit the program. \n"))
 
-            if select_fun == 0:
+            if select_fun == '0':
                 audio_path = record_audio.record()
                 name = input("Please type in your name as new member: ")
                 if name == '': continue
@@ -145,10 +145,16 @@ if __name__ == '__main__':
                 cloud_db = bool(int(cloud_db))
                 register(audio_path, name, cloud_db)
 
-            elif select_fun == 1:
+            elif select_fun == '1':
                 # download 
+                while True:
+                    cloud_db=input('\nPlease type 1 if you want to store your audio to the cloud, else type 0 to store it in the local database\n')
+                    if cloud_db in ['0','1']:
+                        break
+                    else:
+                        print('Not correct input')
+                cloud_db = bool(int(cloud_db))
                 
-                cloud_db = bool(int(input('\nPlease type 1 if you want to access the cloud database, else type 0 to access the local database \n')))
                 if cloud_db and not flag:
                     time_1 = time.time()
                     print('Downloading database...')
@@ -172,9 +178,16 @@ if __name__ == '__main__':
                 if not cloud_db:
                     os.remove('audio_db/temp.wav')
 
-            elif select_fun == 2:
+            elif select_fun == '2':
                 # download 
-                cloud_db = bool(int(input('\nPlease type 1 if you want to access the cloud database, else type 0 to access the local database \n')))
+                while True:
+                    cloud_db=input('\nPlease type 1 if you want to store your audio to the cloud, else type 0 to store it in the local database\n')
+                    if cloud_db in ['0','1']:
+                        break
+                    else:
+                        print('Not correct input')
+                cloud_db = bool(int(cloud_db))
+
                 if cloud_db and not flag:
                     time_1 = time.time()
                     print("Downloading database...")
@@ -204,7 +217,7 @@ if __name__ == '__main__':
                         os.remove('audio_db/temp.wav')
                     pass
 
-            elif(select_fun==3):
+            elif select_fun== '3':
                 print('Exiting program...')
                 if os.path.exists('./tmp'):
                     shutil.rmtree('./tmp')
