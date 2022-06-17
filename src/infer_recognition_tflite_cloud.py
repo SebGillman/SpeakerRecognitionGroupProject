@@ -138,7 +138,7 @@ if __name__ == '__main__':
                 if name == '': continue
                 while True:
                     cloud_db=input('\nPlease type 1 if you want to store your audio to the cloud, else type 0 to store it in the local database\n')
-                    if cloud_db in [0,1]:
+                    if cloud_db in ['0','1']:
                         break
                     else:
                         print('Not correct input')
