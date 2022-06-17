@@ -37,7 +37,6 @@ class RecordAudio:
         for i in tqdm(range(0, int(self.rate / self.chunk * record_seconds))):
             data = self.stream.read(self.chunk,exception_on_overflow = False)
             frames.append(data)
-            print(frames.append(data))
 
         print("[RECORDER] Recording finished!")
         wf = wave.open(output_path, 'wb')
@@ -65,7 +64,6 @@ class RecordAudio:
         for i in range(0, int(self.rate / self.chunk * record_seconds)):
             data = self.stream.read(self.chunk, exception_on_overflow = False)
             frames.append(data)
-            print(frames.append(data))
 
         wf = wave.open(output_path, 'wb')
         wf.setnchannels(self.channels)
