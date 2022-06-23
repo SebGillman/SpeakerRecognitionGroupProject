@@ -47,7 +47,7 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
             elif mode == 'infer':
                 bucket_name = 'stft-data'
             response = s3_client.upload_file(file_name, bucket_name, object_name)
-            destination = os.path.join('./spectrograms', file_name)
+            #destination = os.path.join('./spectrograms', file_name)
         except ClientError as e:
             logging.error(e)
             success = False
