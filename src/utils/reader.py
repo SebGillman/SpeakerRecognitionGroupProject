@@ -45,7 +45,7 @@ def load_audio(audio_path, mode='train', win_length=300, sr=16000, hop_length=16
             success = True
         except KeyboardInterrupt:
             pass
-        else:
+        except:
             print("error")
             success = False
 
