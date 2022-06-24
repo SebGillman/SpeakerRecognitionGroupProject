@@ -11,7 +11,7 @@ import logging
 from botocore.exceptions import ClientError
 
 # Load and pre-process audio file
-def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=160, n_fft=512, spec_len=257, object_name=None, stft_cloud=False, name=None):
+def load_audio(audio_path, mode='train', win_length=200, sr=16000, hop_length=100, n_fft=256, spec_len=257, object_name=None, stft_cloud=False, name=None):
     # Load audio
     wav, sr_ret = librosa.load(audio_path, sr=sr)
     if mode == 'train':
@@ -27,11 +27,9 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
     # save the STFT in folder speactrograms
     if mode == 'load':
         local = '/home/pi/SpeakerRecognitionGroupProject/src/spectrograms/'
-        
+
         if name is not None:
             file_name = name+'.png'
-        elif mode == 'unlabelled':
-            file_name = str(np.random.randint(1000))+'.png'
         else:
             file_name = audio_path+'.png'
         
