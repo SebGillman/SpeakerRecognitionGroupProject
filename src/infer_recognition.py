@@ -1,5 +1,4 @@
 import argparse
-from email import message
 import functools
 import os
 import shutil
@@ -22,7 +21,7 @@ add_arg = functools.partial(add_arguments, argparser=parser)
 add_arg('audio_db',         str,    'audio_db',               'path to our audio database')
 add_arg('input_shape',      str,    '(257, 257, 1)',          'shape of input data')
 add_arg('threshold',        float,   0.85,                     'threshold of verification')
-add_arg('model_path',       str,    'models/infer_quantized_tflite_model.tflite',  'path to model')
+add_arg('model_path',       str,    'models/infer_model.h5',  'path to model')
 args = parser.parse_args()
 
 print_arguments(args)
@@ -219,4 +218,3 @@ if __name__ == '__main__':
                 
     except KeyboardInterrupt:
         pass
-
