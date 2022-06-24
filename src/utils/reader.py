@@ -43,7 +43,9 @@ def load_audio(audio_path, mode='train', win_length=300, sr=16000, hop_length=16
         try:
             plt.savefig(os.path.join(destination + file_name))
             success = True
-        except:
+        except KeyboardInterrupt:
+            pass
+        else:
             print("error")
             success = False
 
