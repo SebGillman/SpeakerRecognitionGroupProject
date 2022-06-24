@@ -34,7 +34,8 @@ def load_audio(audio_path, mode='train', win_length=300, sr=16000, hop_length=16
         elif mode == 'unlabelled':
             file_name = str(np.random.randint(1000))+'.png'
         else:
-            file_name = audio_path+'.png'
+            png_name = audio_path.replace('audio_db/', '')
+            file_name = png_name+'.png'
         
         plt.figure()
         librosa.display.specshow(mag, sr=sr, hop_length=hop_length, y_axis='log', x_axis='time')
