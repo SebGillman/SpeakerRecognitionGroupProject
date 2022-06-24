@@ -24,6 +24,7 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
     linear = librosa.stft(extended_wav, n_fft=n_fft, win_length=win_length, hop_length=hop_length)
     mag, _ = librosa.magphase(linear)
 
+    # save the STFT in folder speactrograms
     if mode == 'load':
         if name is not None:
             file_name = name+'.png'
@@ -37,7 +38,7 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
         plt.savefig(file_name)
 
         try:
-            destination = os.path.join('./spectrograms', file_name)
+            destination = os.path.join('/home/pi/SpeakerRecognitionGroupProject/src/spectrograms', file_name)
             success = True
         except:
             success = False
