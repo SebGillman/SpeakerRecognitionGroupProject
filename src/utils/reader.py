@@ -43,6 +43,7 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
             plt.savefig(os.path.join(destination + file_name))
             success = True
         except:
+            print("error")
             success = False
 
         if success:
