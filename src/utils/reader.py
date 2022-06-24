@@ -38,7 +38,7 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
         plt.savefig(file_name)
 
         try:
-            destination = os.path.join("./spectrograms", file_name)
+            destination = os.path.join('/home/pi/SpeakerRecognitionGroupProject/src/spectrograms/', file_name)
             success = True
         except:
             success = False
