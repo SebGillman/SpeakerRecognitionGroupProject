@@ -32,7 +32,7 @@ def load_audio(audio_path, mode='train', win_length=300, sr=16000, hop_length=16
         if name is not None:
             file_name = name+'.png'
         elif mode == 'unlabelled':
-            file_name = str(np.random.randint(1000))+'.png'
+            file_name = 'infer_' + str(np.random.randint(1000)) + '.png'
         else:
             png_name = audio_path.replace('audio_db/', '')
             file_name = png_name+'.png'
