@@ -27,12 +27,13 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
     
     # save the STFT in folder speactrograms
     if mode == 'load':
-        destination = os.path.abspath('/home/pi/SpeakerRecognitionGroupProject/src/spectrograms/audio_db/')
+        destination = os.path.abspath('/home/pi/SpeakerRecognitionGroupProject/src/spectrograms/')
 
         if name is not None:
             file_name = name+'.png'
         else:
-            file_name = audio_path+'.png'
+            png_name = audio_path.replace('audio_db/', '')
+            file_name = png_name+'.png'
         
         plt.figure()
         librosa.display.specshow(mag, sr=sr, hop_length=hop_length, y_axis='log', x_axis='time')
