@@ -27,7 +27,7 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
     
     # save the STFT in folder speactrograms
     if mode == 'load':
-        destination = os.path.dirname(os.path.abspath('/home/pi/SpeakerRecognitionGroupProject/src/spectrograms/'))
+        destination = os.path.dirname('/home/pi/SpeakerRecognitionGroupProject/src/spectrograms/')
 
         if name is not None:
             file_name = name+'.png'
