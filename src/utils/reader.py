@@ -26,7 +26,7 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
 
     
     # save the STFT in folder speactrograms
-    if mode == 'load':
+    if mode != 'train' and stft_cloud == False:
         destination = '/home/pi/SpeakerRecognitionGroupProject/src/spectrograms/'
 
         if name is not None:
