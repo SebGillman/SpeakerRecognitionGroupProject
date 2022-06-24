@@ -24,6 +24,28 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
     linear = librosa.stft(extended_wav, n_fft=n_fft, win_length=win_length, hop_length=hop_length)
     mag, _ = librosa.magphase(linear)
 
+    if mode == 'load':
+        if name is not None:
+            file_name = name+'.png'
+        elif mode == 'unlabelled':
+            file_name = str(np.random.randint(1000))+'.png'
+        else:
+            file_name = audio_path+'.png'
+        
+        plt.figure()
+        librosa.display.specshow(mag, sr=sr, hop_length=hop_length, y_axis='log', x_axis='time')
+        plt.savefig(file_name)
+
+        try:
+            destination = os.path.join('./spectrograms', file_name)
+            success = True
+        except:
+            success = False
+
+        if success:
+            print('Saved STFT: {} in the local folder!'.format(file_name))
+        
+
     if stft_cloud and mode != 'load':
         if name is not None:
             file_name = name+'.png'

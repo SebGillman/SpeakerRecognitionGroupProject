@@ -148,7 +148,7 @@ if __name__ == '__main__':
             elif select_fun == '1':
                 # download 
                 while True:
-                    cloud_db=input('\nPlease type 1 if you want to store your audio to the cloud, else type 0 to store it in the local database\n')
+                    cloud_db=input('\nPlease type 1 if you want to access the cloud database, else type 0 to access the local database\n')
                     if cloud_db in ['0','1']:
                         break
                     else:
@@ -181,7 +181,7 @@ if __name__ == '__main__':
             elif select_fun == '2':
                 # download 
                 while True:
-                    cloud_db=input('\nPlease type 1 if you want to store your audio to the cloud, else type 0 to store it in the local database\n')
+                    cloud_db=input('\nPlease type 1 if you want to access the cloud database, else type 0 to access the local database\n')
                     if cloud_db in ['0','1']:
                         break
                     else:
