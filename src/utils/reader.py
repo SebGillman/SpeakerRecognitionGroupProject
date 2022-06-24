@@ -40,10 +40,8 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
 
         try:
             plt.savefig(os.path.join(destination + file_name))
-            """
             if not os.path.exists(os.path.dirname(destination)):
                 os.makedirs(os.path.dirname(destination))
-            """
             success = True
         except:
             success = False
