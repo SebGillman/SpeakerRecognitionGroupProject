@@ -6,10 +6,10 @@ from tqdm import tqdm
 class RecordAudio:
     def __init__(self):
         # record parameters
-        self.chunk = 2820
+        self.chunk = 1024
         self.format = pyaudio.paInt16
         self.channels = 1
-        self.rate = 44100
+        self.rate = 16000
 
         # open audio
         self.p = pyaudio.PyAudio()
