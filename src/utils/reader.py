@@ -29,6 +29,7 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
     mag, _ = librosa.magphase(mel)
     mag = librosa.power_to_db(mag, ref=np.max)
     
+    """
     # save the STFT in folder speactrograms
     if mode != 'train' and stft_cloud == False:
         destination = '/home/pi/SpeakerRecognitionGroupProject/src/spectrograms/'
@@ -93,7 +94,7 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
             os.remove(file_name)
         else:
             print(file_name)
-
+    """
     freq, freq_time = mag.shape
     assert freq_time >= spec_len, "speaking time should be greater than 1.3s"
     if mode == 'train':
