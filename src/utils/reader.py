@@ -22,6 +22,7 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
         extended_wav = np.append(wav, wav[::-1])
     # calculate STFT
     linear = librosa.stft(extended_wav, n_fft=n_fft, win_length=win_length, hop_length=hop_length)
+    print(linear)
     #mel = librosa.feature.melspectrogram(extended_wav, n_fft=n_fft, win_length=win_length, hop_length=hop_length, n_mels=128)
     mag, _ = librosa.magphase(linear)
 
