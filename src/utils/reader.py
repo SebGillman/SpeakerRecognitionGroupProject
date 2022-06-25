@@ -11,7 +11,7 @@ import logging
 from botocore.exceptions import ClientError
 
 # Load and pre-process audio file
-def load_audio(audio_path, mode='train', win_length=512, sr=16000, hop_length=160, n_fft=512, spec_len=257, object_name=None, stft_cloud=False, name=None):
+def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=160, n_fft=256, spec_len=257, object_name=None, stft_cloud=False, name=None):
     # Load audio
     wav, sr_ret = librosa.load(audio_path, sr=sr)
     if mode == 'train':
@@ -21,10 +21,9 @@ def load_audio(audio_path, mode='train', win_length=512, sr=16000, hop_length=16
     else:
         extended_wav = np.append(wav, wav[::-1])
     # calculate STFT
-    linear = librosa.stft(extended_wav, n_fft=n_fft, win_length=win_length, hop_length=hop_length)
-    print(len(linear))
-    #mel = librosa.feature.melspectrogram(extended_wav, n_fft=n_fft, win_length=win_length, hop_length=hop_length, n_mels=128)
-    mag, _ = librosa.magphase(linear)
+    #linear = librosa.stft(extended_wav, n_fft=n_fft, win_length=win_length, hop_length=hop_length)
+    mag = librosa.feature.melspectrogram(extended_wav, n_fft=n_fft, win_length=win_length, hop_length=hop_length, n_mels=40, fmin=0.0, fmax=8000)
+    #mag, _ = librosa.magphase(linear)
     print(mag)
     
     # save the STFT in folder speactrograms
@@ -40,7 +39,7 @@ def load_audio(audio_path, mode='train', win_length=512, sr=16000, hop_length=16
             file_name = png_name+'.png'
         
         plt.figure()
-        librosa.display.specshow(mag, sr=sr, hop_length=hop_length, y_axis='log', x_axis='time')
+        librosa.display.specshow(mag, sr=sr, hop_length=hop_length, y_axis='mel', x_axis='time')
 
         try:
             plt.savefig(os.path.join(destination + file_name))
