@@ -7,7 +7,7 @@ class RecordAudio:
     def __init__(self):
         # record parameters
         self.chunk = 1024
-        self.format = pyaudio.paInt32
+        self.format = pyaudio.paInt16
         self.channels = 1
         self.rate = 16000
 
