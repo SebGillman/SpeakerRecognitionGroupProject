@@ -106,7 +106,7 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
     std = np.std(spec_mag, 0, keepdims=True)
     spec_mag = (spec_mag - mean) / (std + 1e-5)
     spec_mag = spec_mag[:, :, np.newaxis]
-
+    print(len(spec_mag[0]))
     print(len(spec_mag))
     return spec_mag
 
