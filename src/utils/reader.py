@@ -43,11 +43,6 @@ def load_audio(audio_path, mode='train', win_length=512, sr=16000, hop_length=16
         librosa.display.specshow(mag, sr=sr, hop_length=hop_length, y_axis='log', x_axis='time')
 
         try:
-            a_file = open(file_name + ".txt", "w")
-            for row in mag:
-                np.savetxt(os.path.join(destination + a_file), row)
-            a_file.close()
-
             plt.savefig(os.path.join(destination + file_name))
             success = True
         except KeyboardInterrupt:
