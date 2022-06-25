@@ -20,7 +20,7 @@ from AWS.s3_download_file import download_files
 parser = argparse.ArgumentParser(description=__doc__)
 add_arg = functools.partial(add_arguments, argparser=parser)
 add_arg('audio_db',         str,    'audio_db',               'path to our audio database')
-add_arg('input_shape',      str,    '(128, 257, 1)',          'shape of input data')
+add_arg('input_shape',      str,    '(257, 128, 1)',          'shape of input data')
 add_arg('threshold',        float,   0.85,                     'threshold of verification')
 add_arg('model_path',       str,    'models/layers_model.tflite',  'path to model')
 args = parser.parse_args()
