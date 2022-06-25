@@ -61,7 +61,7 @@ class RecordAudio:
             output_path="audio_db/temp.wav"
 
         frames = []
-        for i in range(0, int(self.rate / self.chunk * record_seconds)):
+        for i in range(0, 60): #int(self.rate / self.chunk * record_seconds)):
             data = self.stream.read(self.chunk, exception_on_overflow = False)
             frames.append(data)
 
