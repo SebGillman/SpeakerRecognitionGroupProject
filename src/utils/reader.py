@@ -40,7 +40,7 @@ def load_audio(audio_path, mode='train', win_length=512, sr=16000, hop_length=20
             file_name = png_name+'.png'
         
         plt.figure()
-        librosa.display.specshow(mag, sr=sr, hop_length=hop_length, y_axis='log', x_axis='time')
+        librosa.display.specshow(linear, sr=sr, hop_length=hop_length, y_axis='log', x_axis='time')
 
         try:
             plt.savefig(os.path.join(destination + file_name))
