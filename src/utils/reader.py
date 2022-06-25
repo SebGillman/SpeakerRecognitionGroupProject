@@ -52,6 +52,7 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
         if success:
             print('Saved STFT: {} in the local folder!'.format(file_name))
 
+    # save the STFT to the cloud
     if stft_cloud and mode != 'load':
         if name is not None:
             file_name = name+'.png'
