@@ -22,7 +22,7 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
         extended_wav = np.append(wav, wav[::-1])
     # calculate STFT
     linear = librosa.stft(extended_wav, n_fft=n_fft, win_length=win_length, hop_length=hop_length)
-    mag, _ = librosa.magphase(mel)
+    mag, _ = librosa.magphase(linear)
     
     # save the STFT in folder speactrograms
     if mode != 'train' and stft_cloud == False:
