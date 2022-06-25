@@ -11,7 +11,7 @@ import logging
 from botocore.exceptions import ClientError
 
 # Load and pre-process audio file
-def load_audio(audio_path, mode='train', win_length=512, sr=16000, hop_length=200, n_fft=512, spec_len=257, object_name=None, stft_cloud=False, name=None):
+def load_audio(audio_path, mode='train', win_length=512, sr=16000, hop_length=160, n_fft=512, spec_len=257, object_name=None, stft_cloud=False, name=None):
     # Load audio
     wav, sr_ret = librosa.load(audio_path, sr=sr)
     if mode == 'train':
@@ -40,9 +40,14 @@ def load_audio(audio_path, mode='train', win_length=512, sr=16000, hop_length=20
             file_name = png_name+'.png'
         
         plt.figure()
-        librosa.display.specshow(linear, sr=sr, hop_length=hop_length, y_axis='log', x_axis='time')
+        librosa.display.specshow(mag, sr=sr, hop_length=hop_length, y_axis='log', x_axis='time')
 
         try:
+            a_file = open(file_name + ".txt", "w")
+            for row in mag:
+                np.savetxt(os.path.join(destination + a_file), row)
+            a_file.close()
+
             plt.savefig(os.path.join(destination + file_name))
             success = True
         except KeyboardInterrupt:
