@@ -25,7 +25,7 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
     #linear = librosa.stft(extended_wav, n_fft=n_fft, win_length=win_length, hop_length=hop_length)
     # mel
     mel = librosa.feature.melspectrogram(extended_wav, n_fft=n_fft, win_length=win_length, hop_length=hop_length)
-    #print(len(linear))
+    print(len(linear))
     mag, _ = librosa.magphase(mel)
     mag = librosa.power_to_db(mag, ref=np.max)
     
