@@ -39,7 +39,8 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
             file_name = png_name+'.png'
         
         plt.figure()
-        librosa.display.specshow(mag, sr=sr, hop_length=hop_length, y_axis='mel', x_axis='time')
+        plot_dB = librosa.power_to_db(mag, ref=numpy.max)
+        librosa.display.specshow(plot_dB, sr=sr, hop_length=hop_length, y_axis='mel', x_axis='time')
 
         try:
             plt.savefig(os.path.join(destination + file_name))
