@@ -24,6 +24,7 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
     linear = librosa.stft(extended_wav, n_fft=n_fft, win_length=win_length, hop_length=hop_length)
     #mag = librosa.feature.melspectrogram(extended_wav, n_fft=n_fft, win_length=win_length, hop_length=hop_length, n_mels=40, fmin=0.0, fmax=8000)
     mag, _ = librosa.magphase(linear)
+    mag = librosa.power_to_db(mag, ref=np.max)
     print(mag)
     
     # save the STFT in folder speactrograms
@@ -39,8 +40,7 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
             file_name = png_name+'.png'
         
         plt.figure()
-        plot_dB = librosa.power_to_db(mag, ref=np.max)
-        librosa.display.specshow(plot_dB, sr=sr, hop_length=hop_length, y_axis='mel', x_axis='time')
+        librosa.display.specshow(mag, sr=sr, hop_length=hop_length, y_axis='mel', x_axis='time')
 
         try:
             plt.savefig(os.path.join(destination + file_name))
