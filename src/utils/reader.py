@@ -21,8 +21,12 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
     else:
         extended_wav = np.append(wav, wav[::-1])
     # calculate STFT
-    linear = librosa.stft(extended_wav, n_fft=n_fft, win_length=win_length, hop_length=hop_length)
-    mag, _ = librosa.magphase(linear)
+    # linear 
+    #linear = librosa.stft(extended_wav, n_fft=n_fft, win_length=win_length, hop_length=hop_length)
+    # mel
+    mel = librosa.feature.melspectrogram(extended_wav, n_fft=n_fft, win_length=win_length, hop_length=hop_length)
+    mag, _ = librosa.magphase(mel)
+    mag = librosa.power_to_db(mag, ref=np.max)
     
     # save the STFT in folder speactrograms
     if mode != 'train' and stft_cloud == False:
@@ -101,14 +105,6 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
     std = np.std(spec_mag, 0, keepdims=True)
     spec_mag = (spec_mag - mean) / (std + 1e-5)
     spec_mag = spec_mag[:, :, np.newaxis]
-    print(len(spec_mag[0]))
-    print(len(spec_mag))
-
-    a_file = open("test.txt", "w")
-    for row in spec_mag:
-        np.savetxt(a_file, row)
-
-    a_file.close()
 
     return spec_mag
 
