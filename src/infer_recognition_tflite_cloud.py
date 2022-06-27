@@ -43,7 +43,7 @@ person_feature = []
 person_name = []
 
 # Cloud metadata
-wav_bucket_name = 'armgroupproject'
+wav_bucket_name = 'armcloud' #'armgroupproject'
 #stft_bucket_name = 'stft-data'
 #unlabelled_stft_bucket_name = 'unlabelled-stft-data'
 
