@@ -42,7 +42,7 @@ person_feature = []
 person_name = []
 
 # Cloud metadata
-wav_bucket_name = 'armgroupproject'
+wav_bucket_name = 'armgcloud'
 
 def infer(audio_path, message = False, stft_cloud=False, name=None, mode='infer'):
     time5 = time.time()
