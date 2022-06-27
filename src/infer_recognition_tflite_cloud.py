@@ -72,6 +72,9 @@ def infer(audio_path, message = True, stft_cloud=False, name=None, mode='infer')
 
 # Load the database and print out the list of members
 def load_audio_db(audio_db_path, message = False):
+    if not os.path.exists(audio_db_path):
+        os.makedirs(audio_db_path)
+        
     audios = os.listdir(audio_db_path)
     for audio in audios:
         path = os.path.join(audio_db_path, audio)
