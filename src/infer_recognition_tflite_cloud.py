@@ -98,7 +98,6 @@ def recognition(path, mode='unlabelled', cloud_db=False):
     return name, pro
 
 
-
 # Register new member
 def register(path, user_name, cloud_db=False):
     save_path = os.path.join(args.audio_db, user_name + os.path.basename(path)[-4:])
@@ -141,7 +140,7 @@ if __name__ == '__main__':
                     if cloud_db in ['0','1']:
                         break
                     else:
-                        print('Not correct input')
+                        print('Incorrect input')
                 cloud_db = bool(int(cloud_db))
                 register(audio_path, name, cloud_db)
 
@@ -185,7 +184,7 @@ if __name__ == '__main__':
                     if cloud_db in ['0','1']:
                         break
                     else:
-                        print('Not correct input')
+                        print('Incorrect input')
                 cloud_db = bool(int(cloud_db))
 
                 if cloud_db and not flag:
