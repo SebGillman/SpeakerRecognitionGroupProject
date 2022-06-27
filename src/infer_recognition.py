@@ -120,7 +120,7 @@ if __name__ == '__main__':
     
     try:
         while True:
-            print('\n-----------------------------------------------------------------------------------------------------')
+            print('\n-------------------------------------------------------------------------------------------------------------')
             select_fun = input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do single speaker recognition,\n type in 2 to do continuous speaker recognition, \n type in 3 to exit the program. \n")
 
             if select_fun == '0':
@@ -148,7 +148,7 @@ if __name__ == '__main__':
                 
                 if cloud_db and not flag:
                     time_1 = time.time()
-                    print('Accessing Cloud Database...')
+                    print('\nAccessing Cloud Database...')
                     wav_download = download_files(wav_bucket_name)
                     load_audio_db("tmp")
                     time_2 = time.time()
@@ -181,7 +181,7 @@ if __name__ == '__main__':
 
                 if cloud_db and not flag:
                     time_1 = time.time()
-                    print('Accessing Cloud Database...')
+                    print('\nAccessing Cloud Database...')
                     wav_download = download_files(wav_bucket_name)
                     load_audio_db("tmp")
                     time_2 = time.time()
@@ -221,3 +221,4 @@ if __name__ == '__main__':
                 
     except KeyboardInterrupt:
         pass
+
