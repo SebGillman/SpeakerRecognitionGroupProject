@@ -104,12 +104,12 @@ def register(path, user_name, cloud_db=False):
     if cloud_db:
         wav_success_upload = upload_file(save_path, wav_bucket_name)
         if wav_success_upload:
-             print('Successfully uploaded audio: {} to the cloud!'.format(user_name+'.wav'))
+             print('\nSuccessfully uploaded audio: {} to the cloud!'.format(user_name+'.wav'))
 
              # delete file from 'audio_db' after upload --> other solution: save recording to different directory and then depending on cloud_db either join it with 'audio_db' or 'tmp'
              #os.remove('tmp/'+user_name+'.wav') # removes file from the local database
     else:
-        print('Successfully saved audio: {} to the local database!'.format(user_name+'.wav'))
+        print('\nSuccessfully saved audio: {} to the local database!'.format(user_name+'.wav'))
 
 
 if __name__ == '__main__':
@@ -163,10 +163,10 @@ if __name__ == '__main__':
                 name, p = recognition(audio_path, mode='unlabelled', cloud_db=cloud_db)
                 time2 = time.time()
                 if p > args.threshold and "Noise" not in name:
-                    print("The one currently speaking is %s with a similarity of %f" % (name.split("_")[0], p))
+                    print("\nThe one currently speaking is %s with a similarity of %f" % (name.split("_")[0], p))
                     print('Classification time = ', np.round(time2-time1, 3), ' seconds. \n')
                 else:
-                    print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment \n")
+                    print("\nThere's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment \n")
 
                 if not cloud_db:
                     os.remove('audio_db/temp.wav')
