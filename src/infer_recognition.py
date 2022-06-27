@@ -44,6 +44,7 @@ person_name = []
 # Cloud metadata
 wav_bucket_name = 'armcloud'
 
+# Predict the audio
 def infer(audio_path, message = False, stft_cloud=False, name=None, mode='infer'):
     time5 = time.time()
     data = load_audio(audio_path, mode=mode, spec_len=input_shape[1], name=name, stft_cloud=stft_cloud)
@@ -63,6 +64,7 @@ def infer(audio_path, message = False, stft_cloud=False, name=None, mode='infer'
 
     return feature
 
+# Load the database and print out the list of members
 def load_audio_db(audio_db_path, message = False):
     if not os.path.exists(audio_db_path):
         os.makedirs(audio_db_path)
