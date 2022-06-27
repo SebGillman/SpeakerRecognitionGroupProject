@@ -108,7 +108,7 @@ def register(path, user_name, cloud_db=False):
 
 
 if __name__ == '__main__':
-    #load_audio_db(args.audio_db, message = True)
+    load_audio_db(args.audio_db, message = True)
     record_audio = RecordAudio()
 
     flag = False
@@ -151,9 +151,6 @@ if __name__ == '__main__':
                     time_2 = time.time()
                     flag = True
                     print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
-                elif cloud_db==False and not flag:
-                    load_audio_db(args.audio_db, message = True)
-                    flag = True
 
                 # run inference 
                 audio_path = record_audio.record(cloud=cloud_db)
@@ -187,9 +184,6 @@ if __name__ == '__main__':
                     time_2 = time.time()
                     flag = True
                     print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
-                elif cloud_db==False and not flag:
-                    load_audio_db(args.audio_db, message = True)
-                    flag = True
 
                 # run inference 
                 print("\nRecording has started, press Ctrl+C to quit")
