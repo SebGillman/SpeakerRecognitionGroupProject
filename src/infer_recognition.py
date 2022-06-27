@@ -65,11 +65,10 @@ def infer(audio_path, message = False, stft_cloud=False, name=None, mode='infer'
 
 def load_audio_db(audio_db_path, message = False):
     audios = os.listdir(audio_db_path)
-    message = False
     for audio in audios:
         path = os.path.join(audio_db_path, audio)
         name = audio[:-4]
-        feature = infer(path, message, mode='load')[0]
+        feature = infer(path, message = False, mode='load')[0]
         person_name.append(name)
         person_feature.append(feature)
         if message:
