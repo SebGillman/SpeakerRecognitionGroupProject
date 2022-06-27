@@ -130,7 +130,7 @@ if __name__ == '__main__':
     try:
         while True:
             print('\n-----------------------------------------------------------------------------------------------------')
-            select_fun = input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do single voice recognition,\n type in 2 to do continuous voice recognition, \n type in 3 to exit the program. \n")
+            select_fun = input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do single speaker recognition,\n type in 2 to do continuous speaker recognition, \n type in 3 to exit the program. \n")
 
             if select_fun == '0':
                 audio_path = record_audio.record()
@@ -170,10 +170,10 @@ if __name__ == '__main__':
                 name, p = recognition(audio_path, mode='unlabelled', cloud_db=cloud_db)
                 time2 = time.time()
                 if p > args.threshold and "Noise" not in name:
-                    print("The one currently speaking is %s with a similarity of %f" % (name.split("_")[0], p))
+                    print("\nThe one currently speaking is %s with a similarity of %f" % (name.split("_")[0], p))
                     print('Classification time = ', np.round(time2-time1, 3), ' seconds. \n')
                 else:
-                    print("There's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment \n")
+                    print("\nThere's no matched member in the database,try speaking in your natural tone or avoid noisy enviroment \n")
 
                 if not cloud_db:
                     os.remove('audio_db/temp.wav')
@@ -190,7 +190,7 @@ if __name__ == '__main__':
 
                 if cloud_db and not flag:
                     time_1 = time.time()
-                    print("Downloading database...")
+                    print('Accessing Cloud Database...')
                     wav_download = download_files(wav_bucket_name)
                     load_audio_db("tmp")
                     time_2 = time.time()
