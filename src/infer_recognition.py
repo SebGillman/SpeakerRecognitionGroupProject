@@ -41,7 +41,12 @@ model.summary()
 person_feature = []
 person_name = []
 
-def infer(audio_path, message = True, stft_cloud=False, name=None, mode='infer'):
+# Cloud metadata
+wav_bucket_name = 'armgroupproject'
+stft_bucket_name = 'stft-data'
+unlabelled_stft_bucket_name = 'unlabelled-stft-data'
+
+def infer(audio_path, message = False, stft_cloud=False, name=None, mode='infer'):
     time5 = time.time()
     data = load_audio(audio_path, mode=mode, spec_len=input_shape[1], name=name, stft_cloud=stft_cloud)
     time6 = time.time()
@@ -118,7 +123,7 @@ if __name__ == '__main__':
     try:
         while True:
             print('\n-----------------------------------------------------------------------------------------------------')
-            select_fun = input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do voice recognition,\n type in 2 to do continuous recognition, \n type in 3 to exit the program. \n")
+            select_fun = input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do single voice recognition,\n type in 2 to do continuous voice recognition, \n type in 3 to exit the program. \n")
 
             if select_fun == '0':
                 audio_path = record_audio.record()
@@ -145,7 +150,7 @@ if __name__ == '__main__':
                 
                 if cloud_db and not flag:
                     time_1 = time.time()
-                    print('Downloading database...')
+                    print('Accessing Cloud Database...')
                     wav_download = download_files(wav_bucket_name)
                     load_audio_db("tmp")
                     time_2 = time.time()

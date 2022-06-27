@@ -47,10 +47,10 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
         except:
             print("error")
             success = False
-
+        """
         if success:
             print('Saved STFT: {} in the local folder!'.format(file_name))
-
+        """
     # save the STFT to the cloud
     if stft_cloud and mode != 'load':
         if name is not None:
@@ -80,9 +80,11 @@ def load_audio(audio_path, mode='train', win_length=400, sr=16000, hop_length=16
             logging.error(e)
             success = False
         success = True
-
+        
+        """
         if success:
             print('Uploaded STFT: {} to the cloud!'.format(file_name))
+        """
 
         if os.path.exists(file_name):
             os.remove(file_name)
