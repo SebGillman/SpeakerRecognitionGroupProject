@@ -44,8 +44,8 @@ person_name = []
 
 # Cloud metadata
 wav_bucket_name = 'armgroupproject'
-stft_bucket_name = 'stft-data'
-unlabelled_stft_bucket_name = 'unlabelled-stft-data'
+#stft_bucket_name = 'stft-data'
+#unlabelled_stft_bucket_name = 'unlabelled-stft-data'
 
 # predict the audio
 def infer(audio_path, message = True, stft_cloud=False, name=None, mode='infer'):
