@@ -150,7 +150,7 @@ if __name__ == '__main__':
                 if cloud_db and not flag:
                     time_1 = time.time()
                     print('\nAccessing Cloud Database...')
-                    wav_download = download_files(wav_bucket_name)
+                    download_files(wav_bucket_name)
                     load_audio_db("tmp")
                     time_2 = time.time()
                     flag = True
@@ -183,7 +183,7 @@ if __name__ == '__main__':
                 if cloud_db and not flag:
                     time_1 = time.time()
                     print('\nAccessing Cloud Database...')
-                    wav_download = download_files(wav_bucket_name)
+                    download_files(wav_bucket_name)
                     load_audio_db("tmp")
                     time_2 = time.time()
                     flag = True
