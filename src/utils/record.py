@@ -22,8 +22,8 @@ class RecordAudio:
     def record(self, record_seconds=3, cloud = False):
         """
         Terms meaning
-        :param output_path: path of save recording, with file format wav
         :param record_seconds: record time, default setting will be 3s
+        :variable output_path: path of save recording, with file format wav
         :return: file path of the audio recordings
         """
         if cloud:
