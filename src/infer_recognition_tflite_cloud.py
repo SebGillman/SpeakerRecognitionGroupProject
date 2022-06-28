@@ -42,6 +42,9 @@ input_shape = eval(args.input_shape)
 person_feature = []
 person_name = []
 
+person_feature_cloud = []
+person_name_cloud = []
+
 # Cloud metadata
 wav_bucket_name = 'armcloud' #'armgroupproject'
 #stft_bucket_name = 'stft-data'
