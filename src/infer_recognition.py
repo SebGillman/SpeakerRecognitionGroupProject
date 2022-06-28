@@ -41,6 +41,9 @@ model.summary()
 person_feature = []
 person_name = []
 
+person_feature_cloud = []
+person_name_cloud = []
+
 # Cloud metadata
 wav_bucket_name = 'armcloud'
 
@@ -65,7 +68,7 @@ def infer(audio_path, message = False, stft_cloud=False, name=None, mode='infer'
     return feature
 
 # Load the database and print out the list of members
-def load_audio_db(audio_db_path, message = False):
+def load_audio_db(audio_db_path, message = False, cloud_db = False):
     if not os.path.exists(audio_db_path):
         os.makedirs(audio_db_path)
         
@@ -74,8 +77,12 @@ def load_audio_db(audio_db_path, message = False):
         path = os.path.join(audio_db_path, audio)
         name = audio[:-4]
         feature = infer(path, message = False, mode='load')[0]
-        person_name.append(name)
-        person_feature.append(feature)
+        if cloud_db:
+            person_name_cloud.append(name)
+            person_feature_cloud.append(feature)
+        else:  
+            person_name.append(name)
+            person_feature.append(feature)
         if message:
             print("Loaded %s audio." % name)
 
@@ -85,11 +92,18 @@ def recognition(path, mode='unlabelled', cloud_db=False):
     name = ''
     pro = 0
     feature = infer(path, mode=mode, stft_cloud=cloud_db)[0]
-    for i, person_f in enumerate(person_feature):
-        dist = np.dot(feature, person_f) / (np.linalg.norm(feature) * np.linalg.norm(person_f))
-        if dist > pro:
-            pro = dist
-            name = person_name[i]
+    if cloud_db:
+        for i, person_f in enumerate(person_feature_cloud):
+            dist = np.dot(feature, person_f) / (np.linalg.norm(feature) * np.linalg.norm(person_f))
+            if dist > pro:
+                pro = dist
+                name = person_name_cloud[i]
+    else:
+        for i, person_f in enumerate(person_feature):
+            dist = np.dot(feature, person_f) / (np.linalg.norm(feature) * np.linalg.norm(person_f))
+            if dist > pro:
+                pro = dist
+                name = person_name[i]
 
     return name, pro
 
@@ -100,14 +114,16 @@ def register(path, user_name, cloud_db=False):
     shutil.move(path, save_path)
     message = False
     feature = infer(save_path, message, name=user_name, stft_cloud=cloud_db)[0]
-    person_name.append(user_name)
-    person_feature.append(feature)
 
     if cloud_db:
+        person_name_cloud.append(user_name)
+        person_feature_cloud.append(feature)
         wav_success_upload = upload_file(save_path, wav_bucket_name)
         if wav_success_upload:
              print('\nSuccessfully uploaded audio: {} to the cloud!'.format(user_name+'.wav'))
     else:
+        person_name.append(user_name)
+        person_feature.append(feature)
         print('\nSuccessfully saved audio: {} to the local database!'.format(user_name+'.wav'))
 
 
@@ -151,7 +167,7 @@ if __name__ == '__main__':
                     time_1 = time.time()
                     print('\nAccessing Cloud Database...')
                     download_files(wav_bucket_name)
-                    load_audio_db("tmp")
+                    load_audio_db("tmp", cloud_db=cloud_db)
                     time_2 = time.time()
                     flag = True
                     print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
@@ -184,7 +200,7 @@ if __name__ == '__main__':
                     time_1 = time.time()
                     print('\nAccessing Cloud Database...')
                     download_files(wav_bucket_name)
-                    load_audio_db("tmp")
+                    load_audio_db("tmp", cloud_db=cloud_db)
                     time_2 = time.time()
                     flag = True
                     print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
