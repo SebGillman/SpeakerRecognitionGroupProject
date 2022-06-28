@@ -139,10 +139,10 @@ if __name__ == '__main__':
         while True:
             print('\n-------------------------------------------------------------------------------------------------------')
             select_fun = input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do single speaker recognition,\n type in 2 to do continuous speaker recognition, \n type in 3 to exit the program. \n")
-            print("person feature"+person_feature)
-            print("person name"+person_name)
-            print("cloud feature" + person_feature_cloud)
-            print("cloud name" + person_name_cloud)
+            #print("person feature"+person_feature)
+            #print("person name"+person_name)
+            #print("cloud feature" + person_feature_cloud)
+            #print("cloud name" + person_name_cloud)
             if select_fun == '0':
                 audio_path = record_audio.record()
                 name = input("Please type in your name as new member: ")
