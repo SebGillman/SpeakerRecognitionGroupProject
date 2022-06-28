@@ -110,18 +110,22 @@ def recognition(path, mode='unlabelled', cloud_db=False):
 
 # Register new member
 def register(path, user_name, cloud_db=False):
-    save_path = os.path.join(args.audio_db, user_name + os.path.basename(path)[-4:])
-    shutil.move(path, save_path)
-    message = False
-    feature = infer(save_path, message, name=user_name, stft_cloud=cloud_db)[0]
 
     if cloud_db:
+        save_path = os.path.join('./tmp', user_name + os.path.basename(path)[-4:])
+        shutil.move(path, save_path)
+        message = False
+        feature = infer(save_path, message, name=user_name, stft_cloud=cloud_db)[0]
         person_name_cloud.append(user_name)
         person_feature_cloud.append(feature)
         wav_success_upload = upload_file(save_path, wav_bucket_name)
         if wav_success_upload:
              print('\nSuccessfully uploaded audio: {} to the cloud!'.format(user_name+'.wav'))
     else:
+        save_path = os.path.join(args.audio_db, user_name + os.path.basename(path)[-4:])
+        shutil.move(path, save_path)
+        message = False
+        feature = infer(save_path, message, name=user_name, stft_cloud=cloud_db)[0]
         person_name.append(user_name)
         person_feature.append(feature)
         print('\nSuccessfully saved audio: {} to the local database!'.format(user_name+'.wav'))
@@ -131,18 +135,13 @@ if __name__ == '__main__':
     load_audio_db(args.audio_db, message = True)
     record_audio = RecordAudio()
 
-    flag = False
-
     print('\n \n \n')
     
     try:
         while True:
             print('\n-------------------------------------------------------------------------------------------------------')
             select_fun = input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do single speaker recognition,\n type in 2 to do continuous speaker recognition, \n type in 3 to exit the program. \n")
-            #print("person feature"+person_feature)
-            #print("person name"+person_name)
-            #print("cloud feature" + person_feature_cloud)
-            #print("cloud name" + person_name_cloud)
+
             if select_fun == '0':
                 audio_path = record_audio.record()
                 name = input("Please type in your name as new member: ")
@@ -166,13 +165,12 @@ if __name__ == '__main__':
                         print('Not correct input')
                 cloud_db = bool(int(cloud_db))
                 
-                if cloud_db and not flag:
+                if cloud_db:
                     time_1 = time.time()
                     print('\nAccessing Cloud Database...')
                     download_files(wav_bucket_name)
                     load_audio_db("tmp", cloud_db=cloud_db)
                     time_2 = time.time()
-                    flag = True
                     print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
 
                 # run inference 
@@ -199,13 +197,12 @@ if __name__ == '__main__':
                         print('Invalid input')
                 cloud_db = bool(int(cloud_db))
 
-                if cloud_db and not flag:
+                if cloud_db:
                     time_1 = time.time()
                     print('\nAccessing Cloud Database...')
                     download_files(wav_bucket_name)
                     load_audio_db("tmp", cloud_db=cloud_db)
                     time_2 = time.time()
-                    flag = True
                     print('Download time = ', np.round(time_2-time_1, 3), ' seconds.')
 
                 # run inference 
