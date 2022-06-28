@@ -112,6 +112,8 @@ def recognition(path, mode='unlabelled', cloud_db=False):
 def register(path, user_name, cloud_db=False):
 
     if cloud_db:
+        if not os.path.exists('./tmp'):
+            os.makedirs('./tmp')
         save_path = os.path.join('./tmp', user_name + os.path.basename(path)[-4:])
         shutil.move(path, save_path)
         message = False
