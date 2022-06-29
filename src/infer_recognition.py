@@ -145,6 +145,7 @@ if __name__ == '__main__':
             select_fun = input("Please type in number to choose function:\n type in 0 to register new member,\n type in 1 to do single speaker recognition,\n type in 2 to do continuous speaker recognition, \n type in 3 to exit the program. \n")
 
             if select_fun == '0':
+                print("\nPlease speak slowly for a total of 3 seconds")
                 audio_path = record_audio.record()
                 name = input("Please type in your name as new member: ")
                 if name == '': continue
