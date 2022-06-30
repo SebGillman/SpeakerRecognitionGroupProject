@@ -61,7 +61,7 @@ def get_all_audio_feature(list_path):
     return features, labels
 
 
-# calculate cos
+# cosine similarit
 def cosin_metric(x1, x2):
     return np.dot(x1, x2) / (np.linalg.norm(x1) * np.linalg.norm(x2))
 
