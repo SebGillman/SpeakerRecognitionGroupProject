@@ -41,7 +41,7 @@ This document serves as the Design History File of Group 16’s project. The goa
 
 The applications of our product are quite open to interpretation by the user. We have developed a speaker recognition platform that could be incorporated into larger applications such as a foundation for a basic voice assistant or a voice enabled security system (either on a small scale with local database or company-wide with a cloud based database). The product has features that enable a versatile number of use cases.
 
-The software is available on this GitHub repository, which can be used to view the complete software development history of the project. The data used for training and testing includes a combination of public datasets and the group’s own. The group’s own dataset can be found here the GitHub in `TrainingDataGen`. The product should be functional on all microcontrollers that meet the minimum specification as outlined in the Hardware section, however development and testing was only conducted on a Raspberry Pi 4, thus this is the recommended microcontroller for guaranteeing reproducible results. 
+The software is available on this GitHub repository, which can be used to view the complete software development history of the project. The data used for training and testing includes a combination of public datasets and the group’s own. The group’s own dataset can be found here the GitHub folder named `TrainingDataGen`. The product should be functional on all microcontrollers that meet the minimum specification as outlined in the Hardware section, however development and testing was only conducted on a Raspberry Pi 4, thus this is the recommended microcontroller for guaranteeing reproducible results. 
 
 
 </br>
@@ -78,7 +78,7 @@ Discussions were held between the group and client, who was a representative fro
 |     Microcontroller-isolated   environment for input and output    |     Maximize portability between microcontrollers                            |
 
 ###	Initial Approach
-The first component of the project involved experimenting with the [group’s own dataset](./TrainingDataGen/Training) and understanding the type and quantity of data required for a successful product. The Colab Notbook `GroupProject.ipynb` contains the initial attempt to create a solution.
+The first component of the project involved experimenting with the group’s own dataset in [`TrainingDataGen`](./TrainingDataGen/Training) and understanding the type and quantity of data required for a successful product. The Colab Notbook `GroupProject.ipynb` contains the initial attempt to create a solution.
 
 For speaker recognition, the spectrogram of each audio has to be obtained. A spectrogram is a visual representation of the change in distribution of energy among different frequencies over time.  They contain rich information as their various shapes displayed reveal the features of voice. For example, they can be used to distinguish the natural frequencies of people's tones. 
 
