@@ -74,13 +74,34 @@ Discussions were held between the group and client, who was a representative fro
 
 ### Data Aquisition
 
+The first component of the project involved experimenting with different datasets and understanding the type and quantity of data required for a successful product. The group focused on a combination of public datasets, for example the Speech Commands dataset  and zhvoice corpus , and the group’s own dataset . The format of all speech datasets must be encoded using the Waveform Audio File Format (WAV). This is because WAV files do not lose any information when it comes to frequencies on the sound spectrum. 
 
+The group has decided to combine the zhvoice corpus dataset with our own group dataset, which resulted in a total of 3253 people’s speech data. These audio files add up to around 900 hours in total and are clips of voice samples at maximum of 3 seconds. The different speakers are labelled into different integers, in the range of 0-3252.
 
+As the zhvoice corpus contains audios in MP3 format sampled at 16kHz, we have created a python script `create_data.py` that converts all the audios to WAV format. Additionally, the program creates a list containing the file path to each audio and its corresponding classification label (the unique ID of the speaker). This data list is mainly for the convenience of passing each labeled voice through the preprocessing and training process. 
+
+Below are three example of waveforms from the group dataset
 <p align="center">
   <img src="./images/waveforms.png" alt="waveforms" width="550"/>
 </p>
 
 ### Data Preprocessing
+With the data list created, the spectrogram of each audio can be obtained. A spectrogram is a visual representation of the change on distribution of energy among different frequencies over time.  They contain rich information as their various shape displayed reveal the features of voice. For example, they can be used to distinguish the natural frequencies of people's tones. 
+
+The preprocessing of the WAV audios has multiple stages to make it more suitable and faster to process for the ML model. The waveforms are converted into amplitude spectrograms using Short Time Fourier Transforms (STFT). It was discussed whether to use STFT, Mel-frequency spectrograms or Mel-frequency cepstral coefficients spectrograms as they are more used in speech recognition, but after a first round of testing it was decided that linear-frequency spectrograms were satisfactory enough to extract the voiceprint of the speakers. 
+
+The APIs used for this task are `librosa.stft()` and `librosa.magphase()`. This can be shown in the python script `src/utils/reader.py` 
+
+During training, data augmentation, such as random flip stitching, random cropping, frequency masking, is used. After processing the data, spectrograms with the shape of 257x257 are obtained. 
+
+Finally, the spectrograms are split into training and test sets, with a 90:10 ratio. Two example spectrograms are shown in the figures below:
+
+<p float="left">
+  <img src="./images/Seb.png" width="100" />
+  <img src="./images/Riccardo_linear.png" width="100" /> 
+</p>
+
+The specification of preprocessing data samples is listed in the table below:
 
 ### Model Selection
 
