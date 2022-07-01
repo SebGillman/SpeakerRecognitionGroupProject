@@ -281,9 +281,9 @@ Amazon Web Services (AWS) was chosen as the cloud solutions provider due to the 
 When running `src/infer_recognition.py`, during doing recognition or registering new members to the cloud database, a temporary folder will be created as ‘temp/’. This is for storing the temporary audio data when accessing the cloud. It separates the audioes in the cloud database to the ones in local database in ‘audio_db/’. The folder is deleted once finished.
 
 ### Model Optimization
-Once the basic functional requirements were met, there were optimizations that could be done on the model. Due to the low-cost aspect of the product, the group chose to optimize the model in such a way as to reduce the size and increase its speed while maintaining sufficient levels of accuracy. These goals resulted in several different optimizations being applied.
+Once the basic functional requirements were met, there were optimizations that could be done on the model. Due to the low-cost aspect of the product, the group chose to optimize the model in such a way as to reduce the size and increase its speed while maintaining sufficient levels of accuracy. These goals resulted in several different optimizations being applied. 
 
-The h5 model size is 96457 KB and is large considered it is imported to a microcontroller. In terms of pursing faster processing time and smaller size, the group considered converting the model from `.h5` format to a `.tflite` model. Tflite model is optimised as it reduces the latency of the prediction, size, and even lower power consumption.
+The h5 model size is 96457 KB and is large considered it is imported to a microcontroller. In terms of pursing faster processing time and smaller size, the group considered converting the model from `.h5` format to a `.tflite` model using the program `src/quantizer.py`. Tflite model is optimised as it reduces the latency of the prediction, size, and even lower power consumption.
 
 However, the main drawback of using a converted tflite model on pi is its loss in precision. When operating the tflite model, it outputs extreme high similarity on every sample and resulted in higher cases of mispredictions. Converting h5 model to tflite model is a trade-off between speed and accuracy. Overall, the group decided to keep using the h5 model.
 
