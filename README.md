@@ -1,6 +1,5 @@
 # Speaker Recognition using Spectral Analysis and ML - Design History File
-By ADAM HORSLER, RICCARDO EL HASSININ, SEBASTIAN GILLMAN, XIXIAN HUANG and IBRAHIM MOHAMED
-
+By [Riccardo El Hassanin](https://github.com/rccrd27), [Adam Horsler](https://github.com/horsada), [Sebastian Gillman](https://github.com/SebGillman), [Xixian Huang](https://github.com/heyinwong) and [Ibrahim Mohamed](https://github.com/ibzmo)
 
 </br>
 
