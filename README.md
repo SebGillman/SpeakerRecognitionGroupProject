@@ -100,7 +100,7 @@ When the trained model was experimented on the test set, the group found that it
 
 A huge flaw that was observed with this method is that it would require retraining each time a new user was added. This CNN model is more for a classification purpose and is used to classified only group members.
 
-A new method was drawn up where voice feature extraction would be learned on a large dataset using a more complex CNN and this feature extraction would allow the recognition of a new user to be done after registering them with just one voice sample.
+A new method was drawn up where voice feature extraction would be learned on a larger dataset using a more complex CNN. This feature extraction method would allow the recognition of a new user to be performed after registering them with just one voice sample.
 
 ### Data Aquisition
 
