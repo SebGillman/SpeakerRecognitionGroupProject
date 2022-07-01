@@ -90,15 +90,15 @@ With the data list created, the spectrogram of each audio can be obtained. A spe
 
 The preprocessing of the WAV audios has multiple stages to make it more suitable and faster to process for the ML model. The waveforms are converted into amplitude spectrograms using Short Time Fourier Transforms (STFT). It was discussed whether to use STFT, Mel-frequency spectrograms or Mel-frequency cepstral coefficients spectrograms as they are more used in speech recognition, but after a first round of testing it was decided that linear-frequency spectrograms were satisfactory enough to extract the voiceprint of the speakers. 
 
-The APIs used for this task are `librosa.stft()` and `librosa.magphase()`. This can be shown in the python script `src/utils/reader.py` 
+The APIs used for this task are `librosa.stft()` and `librosa.magphase()`. This can be shown in the python script `src/utils/reader.py`.
 
 During training, data augmentation, such as random flip stitching, random cropping, frequency masking, is used. After processing the data, spectrograms with the shape of 257x257 are obtained. 
 
 Finally, the spectrograms are split into training and test sets, with a 90:10 ratio. Two example spectrograms are shown in the figures below:
 
 <p float="left">
-  <img src="./images/Seb.png" width="100" />
-  <img src="./images/Riccardo_linear.png" width="100" /> 
+  <img src="./images/Seb.png" width="300" />
+  <img src="./images/Riccardo_linear.png" width="300" /> 
 </p>
 
 The specification of preprocessing data samples is listed in the table below:
