@@ -276,7 +276,7 @@ After confirming functionality by storing speaker recordings on the Pi, the grou
 
 Amazon Web Services (AWS) was chosen as the cloud solutions provider due to the group’s previous knowledge, however any cloud provider would be acceptable. There are utility and helper functions located in `src/AWS`, which all use the boto3 Software Development Kit (SDK) as recommended by AWS. 
 
-When running `src/infer_recognition.py`, during doing recognition or registering new members to the cloud database, a temporary folder will be created as ‘temp/’. This is for storing the temporary audio data when accessing the cloud. It separates the audioes in the cloud database to the ones in local database in ‘audio_db/’. The folder is deleted once finished.
+When running `src/infer_recognition.py`, during doing recognition or registering new members to the cloud database, a temporary folder will be created as `temp/`. This is for storing the temporary audio data when accessing the cloud. It separates the audioes in the cloud database to the ones in local database in `audio_db/`. The folder is deleted once finished.
 
 ### Model Optimization
 Once the basic functional requirements were met, there were optimizations that could be done on the model. Due to the low-cost aspect of the product, the group chose to optimize the model in such a way as to reduce the size and increase its speed while maintaining sufficient levels of accuracy. These goals resulted in several different optimizations being applied. 
