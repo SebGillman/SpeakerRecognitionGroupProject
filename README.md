@@ -32,6 +32,7 @@ By [Riccardo El Hassanin](https://github.com/rccrd27), [Adam Horsler](https://gi
 7. [Ethics and Sustainability](./README.md#ethics-and-sustainability)
     1. [Ethics](./README.md#ethics)
     2. [Sustainability](./README.md#sustainability)
+8. [References](./README.md#references)
 
 </br>
 
@@ -298,7 +299,7 @@ The Raspberry Pi in general as a microcontroller is energy efficient when compar
 
 In terms of product upgrades as technology advances, all the code and environments use technologies that are currently in active development and maintenance, allowing for easy upgrades. In addition, as the hardware and software are essentially platform independent, hardware upgrades should be simple. 
 
-### References 
+## References 
 
 [1] - P. Warden, "Speech Commands: A Dataset for Limited-Vocabulary Speech Recognition", arXiv.org, 2022. [Online]. Available: https://arxiv.org/abs/1804.03209. [Accessed: 01- Jul- 2022].
 
