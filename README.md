@@ -180,7 +180,7 @@ The algorithm then calculates all the cosine similarities between the microphone
 To evaluate the algorithm, we tested it with each group member ten times and recorded the results. The Confusion Matrix below gives an example of some of the results obtained by the group during testing:
 
 <p align="center">
-  <img src="./images/Confusion1.png" alt="confusion" />
+  <img src="./images/Confusion1.png" alt="confusion" width="600"/>
 </p>
 
 
