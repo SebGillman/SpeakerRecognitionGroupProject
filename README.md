@@ -96,7 +96,7 @@ During training, data augmentation, such as random flip stitching, random croppi
 
 Finally, the spectrograms are split into training and test sets, with a 90:10 ratio. Two example spectrograms are shown in the figures below:
 
-<p float="left">
+<p float="center">
   <img src="./images/Seb.png" width="400" />
   <img src="./images/Riccardo_linear.png" width="400" /> 
 </p>
