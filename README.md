@@ -205,7 +205,7 @@ The `pip` python package installer can facilitate automatic installation of all 
 
 The Raspberry Pi must be configured to correctly detect and use the microphone attached to the USB port. The GitHub repo also includes helper files to facilitate this setup, for example `device_details.py`, which lists on the command line all the devices the Raspberry Pi has detected. 
 
-Finally, the Keras model must be uploaded into the `models/` folder on the Pi. It is recommended to use the Keras save and load API, which results in a `.h5` model file that contains all the necessary model information.
+Finally, the Keras model must be uploaded into the `src/models/` folder on the Pi. It is recommended to use the Keras save and load API, which results in a `.h5` model file that contains all the necessary model information.
 
 Once the system-level software is configured, it is ready for use. 
 
@@ -215,7 +215,7 @@ To perform the recognition of the speaker on the microcontroller, run `src/infer
  * 1: Perform single inference
  * 2: Perform continuous inference
 
-To add a user, select `0: Add a user to the database`. On first use, the database is empty. Therefore, it is expected that the user adds a person(s) to the database before performing inference. Once the necessary steps are followed as described in the flowchart in section 1, the user’s voice will be recorded and stored in the Pi in the folder `audio_db/` and the program will return to the post-initialization state. 
+To add a user, select `0: Add a user to the database`. On first use, the database is empty. Therefore, it is expected that the user adds a person(s) to the database before performing inference. Once the necessary steps are followed as described in the flowchart in section 1, the user’s voice will be recorded and stored in the Pi in the folder `src/audio_db/` and the program will return to the post-initialization state. 
 
 The `1: Perform single inference` and `2: Perform continuous inference` commands allow the user to employ the speaker recognition algorithm outlined in “Recognition Algorithm” section.  
 
