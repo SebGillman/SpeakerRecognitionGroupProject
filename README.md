@@ -55,7 +55,9 @@ The Gantt chart below illustrates these sprints and how the project advanced, fr
 ### Flowchart
 The flowchart below shows how the various components of the product interact with each other. 
 
-
+<p align="center">
+  <img src="./images/Flowchart.png" alt="waveforms" width="550"/>
+</p>
 
 </br>
 
