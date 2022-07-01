@@ -78,7 +78,7 @@ Discussions were held between the group and client, who was a representative fro
 |     Microcontroller-isolated   environment for input and output    |     Maximize portability between microcontrollers                            |
 
 ###	Initial Approach
-The first component of the project involved experimenting with the [group’s own dataset](./TrainingDataGen/Training) and understanding the type and quantity of data required for a successful product. 
+The first component of the project involved experimenting with the [group’s own dataset](./TrainingDataGen/Training) and understanding the type and quantity of data required for a successful product. The Colab Notbook `GroupProject.ipynb` contains the initial attempt to create a solution.
 
 For speaker recognition, the spectrogram of each audio has to be obtained. A spectrogram is a visual representation of the change in distribution of energy among different frequencies over time.  They contain rich information as their various shapes displayed reveal the features of voice. For example, they can be used to distinguish the natural frequencies of people's tones. 
 
