@@ -56,7 +56,7 @@ The Gantt chart below illustrates these sprints and how the project advanced, fr
 The flowchart below shows how the various components of the product interact with each other. 
 
 <p align="center">
-  <img src="./images/Flowchart.png" alt="waveforms"/>
+  <img src="./images/Flowchart.png" alt="flowchart"/>
 </p>
 
 </br>
@@ -78,7 +78,7 @@ The first component of the project involved experimenting with different dataset
 
 The group has decided to combine the zhvoice corpus dataset with our own group dataset, which resulted in a total of 3253 people’s speech data. These audio files add up to around 900 hours in total and are clips of voice samples at maximum of 3 seconds. The different speakers are labelled into different integers, in the range of 0-3252.
 
-As the zhvoice corpus contains audios in MP3 format sampled at 16kHz, we have created a python script `create_data.py` that converts all the audios to WAV format. Additionally, the program creates a list containing the file path to each audio and its corresponding classification label (the unique ID of the speaker). This data list is mainly for the convenience of passing each labeled voice through the preprocessing and training process. 
+As the zhvoice corpus contains audios in MP3 format sampled at 16kHz, we have created a python script `src/create_data.py` that converts all the audios to WAV format. Additionally, the program creates a list containing the file path to each audio and its corresponding classification label (the unique ID of the speaker). This data list is mainly for the convenience of passing each labeled voice through the preprocessing and training process. 
 
 Below are three example of waveforms from the group dataset
 <p align="center">
@@ -103,9 +103,33 @@ Finally, the spectrograms are split into training and test sets, with a 90:10 ra
 
 The specification of preprocessing data samples is listed in the table below:
 
+| Argument                      | Value        |
+|-------------------------------|--------------|
+|     Sample   Rate             |     16000    |
+|     Frame   length            |     0.025    |
+|     Window   length           |     400      |
+|     Frame   stride            |     0.01     |
+|     Hop   length              |     160      |
+|     Spectrogram   length      |     257      |
+|     Length   of FFT points    |     512      |
+
 ### Model Selection
 
 ### Model Training
+For the Resnet model, after processing the data into 257x257 spectrograms, we fed them into our CNN network. As seen in `src/train.py`, the data input layer is [None,1,257,257] which matches the shape of spectrograms. For training, we use a stochastic gradient descent optimizer with a learning rate is 0.001 and the number of epochs is set to be 50. The loss function chosen is Additive Angular Margin Loss (ArcFace Loss). This loss function is used to normalize the features vector and weights, making the predictions only depend on the angle between the feature and the weight where an additive angular margin penalty m is added to θ (angle between weights and the features)
+
+<p align="center">
+  <img src="./images/loss_function.png" alt="loss"/>
+</p>
+
+Overall, the ArcFace loss helps the model to maximize the margin which is the decision boundary on the hyperplane. It obtains discriminative features for speaker recognition and helps the model to calculate the geodesic distance between features on the hyperplane.
+
+A dense layer with 3252 classes was added at the end of the ResNet5o model, in order to classify the 3253 people in the dataset during training. The following pictures showcase the training accuracy and loss of the model over 50 epochs.
+
+<p float="left">
+  <img src="./images/accuracy.JPG" />
+  <img src="./images/loss.JPG" /> 
+</p>
 
 ### Final Model Architecture 
 
