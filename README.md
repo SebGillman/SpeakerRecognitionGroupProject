@@ -87,9 +87,9 @@ Below are three example of waveforms from the group dataset
 ### Data Preprocessing
 With the data list created, the spectrogram of each audio can be obtained. A spectrogram is a visual representation of the change on distribution of energy among different frequencies over time.  They contain rich information as their various shape displayed reveal the features of voice. For example, they can be used to distinguish the natural frequencies of people's tones. 
 
-The preprocessing of the WAV audios has multiple stages to make it more suitable and faster to process for the ML model. The waveforms are converted into amplitude spectrograms using Short Time Fourier Transforms (STFT). It was discussed whether to use STFT, Mel-frequency spectrograms or Mel-frequency cepstral coefficients spectrograms as they are more used in speech recognition, but after a first round of testing it was decided that linear-frequency spectrograms were satisfactory enough to extract the voiceprint of the speakers. 
+The preprocessing of the WAV audios has multiple stages to make it more suitable and faster to process for the ML model. It was discussed whether to use linear-frequencies, mel-frequencies spectrograms or mel-frequencies cepstral coefficients spectrograms as they are more used in speech recognition, but after a first round of testing it was decided that linear-frequency spectrograms were satisfactory enough to extract the voiceprint of the speakers. 
 
-The APIs used for this task are `librosa.stft()` and `librosa.magphase()`. This can be shown in the python script `src/utils/reader.py`.
+Therefore, the waveforms are converted into linear-frequency spectrograms using Short Time Fourier Transforms (STFT). The APIs used for this task are `librosa.stft()` and `librosa.magphase()`. This can be shown in the python script `src/utils/reader.py`.
 
 During training, data augmentation, such as random flip stitching, random cropping, frequency masking, is used. After processing the data, spectrograms with the shape of 257x257 are obtained. 
 
