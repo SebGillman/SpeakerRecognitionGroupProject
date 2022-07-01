@@ -67,7 +67,7 @@ Discussions were held between the group and client, who was a representative fro
 ### Data Aquisition
 
 
-<img src="./images/waveforms.png" alt="waveforms" width="550"/>
+<img src="./images/waveforms.png" alt="waveforms" align="center" width="550"/>
 
 ### Data Preprocessing
 
