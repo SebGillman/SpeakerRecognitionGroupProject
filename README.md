@@ -36,6 +36,12 @@ By ADAM HORSLER, RICCARDO EL HASSININ, SEBASTIAN GILLMAN, XIXIAN HUANG and IBRAH
 
 ## Introduction
 
+This document serves as the Design History File of Group 16’s project. The goal of the project was to develop a near real-time speaker recognition Machine Learning (ML) product on a microcontroller. The input is a person’s voice, and the output is a prediction of the name of who that speaker is (if they exist in the database). 
+
+The applications of our product are quite open to interpretation by the user. We have developed a speaker recognition platform that could be incorporated into larger applications such as a foundation for a basic voice assistant or a voice enabled security system (either on a small scale with local database or company-wide with a cloud based database). The product has features that enable a versatile number of use cases.
+
+The software is available on this GitHub repository, which can be used to view the complete software development history of the project. The data used for training and testing includes a combination of public datasets and the group’s own. The group’s own dataset can be found here the GitHub in `TrainingDataGen`. The product should be functional on all microcontrollers that meet the minimum specification as outlined in the Hardware section, however development and testing was only conducted on a Raspberry Pi 4, thus this is the recommended microcontroller for guaranteeing reproducible results. 
+
 </br>
 
 ## Project Structure
@@ -67,7 +73,6 @@ Discussions were held between the group and client, who was a representative fro
 ### Data Aquisition
 
 
-<img src="./images/waveforms.png" alt="waveforms" style=centerme width="550"/>
 
 <p align="center">
   <img src="./images/waveforms.png" alt="waveforms" width="550"/>
