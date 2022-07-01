@@ -11,7 +11,7 @@ By [Riccardo El Hassanin](https://github.com/rccrd27), [Adam Horsler](https://gi
 3. [Exploratory Data Analysis](./README.md#exploratory-data-analysis)
     1. [Problem Formulation](./README.md#problem-formulation)
     2. [Initial Approach](./README.md#initial-approach)
-    3. [Data Aquisition](./README.md#data-acquisition)
+    3. [Data Acquisition](./README.md#data-acquisition)
     4. [Data Preprocessing](./README.md#data-preprocessing)
     5. [Model Selection](./README.md#model-selection)
     6. [Model Training](./README.md#model-training)
@@ -103,8 +103,6 @@ A huge flaw that was observed with this method is that it would require retraini
 A new method was drawn up where voice feature extraction would be learned on a larger dataset using a more complex CNN. This feature extraction method would allow the recognition of a new user to be performed after registering them with just one voice sample.
 
 ### Data Aquisition
-
-The first component of the project involved experimenting with different datasets and understanding the type and quantity of data required for a successful product. The group focused on a combination of public datasets, 
 
 After the initial experimentation, the group decided to expand the dataset used for training and focused on a combination of public datasets, for example the [Speech Commands dataset](https://arxiv.org/abs/1804.03209) and [zhvoice corpus](https://github.com/fighting41love/zhvoice), and the [group’s own dataset](./TrainingDataGen/Training). The format of all speech datasets must be encoded using the Waveform Audio File Format (WAV). This is because WAV files do not lose any information when it comes to frequencies on the sound spectrum. 
 
