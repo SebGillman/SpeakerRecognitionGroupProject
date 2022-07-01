@@ -72,7 +72,7 @@ The flowchart below shows how the various components of the product interact wit
 Discussions were held between the group and client, who was a representative from ARM. The initial functional and non-functional requirements were given to the group and are outlined in the table below.
 
 |     Functional                                                     |     Non-functional                                                           |
-|:------------------------------------------------------------------:|:----------------------------------------------------------------------------:|
+|--------------------------------------------------------------------|------------------------------------------------------------------------------|
 |     One-word specific   speaker recognition accuracy of 80%        |     Minimize storage and   computation capacity while maximizing accuracy    |
 |     Latency of <3 seconds per prediction                           |     Cloud-enabled features                                                   |
 |     Microcontroller-isolated   environment for input and output    |     Maximize portability between microcontrollers                            |
