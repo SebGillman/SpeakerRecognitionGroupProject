@@ -95,7 +95,7 @@ As seen in the picture below, it is evident that the model learns the training s
 When the trained model was experimented on the test set, the group found that it struggled to learn the patterns necessary for speaker recognition as a result of the overfitting. This is shown in the bar chart below. Despite correctly classifying the speaker as “Riccardo”, the other members in the database “Adam” and “Xixian” also achieved high scores. Ideally, only “Riccardo” would have a high prediction score.
  
 <p align="center">
-  <img src="./images/prediction.png" alt="prediction" width = "300" />
+  <img src="./images/prediction.png" alt="prediction" width = "400" />
 </p>
 
 A huge flaw that was observed with this method is that it would require retraining each time a new user was added. This CNN model is more for a classification purpose and is used to classified only group members.
