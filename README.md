@@ -95,7 +95,7 @@ As seen in the picture below, it is evident that the model learns the training s
 When the trained model was experimented on the test set, the group found that it struggled to learn the patterns necessary for speaker recognition as a result of the overfitting. This is shown in the bar chart below. Despite correctly classifying the speaker as “Riccardo”, the other members in the database “Adam” and “Xixian” also achieved high scores. Ideally, only “Riccardo” would have a high prediction score.
  
 <p align="center">
-  <img src="./images/prediction.png" alt="prediction" width = "400" />
+  <img src="./images/prediction.png" alt="prediction" width = "350" />
 </p>
 
 A huge flaw that was observed with this method is that it would require retraining each time a new user was added. This CNN model is more for a classification purpose and is used to classified only group members.
@@ -117,7 +117,7 @@ Additionally, the program creates a `.txt` file containing a list with the file 
 
 Below are three example of waveforms from the group dataset
 <p align="center">
-  <img src="./images/waveforms.png" alt="waveforms" width="550"/>
+  <img src="./images/waveforms.png" alt="waveforms" width="600"/>
 </p>
 
 ### Data Preprocessing
@@ -160,7 +160,7 @@ When looking to decide what network architecture would be best in order to fulfi
 After processing the data into 257x257 spectrograms, we fed them into our Resnet50 network. As seen in `src/train.py`, the data input layer is [None,1,257,257] which matches the shape of spectrograms. For training, we use a stochastic gradient descent optimizer with a learning rate is 0.001 and the number of epochs is set to be 50. The loss function chosen is Additive Angular Margin Loss (ArcFace Loss). This loss function is used to normalize the features vector and weights, making the predictions only depend on the angle between the feature and the weight where an additive angular margin penalty m is added to θ (angle between weights and the features)
 
 <p align="center">
-  <img src="./images/loss_function.png" alt="loss" width="400"/>
+  <img src="./images/loss_function.png" alt="loss" width="350"/>
 </p>
 
 Overall, the ArcFace loss helps the model to maximize the margin which is the decision boundary on the hyperplane. It obtains discriminative features for speaker recognition and helps the model to calculate the geodesic distance between features on the hyperplane.
