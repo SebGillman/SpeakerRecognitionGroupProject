@@ -47,7 +47,9 @@ The Gantt chart below illustrates these sprints and how the project advanced, fr
 
 
 ### Flowchart
-The flowchart below shows how the various components of the product interact with each other and the decisions taken throughout the project.
+The flowchart below shows how the various components of the product interact with each other. 
+
+
 
 </br>
 
@@ -65,7 +67,7 @@ Discussions were held between the group and client, who was a representative fro
 ### Data Aquisition
 
 
-<img src="./images/waveforms.jpg" alt="waveforms" width="550"/>
+<img src="./images/waveforms.png" alt="waveforms" width="550"/>
 
 ### Data Preprocessing
 
