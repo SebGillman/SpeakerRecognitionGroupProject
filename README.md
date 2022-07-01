@@ -116,7 +116,7 @@ The specification of preprocessing data samples is listed in the table below:
 ### Model Selection
 
 ### Model Training
-For the Resnet model, after processing the data into 257x257 spectrograms, we fed them into our CNN network. As seen in `src/train.py`, the data input layer is [None,1,257,257] which matches the shape of spectrograms. For training, we use a stochastic gradient descent optimizer with a learning rate is 0.001 and the number of epochs is set to be 50. The loss function chosen is Additive Angular Margin Loss (ArcFace Loss). This loss function is used to normalize the features vector and weights, making the predictions only depend on the angle between the feature and the weight where an additive angular margin penalty m is added to θ (angle between weights and the features)
+For the Resnet model, after processing the data into 257x257 spectrograms, we fed them into our CNN network. As seen in `src/train.py`, the data input layer is [None,1,257,257] which matches the shape of spectrograms. For training, we use a stochastic gradient descent optimizer with a learning rate is 0.001 and the number of epochs is set to be 50. As specified in `src/utils/loss.py`, the loss function chosen is Additive Angular Margin Loss (ArcFace Loss). This loss function is used to normalize the features vector and weights, making the predictions only depend on the angle between the feature and the weight where an additive angular margin penalty m is added to θ (angle between weights and the features)
 
 <p align="center">
   <img src="./images/loss_function.png" alt="loss" width="400"/>
@@ -162,37 +162,96 @@ For the Resnet model, it is more robust than the custom one. As it is trained on
 </br>
 
 ## Inference Algorithm
-
 ### Database
+Given that a cosine similarity metric is used to determine the similitude between two feature vectors of two speaker voices, one of those two audios must be labelled in order for the recognition algorithm to output the name of the speaker. Therefore, a local database for the user’s members is created. The user’s voice will be recorded and stored in the in the folder `audio_db/` which will serve as the local database in the embedded device. 
 
+This allows the users to register new members in the database without having to re-train the whole model to classify them. Therefore, with the following recognition algorithm, the user can recognize a new voice immediately after registering it in the database, thus allowing for a custom-tailored database. 
 ### Algorithm
+The speaker recognition algorithm developed can be found in `src/infer_recognition.py`. At the initialization of the program, it firstly loads the audios of the registered users from the database and, for each element, produces the corresponding spectrograms. These are fed into the trained CNN model and the significant features are extracted. The program then adds the extracted features and labels of each audio to the library (arrays), ready for comparison. 
+
+After the program is initialized, the user can speak into the microphone and record his/her voice for a total of 3 seconds. The recording is converted to a spectrogram and the features are then extracted using the trained CNN model. 
+
+The algorithm then calculates all the cosine similarities between the microphone’s input features and each audio features vector in the database and chooses the highest value to output. A prediction is made depending on whether the similarity is above or below the set threshold of 0.8. If the cosine similarity is above the threshold, it indicates that those features are from the same speaker, which means it recognizes that the one currently speaking is one of the members in the database and therefore the program shows the name of that speaker as its output. Otherwise, if the output is below the threshold, it shows that the current speaker is treated as a different person who is not inside the database. The figure below showcases the above algorithm. 
+
+<p align="center">
+  <img src="./images/flow.drawio.png" alt="algorithm" />
+</p>
 
 ### Testing
+To evaluate the algorithm, we tested it with each group member ten times and recorded the results. The Confusion Matrix below gives an example of some of the results obtained by the group during testing:
+
+<p align="center">
+  <img src="./images/Confusion1.png" alt="confusion" />
+</p>
+
+
+In addition to the above quantitative results, the group was able to gather key qualitative results. Firstly, if someone were to register his voice by saying only one word, for instance a quick “hello”, then the algorithm would not be able to pick up his voiceprint. This is because it was previously mentioned that the speaking time should be at least 1.3 seconds long in order to be able to extract relevant features. Secondly, when a person was speaking faster than its recorded sample or not in his true tone, the algorithm was mistakenly classifying it as another person or as noise. Thirdly, the proximity of the microphone was a factor influencing the output: if it was too close the recorded audio would be clipped and if it was too far the speaker would just blend in with the background noise. 
+
+The next task is to transfer the algorithm to the Raspberry Pi.
 
 </br>
 
 ## Microcontroller Implementation
-
 ### Microcontroller Selection
+The group had a choice of microcontrollers to develop the product on. The primary choices were a Raspberry Pi 3/4 and the Nvidia Jetson. However, due to Nvidia Jetson supply issues, it was decided that development would be done on the readily available Raspberry Pi 4. 
 
+The Raspberry Pi 4 was chosen due to its generous hardware specifications when compared to other models, for example the 8GB RAM, 16GB Memory, WiFi port and most notably a 64-bit quad core ARM CPU. This allows for rapid development and prototyping. 
+
+After completing the functional requirements, the group would then optimize the product to run on the minimum configuration possible (or a configurable setup such that the user can choose depending on their specific use case). 
 ### Microcontroller Configuration
+The Raspbian OS comes pre-installed with many of the necessary packages. However, to enable fast python environment configuration, the GitHub repo contains the file `requirements.txt` which lists the python packages to install. In addition, for some packages specific versions are specified, for example `numpy==1.19.2`, where 1.19.2 is the version number. This is to guarantee compatibility between the packages. 
+
+The `pip` python package installer can facilitate automatic installation of all packages on the Linux command line using: `pip install -r requirements.txt`. A screenshot of the requirements text file is found in Appendix A for reference. 
+
+The Raspberry Pi must be configured to correctly detect and use the microphone attached to the USB port. The GitHub repo also includes helper files to facilitate this setup, for example `device_details.py`, which lists on the command line all the devices the Raspberry Pi has detected. 
+
+Finally, the Keras model must be uploaded into the `models/` folder on the Pi. It is recommended to use the Keras save and load API, which results in a `.h5` model file that contains all the necessary model information.
+
+Once the system-level software is configured, it is ready for use. 
 
 ### Inference on Microcontroller 
+To perform the recognition of the speaker on the microcontroller, run `src/infer_recognition.py` using `python3 infer_recognition.py`. This is the main point of entry functionality for the product. The program initially loads the trained CNN inference model and the database. Once the program has successfully finished initializing, the user will be prompted with a choice of 3 commands: 
+ * 0: Add a user to the database
+ * 1: Perform single inference
+ * 2: Perform continuous inference
+
+To add a user, select `0: Add a user to the database`. On first use, the database is empty. Therefore, it is expected that the user adds a person(s) to the database before performing inference. Once the necessary steps are followed as described in the flowchart in section 1, the user’s voice will be recorded and stored in the Pi in the folder `audio_db/` and the program will return to the post-initialization state. 
+
+The `1: Perform single inference` and `2: Perform continuous inference` commands allow the user to employ the speaker recognition algorithm outlined in “Recognition Algorithm” section.  
+
+Single inference will take a 3 second recording and attempt to match the extracted features form the recording to a voice in the database using cosine similarity. If it is successful and the cosine similarity is above the threshold parameter (set as 0.8 in `src/infer_recognition.py`), it will return the name given to that user. If unsuccessful, it will return a message stating that either the environment is too noisy, or the user is not in the database.
+
+Continuous inference is an extension of single inference as it runs the inference pipeline in a while loop until interrupted. It therefore will take continuous 3 second recordings and continuously attempt to infer who is speaking in those 3 seconds. This recognition mode happens in near real-time as the classification time of each recording is on average 1.3 seconds. This is because the microcontroller takes around 0.2 seconds to produce the spectrograms and 1.1 seconds to extract the features using the trained CNN model. 
+
 
 </br>
 
 ## Optimization
 
-### Hardware Optimization
+### Cloud Optimization
+After confirming functionality by storing speaker recordings on the Pi, the group decided to implement an optional cloud storage solution. This will enable the Pi to act as an IoT device if required by the user as it can upload and download recordings to the cloud. The user will then decide on each inference whether they would like to access the local database or the cloud database. This is to preserve potential desired properties of the product, notably security as opening the Pi to the internet (although through a secure HTTPS connection) may not be suitable in some use cases. 
+
+Amazon Web Services (AWS) was chosen as the cloud solutions provider due to the group’s previous knowledge, however any cloud provider would be acceptable. There are utility and helper functions located in `src/AWS`, which all use the boto3 Software Development Kit (SDK) as recommended by AWS. 
 
 ### Model Optimization
+Once the basic functional requirements were met, there were optimizations that could be done on the model. Due to the low-cost aspect of the product, the group chose to optimize the model in such a way as to reduce the size and increase its speed while maintaining sufficient levels of accuracy. These goals resulted in several different optimizations being applied.
+
+The model size, (measured in KB) 
+
+However the main drawback of converting the model from `.h5` to `.tflite` is a resulting loss in precision. In fact, this was the expected phenomenon to happen as it presents a trade-off between speed and accuracy.
+
 
 </br>
 
 ## Ethics and Sustainability
-
 ### Ethics
+Many machine learning problems have fundamental ethics considerations related to the data they use and the consequences of their solutions. For speaker recognition, the data is by definition people’s voices. This poses an identity risk if a third party were to gain access to these voices. However, the product has various features to limit this risk. 
+
+Firstly, giving the user the choice to store data locally ensures that if desired, their voice recording will never be exposed to the internet. In addition, all processing of their voice is done locally, effectively rendering the Raspberry Pi into an isolated environment. Secondly, giving the user the choice of what to name their recording gives flexibility against using Personally Identifiable Information (PII). For example, instead of using their full name, a user could use an ID number. PII is heavily regulated and thus this consideration is required when using the product.  
 
 ### Sustainability
+The Raspberry Pi in general as a microcontroller is energy efficient when compared to other machine learning systems, for example data centers with many high-power General Processing Unit’s (GPU’s). In terms of storage, the waveforms and spectrogram file sizes are small (as they must be suitable for storage on the Pi!). 
+
+In terms of product upgrades as technology advances, all the code and environments use technologies that are currently in active development and maintenance, allowing for easy upgrades. In addition, as the hardware and software are essentially platform independent, hardware upgrades should be simple. 
 
 
