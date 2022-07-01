@@ -132,7 +132,19 @@ A dense layer with 3252 classes was added at the end of the ResNet5o model, in o
 </p>
 
 ### Final Model Architecture 
+Since features extraction from the spectrograms is an invaluable stage of the recognition process, the final dense layers of the ResNet50 are removed as they were used to classify those 3253 people during training. For the inference algorithm, the previous layers of the model are used as they extract the relevant features of the inputs. The final architecture for the Resnet50 is shown below: 
 
+<p align="center">
+  <img src="./images/infer_model_plot.png" alt="model-plot" width="550"/>
+</p>
+
+When visualizing the output of the last latent layer, the group found that the input images are mapped to a higher-dimension hyperplane and resulted in clusters-like forming of the features of speakers who pass the model. This was visualized using the t-SNE dimensionality reduction technique as it is well suited for non-linear mappings, whereas techniques like Principal Component Analysis (PCA) can only use linear mappings. The 2D result of the t-SNE dimension reduction technique is shown in the Figure below (note: only the group member’s voices are displayed for easier visualization). 
+
+<p align="center">
+  <img src="./images/clustering.png" alt="clusters" width="550"/>
+</p>
+
+From the Figure, some voices have more distinct features, so they can be better distinguished than others. For example, red, purple, and green samples are well clustered, whereas orange isn’t. 
 ### Model Evaluation
 
 </br>
