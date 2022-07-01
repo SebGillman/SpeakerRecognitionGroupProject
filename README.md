@@ -127,8 +127,8 @@ Overall, the ArcFace loss helps the model to maximize the margin which is the de
 A dense layer with 3252 classes was added at the end of the ResNet5o model, in order to classify the 3253 people in the dataset during training. The following pictures showcase the training accuracy and loss of the model over 50 epochs.
 
 <p float="left">
-  <img src="./images/accuracy.JPG" width="505"/>
-  <img src="./images/loss.JPG" width="505"/> 
+  <img src="./images/accuracy.JPG" width="502"/>
+  <img src="./images/loss.JPG" width="502"/> 
 </p>
 
 ### Final Model Architecture 
