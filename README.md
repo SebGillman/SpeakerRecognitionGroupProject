@@ -287,7 +287,6 @@ The h5 model size is 96457 KB and is large considered it is imported to a microc
 
 However, the main drawback of using a converted tflite model on pi is its loss in precision. When operating the tflite model, it outputs extreme high similarity on every sample and resulted in higher cases of mispredictions. Converting h5 model to tflite model is a trade-off between speed and accuracy. Overall, the group decided to keep using the h5 model.
 
-
 </br>
 
 ## Ethics and Sustainability
