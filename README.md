@@ -74,7 +74,7 @@ Discussions were held between the group and client, who was a representative fro
 
 ### Data Aquisition
 
-The first component of the project involved experimenting with different datasets and understanding the type and quantity of data required for a successful product. The group focused on a combination of public datasets, for example the Speech Commands dataset  and zhvoice corpus , and the group’s own dataset . The format of all speech datasets must be encoded using the Waveform Audio File Format (WAV). This is because WAV files do not lose any information when it comes to frequencies on the sound spectrum. 
+The first component of the project involved experimenting with different datasets and understanding the type and quantity of data required for a successful product. The group focused on a combination of public datasets, for example the [Speech Commands dataset](https://arxiv.org/abs/1804.03209) and [zhvoice corpus](https://github.com/fighting41love/zhvoice), and the [group’s own dataset](./TrainingDataGen/Training). The format of all speech datasets must be encoded using the Waveform Audio File Format (WAV). This is because WAV files do not lose any information when it comes to frequencies on the sound spectrum. 
 
 The group has decided to combine the zhvoice corpus dataset with our own group dataset, which resulted in a total of 3253 people’s speech data. These audio files add up to around 900 hours in total and are clips of voice samples at maximum of 3 seconds. The different speakers are labelled into different integers, in the range of 0-3252.
 
@@ -217,7 +217,7 @@ To perform the recognition of the speaker on the microcontroller, run `src/infer
 
 To add a user, select `0: Add a user to the database`. On first use, the database is empty. Therefore, it is expected that the user adds a person(s) to the database before performing inference. Once the necessary steps are followed as described in the flowchart in section 1, the user’s voice will be recorded and stored in the Pi in the folder `src/audio_db/` and the program will return to the post-initialization state. 
 
-The `1: Perform single inference` and `2: Perform continuous inference` commands allow the user to employ the speaker recognition algorithm outlined in “Recognition Algorithm” section.  
+The `1: Perform single inference` and `2: Perform continuous inference` commands allow the user to employ the speaker recognition algorithm outlined in [Algorithm](./README.md#algorithm) section.  
 
 Single inference will take a 3 second recording and attempt to match the extracted features form the recording to a voice in the database using cosine similarity. If it is successful and the cosine similarity is above the threshold parameter (set as 0.8 in `src/infer_recognition.py`), it will return the name given to that user. If unsuccessful, it will return a message stating that either the environment is too noisy, or the user is not in the database.
 
