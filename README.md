@@ -46,7 +46,7 @@ The software is available on this GitHub repository, which can be used to view t
 ## Project Structure
 
 ### Gantt Chart
-The project involved 7 weeks of development and the group followed the Agile development process, which includes several “sprints” with varying end goals to achieve the final product. 
+The project involved 7 weeks of development and the group followed the agile development process, which includes several “sprints” with varying end goals to achieve the final product. 
 
 The Gantt chart below illustrates these sprints and how the project advanced, from start to finish, across the 7 weeks of development. 
 
