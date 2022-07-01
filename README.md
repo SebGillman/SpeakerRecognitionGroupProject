@@ -191,7 +191,7 @@ From the Figure, some voices have more distinct features, so they can be better 
 After training, the program `src/eval.py` was used to evaluate the trained network in terms of accuracy. Since the CNN is used to extract the audio features, they can be used to determine the similarity between each voice in the test set. A cosine similarity metric is employed to perform pairwise comparisons between each audio feature vector in the hyperplane and determine the distance for how close those voices are from each other. It is defined as shown below where A and B are two feature vectors under comparison.
 
 <p align="center">
-  <img src="./images/similarity.png" alt="similarity" width="250"/>
+  <img src="./images/similarity.png" alt="similarity" width="300"/>
 </p>
 
 If the program outputs a high cosine similarity above a certain threshold, it indicates that those features are from the same speaker and thus if the labels are identical then the person speaking is indeed the same and the trained model was successful. Therefore, the program sets multiple thresholds to determine at which value the best accuracy of the model is achieved. 
