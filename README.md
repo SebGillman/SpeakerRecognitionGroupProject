@@ -10,12 +10,14 @@ By [Riccardo El Hassanin](https://github.com/rccrd27), [Adam Horsler](https://gi
     2. [Flowchart](./README.md#flowchart)
 3. [Exploratory Data Analysis](./README.md#exploratory-data-analysis)
     1. [Problem Formulation](./README.md#problem-formulation)
-    2. [Data Aquisition](./README.md#data-acquisition)
-    3. [Data Preprocessing](./README.md#data-preprocessing)
-    4. [Model Selection](./README.md#model-selection)
-    5. [Model Training](./README.md#model-training)
-    6. [Final Model Architecture](./README.md#final-model-architecture)
-    7. [Model Evaluation](./README.md#model-evaluation)
+    2. [Initial Approach](./README.md#initial-approach)
+    3. [Data Aquisition](./README.md#data-acquisition)
+    4. [Data Preprocessing](./README.md#data-preprocessing)
+    5. [Model Selection](./README.md#model-selection)
+    6. [Model Training](./README.md#model-training)
+    7. [Final Model Architecture](./README.md#final-model-architecture)
+    8. [Model Evaluation](./README.md#model-evaluation)
+    9. [Summary](./README.md#summary)
 4. [Inference Algorithm](./README.md#inference-algorithm)
     1. [Database](./README.md#database)
     2. [Algorithm](./README.md#algorithm)
@@ -71,9 +73,12 @@ Discussions were held between the group and client, who was a representative fro
 |     Latency of <3 seconds per prediction                           |     Cloud-enabled features                                                   |
 |     Microcontroller-isolated   environment for input and output    |     Maximize portability between microcontrollers                            |
 
+###	Initial Approach
 ### Data Aquisition
 
-The first component of the project involved experimenting with different datasets and understanding the type and quantity of data required for a successful product. The group focused on a combination of public datasets, for example the [Speech Commands dataset](https://arxiv.org/abs/1804.03209) and [zhvoice corpus](https://github.com/fighting41love/zhvoice), and the [group’s own dataset](./TrainingDataGen/Training). The format of all speech datasets must be encoded using the Waveform Audio File Format (WAV). This is because WAV files do not lose any information when it comes to frequencies on the sound spectrum. 
+The first component of the project involved experimenting with different datasets and understanding the type and quantity of data required for a successful product. The group focused on a combination of public datasets, 
+
+After the initial experimentation, the group decided to expand the dataset used for training and focused on a combination of public datasets, for example the [Speech Commands dataset](https://arxiv.org/abs/1804.03209) and [zhvoice corpus](https://github.com/fighting41love/zhvoice), and the [group’s own dataset](./TrainingDataGen/Training). The format of all speech datasets must be encoded using the Waveform Audio File Format (WAV). This is because WAV files do not lose any information when it comes to frequencies on the sound spectrum. 
 
 The group has decided to combine the zhvoice corpus dataset with our own group dataset, which resulted in a total of 3253 people’s speech data. These audio files add up to around 900 hours in total and are clips of voice samples at maximum of 3 seconds. The different speakers are labelled into different integers, in the range of 0-3252.
 
@@ -112,10 +117,11 @@ The specification of preprocessing data samples is listed in the table below:
 |     Spectrogram   length      |     257      |
 |     Length   of FFT points    |     512      |
 
+When using `create_data.py` to process mp3 audio files into wav format, the code also removes samples that are below 1.3 seconds. This is because on the subsequent data preprocessing stage, each audio they are all converted using short time fourier transfer. As shown on the table above, we have a sample rate of 16k, window length is 400 with a separation (hop length) of 160. Since the input shape is 257x257, the least time required to process transform is 1/16000*(400+160*256) = 2.585 seconds. When preprocessing the data, the audios are flipped and concatenated, so the least speaking duration should be half, which is 1.3 s. 
 ### Model Selection
 
 ### Model Training
-For the Resnet model, after processing the data into 257x257 spectrograms, we fed them into our CNN network. As seen in `src/train.py`, the data input layer is [None,1,257,257] which matches the shape of spectrograms. For training, we use a stochastic gradient descent optimizer with a learning rate is 0.001 and the number of epochs is set to be 50. As specified in `src/utils/loss.py`, the loss function chosen is Additive Angular Margin Loss (ArcFace Loss). This loss function is used to normalize the features vector and weights, making the predictions only depend on the angle between the feature and the weight where an additive angular margin penalty m is added to θ (angle between weights and the features)
+After processing the data into 257x257 spectrograms, we fed them into our Resnet50 network. As seen in `src/train.py`, the data input layer is [None,1,257,257] which matches the shape of spectrograms. For training, we use a stochastic gradient descent optimizer with a learning rate is 0.001 and the number of epochs is set to be 50. The loss function chosen is Additive Angular Margin Loss (ArcFace Loss). This loss function is used to normalize the features vector and weights, making the predictions only depend on the angle between the feature and the weight where an additive angular margin penalty m is added to θ (angle between weights and the features)
 
 <p align="center">
   <img src="./images/loss_function.png" alt="loss" width="400"/>
