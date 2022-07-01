@@ -69,6 +69,10 @@ Discussions were held between the group and client, who was a representative fro
 
 <img src="./images/waveforms.png" alt="waveforms" style=centerme width="550"/>
 
+<p align="center">
+  <img src="./images/waveforms.png" alt="waveforms" width="550"/>
+</p>
+
 ### Data Preprocessing
 
 ### Model Selection
