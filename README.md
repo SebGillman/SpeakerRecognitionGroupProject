@@ -160,7 +160,7 @@ When looking to decide what network architecture would be best in order to fulfi
 After processing the data into 257x257 spectrograms, we fed them into our Resnet50 network. As seen in `src/train.py`, the data input layer is [None,1,257,257] which matches the shape of spectrograms. For training, we use a stochastic gradient descent optimizer with a learning rate is 0.001 and the number of epochs is set to be 50. The loss function chosen is Additive Angular Margin Loss (ArcFace Loss). This loss function is used to normalize the features vector and weights, making the predictions only depend on the angle between the feature and the weight where an additive angular margin penalty m is added to θ (angle between weights and the features)
 
 <p align="center">
-  <img src="./images/loss_function.png" alt="loss" width="350"/>
+  <img src="./images/loss_function.png" alt="loss" width="400"/>
 </p>
 
 Overall, the ArcFace loss helps the model to maximize the margin which is the decision boundary on the hyperplane. It obtains discriminative features for speaker recognition and helps the model to calculate the geodesic distance between features on the hyperplane.
@@ -191,7 +191,7 @@ From the Figure, some voices have more distinct features, so they can be better 
 After training, the program `src/eval.py` was used to evaluate the trained network in terms of accuracy. Since the CNN is used to extract the audio features, they can be used to determine the similarity between each voice in the test set. A cosine similarity metric is employed to perform pairwise comparisons between each audio feature vector in the hyperplane and determine the distance for how close those voices are from each other. It is defined as shown below where A and B are two feature vectors under comparison.
 
 <p align="center">
-  <img src="./images/similarity.png" alt="similarity" width="300"/>
+  <img src="./images/similarity.png" alt="similarity" width="250"/>
 </p>
 
 If the program outputs a high cosine similarity above a certain threshold, it indicates that those features are from the same speaker and thus if the labels are identical then the person speaking is indeed the same and the trained model was successful. Therefore, the program sets multiple thresholds to determine at which value the best accuracy of the model is achieved. 
