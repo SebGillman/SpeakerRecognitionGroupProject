@@ -146,6 +146,18 @@ When visualizing the output of the last latent layer, the group found that the i
 
 From the Figure, some voices have more distinct features, so they can be better distinguished than others. For example, red, purple, and green samples are well clustered, whereas orange isn’t. 
 ### Model Evaluation
+After training, the program `src/eval.py` was used to evaluate the trained network. Since the CNN is used to extract the audio features, they can be used to determine the similarity between each voice in the test set. A cosine similarity metric is employed to perform pairwise comparisons between each audio feature vector in the hyperplane and determine how close those voices are from each other. 
+
+If the program outputs a high cosine similarity above a certain threshold, it indicates that those features are from the same speaker and thus if the labels are identical then the person speaking is indeed the same and the trained model was successful. Therefore, the program sets multiple thresholds to determine at which value the best accuracy of the model is achieved. 
+
+It was found that the accuracy of the model on the test set was of 90% when the threshold was set to 0.8. This threshold value is used in the subsequent speaker recognition algorithm.
+
+
+### Summary
+Exploratory Data Analysis has shown the proof-of-concept of speaker recognition using ML with a clearly defined implementation, from input to output. By finetuning the ResNet model, the salient features of the input spectrograms can be learned effectively, allowing a high-grade generalization to the user’s database. 
+
+For the Resnet model, it is more robust than the custom one. As it is trained on a large dataset and the concept is to learn how to extract features from voice, there is no overfitting for the whole dataset. 
+
 
 </br>
 
