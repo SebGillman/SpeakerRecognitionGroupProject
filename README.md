@@ -104,7 +104,7 @@ A new method was drawn up where voice feature extraction would be learned on a l
 
 ### Data Aquisition
 
-After the initial experimentation, the group decided to expand the dataset used for training and focused on a combination of public datasets, for example the [Speech Commands dataset](https://arxiv.org/abs/1804.03209) and [zhvoice corpus](https://github.com/fighting41love/zhvoice), and the [group’s own dataset](./TrainingDataGen/Training). The format of all speech datasets must be encoded using the Waveform Audio File Format (WAV). This is because WAV files do not lose any information when it comes to frequencies on the sound spectrum. 
+After the initial experimentation, the group decided to expand the dataset used for training and focused on a combination of public datasets, for example the [Speech Commands dataset](https://arxiv.org/abs/1804.03209)[1] and [zhvoice corpus](https://github.com/fighting41love/zhvoice) [2] , and the [group’s own dataset](./TrainingDataGen/Training) [3] . The format of all speech datasets must be encoded using the Waveform Audio File Format (WAV). This is because WAV files do not lose any information when it comes to frequencies on the sound spectrum. 
 
 The group has decided to combine the zhvoice corpus dataset with our own group dataset, which resulted in a total of 3253 people’s speech data. These audio files add up to around 900 hours in total and are clips of voice samples at maximum of 3 seconds. The different speakers are labelled into different integers, in the range of 0-3252.
 
@@ -298,4 +298,10 @@ The Raspberry Pi in general as a microcontroller is energy efficient when compar
 
 In terms of product upgrades as technology advances, all the code and environments use technologies that are currently in active development and maintenance, allowing for easy upgrades. In addition, as the hardware and software are essentially platform independent, hardware upgrades should be simple. 
 
+### References 
 
+[1] - P. Warden, "Speech Commands: A Dataset for Limited-Vocabulary Speech Recognition", arXiv.org, 2022. [Online]. Available: https://arxiv.org/abs/1804.03209. [Accessed: 01- Jul- 2022].
+
+[2] - D. Wang and X. Zhang, "THCHS-30 : A Free Chinese Speech Corpus", arXiv.org, 2022. [Online]. Available: https://arxiv.org/abs/1512.01882. [Accessed: 01- Jul- 2022].
+
+[3] - S. Gilman, I. Mohamed, R. El Hassanin, A. Horsler and X. Huang, "SpeakerRecognitionGroupProject", GitHub, 2022. [Online]. Available: https://github.com/SebGillman/SpeakerRecognitionGroupProject/tree/main/TrainingDataGen/Training. [Accessed: 01- Jul- 2022].
