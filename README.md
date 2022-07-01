@@ -95,7 +95,7 @@ As seen in the picture below, it is evident that the model learns the training s
 When the trained model was experimented on the test set, the group found that it struggled to learn the patterns necessary for speaker recognition as a result of the overfitting. This is shown in the bar chart below. Despite correctly classifying the speaker as “Riccardo”, the other members in the database “Adam” and “Xixian” also achieved high scores. Ideally, only “Riccardo” would have a high prediction score.
  
 <p align="center">
-  <img src="./images/prediction.png" alt="prediction" />
+  <img src="./images/prediction.png" alt="prediction" width = "300" />
 </p>
 
 A huge flaw that was observed with this method is that it would require retraining each time a new user was added. This CNN model is more for a classification purpose and is used to classified only group members.
@@ -191,7 +191,7 @@ From the Figure, some voices have more distinct features, so they can be better 
 After training, the program `src/eval.py` was used to evaluate the trained network in terms of accuracy. Since the CNN is used to extract the audio features, they can be used to determine the similarity between each voice in the test set. A cosine similarity metric is employed to perform pairwise comparisons between each audio feature vector in the hyperplane and determine the distance for how close those voices are from each other. It is defined as shown below where A and B are two feature vectors under comparison.
 
 <p align="center">
-  <img src="./images/similarity.png" alt="similarity" width="400"/>
+  <img src="./images/similarity.png" alt="similarity" width="300"/>
 </p>
 
 If the program outputs a high cosine similarity above a certain threshold, it indicates that those features are from the same speaker and thus if the labels are identical then the person speaking is indeed the same and the trained model was successful. Therefore, the program sets multiple thresholds to determine at which value the best accuracy of the model is achieved. 
@@ -216,10 +216,7 @@ The speaker recognition algorithm developed can be found in `src/infer_recogniti
 
 After the program is initialized, the user can speak into the microphone and record his/her voice for a total of 3 seconds – as seen in `src/record.py` the library used to record the speakers is `pyaudio` and uses a sample rate of 16kHz (the same as the dataset inputs used for training). The recording is converted to a spectrogram and the features are then extracted using the trained CNN model. 
 
-The algorithm then calculates all the cosine similarities between the microphone’s input features and each audio features vector in the database and chooses the highest value to output. 
-The algorithm then calculates all the cosine similarities between the feature vector of the audio to be recognised and each of the feature vectors of the audio files in the database. It vchooses the highest similarity value to output and 
-
-A prediction is made depending on whether the similarity is above or below the set threshold of 0.8. If the cosine similarity is above the threshold, it indicates that those features are from the same speaker, which means it recognizes that the one currently speaking is one of the members in the database and therefore the program shows the name of that speaker as its output. Otherwise, if the output is below the threshold, it shows that the current speaker is treated as a different person who is not inside the database. The figure below showcases the above algorithm. 
+The algorithm then calculates all the cosine similarities between the feature vector of the audio to be recognised and each of the feature vectors of the audio files in the database. It chooses the highest similarity value to output and a prediction is made depending on whether the similarity is above or below the set threshold of 0.8. If the cosine similarity is above the threshold, it indicates that those features are from the same speaker, which means it recognizes that the one currently speaking is one of the members in the database. Otherwise, if the output is below the threshold, it shows that the current speaker is treated as a different person who is not inside the database. The figure below showcases the above algorithm. 
 
 <p align="center">
   <img src="./images/flow.drawio.png" alt="algorithm" />
@@ -233,7 +230,7 @@ To evaluate the algorithm, we tested it with each group member ten times and rec
 </p>
 
 
-In addition to the above quantitative results, the group was able to gather key qualitative results. Firstly, if someone were to register his voice by saying only one word, for instance a quick “hello”, then the algorithm would not be able to pick up his voiceprint. This is because it was previously mentioned that the speaking time should be at least 1.3 seconds long in order to be able to extract relevant features. Secondly, when a person was speaking faster than its recorded sample or not in his true tone, the algorithm was mistakenly classifying it as another person or as noise. Thirdly, the proximity of the microphone was a factor influencing the output: if it was too close the recorded audio would be clipped and if it was too far the speaker would just blend in with the background noise. 
+In addition to the above quantitative results, the group was able to gather key qualitative results. Firstly, if someone were to register his voice by saying only one word, for instance a quick “hello”, then the algorithm would not be able to pick up his voiceprint. This is because it was previously mentioned that the speaking time should be at least 1.3 seconds long in order to be able to extract relevant features. Secondly, when a person deliberately was speaking faster than its recorded sample or not in his true tone, the algorithm was mistakenly classifying it as another person or was unregistered. Thirdly, the proximity of the microphone was a factor influencing the output: If it is too close the recorded audio would be clipped and if it is too far the speaker would just blend in with the background noise. 
 
 The next task is to transfer the algorithm to the Raspberry Pi.
 
@@ -246,6 +243,7 @@ The group had a choice of microcontrollers to develop the product on. The primar
 The Raspberry Pi 4 was chosen due to its generous hardware specifications when compared to other models, for example the 8GB RAM, 16GB Memory, WiFi port and most notably a 64-bit quad core ARM CPU. This allows for rapid development and prototyping. 
 
 After completing the functional requirements, the group would then optimize the product to run on the minimum configuration possible (or a configurable setup such that the user can choose depending on their specific use case). 
+
 ### Microcontroller Configuration
 The Raspbian OS comes pre-installed with many of the necessary packages. However, to enable fast python environment configuration, the GitHub repo contains the file `requirements.txt` which lists the python packages to install. In addition, for some packages specific versions are specified, for example `numpy==1.19.2`, where 1.19.2 is the version number. This is to guarantee compatibility between the packages. 
 
@@ -253,12 +251,12 @@ The `pip` python package installer can facilitate automatic installation of all 
 
 The Raspberry Pi must be configured to correctly detect and use the microphone attached to the USB port. The GitHub repo also includes helper files to facilitate this setup, for example `device_details.py`, which lists on the command line all the devices the Raspberry Pi has detected. 
 
-Finally, the Keras model must be uploaded into the `src/models/` folder on the Pi. It is recommended to use the Keras save and load API, which results in a `.h5` model file that contains all the necessary model information.
+Finally, the Keras model must be uploaded into the `models/` folder on the Pi. It is recommended to use the Keras save and load API, which results in a `.h5` model file that contains all the necessary model information.
 
-Once the system-level software is configured, it is ready for use. 
+Once the system-level software is configured, it is ready for use.  
 
 ### Inference on Microcontroller 
-To perform the recognition of the speaker on the microcontroller, run `src/infer_recognition.py` using `python3 infer_recognition.py`. This is the main point of entry functionality for the product. The program initially loads the trained CNN inference model and the database. Once the program has successfully finished initializing, the user will be prompted with a choice of 3 commands: 
+To perform the recognition of the speaker on the microcontroller, run `src/infer_recognition.py` using `python3 infer_recognition.py`. This is the main point of entry functionality for the product. The program initially loads the trained CNN inference model and the database. Once the program has successfully finished initializing, the user will be prompted with a choice of three commands: 
  * 0: Add a user to the database
  * 1: Perform single inference
  * 2: Perform continuous inference
@@ -271,7 +269,6 @@ Single inference will take a 3 second recording and attempt to match the extract
 
 Continuous inference is an extension of single inference as it runs the inference pipeline in a while loop until interrupted. It therefore will take continuous 3 second recordings and continuously attempt to infer who is speaking in those 3 seconds. This recognition mode happens in near real-time as the classification time of each recording is on average 1.3 seconds. This is because the microcontroller takes around 0.2 seconds to produce the spectrograms and 1.1 seconds to extract the features using the trained CNN model. 
 
-
 </br>
 
 ## Optimization
@@ -281,21 +278,23 @@ After confirming functionality by storing speaker recordings on the Pi, the grou
 
 Amazon Web Services (AWS) was chosen as the cloud solutions provider due to the group’s previous knowledge, however any cloud provider would be acceptable. There are utility and helper functions located in `src/AWS`, which all use the boto3 Software Development Kit (SDK) as recommended by AWS. 
 
+When running `src/infer_recognition.py`, during doing recognition or registering new members to the cloud database, a temporary folder will be created as ‘temp/’. This is for storing the temporary audio data when accessing the cloud. It separates the audioes in the cloud database to the ones in local database in ‘audio_db/’. The folder is deleted once finished.
+
 ### Model Optimization
 Once the basic functional requirements were met, there were optimizations that could be done on the model. Due to the low-cost aspect of the product, the group chose to optimize the model in such a way as to reduce the size and increase its speed while maintaining sufficient levels of accuracy. These goals resulted in several different optimizations being applied.
 
-The model size, (measured in KB) 
+The h5 model size is 96457 KB and is large considered it is imported to a microcontroller. In terms of pursing faster processing time and smaller size, the group considered converting the model from `.h5` format to a `.tflite` model. Tflite model is optimised as it reduces the latency of the prediction, size, and even lower power consumption.
 
-However the main drawback of converting the model from `.h5` to `.tflite` is a resulting loss in precision. In fact, this was the expected phenomenon to happen as it presents a trade-off between speed and accuracy.
+However, the main drawback of using a converted tflite model on pi is its loss in precision. When operating the tflite model, it outputs extreme high similarity on every sample and resulted in higher cases of mispredictions. Converting h5 model to tflite model is a trade-off between speed and accuracy. Overall, the group decided to keep using the h5 model.
 
 
 </br>
 
 ## Ethics and Sustainability
 ### Ethics
-Many machine learning problems have fundamental ethics considerations related to the data they use and the consequences of their solutions. For speaker recognition, the data is by definition people’s voices. This poses an identity risk if a third party were to gain access to these voices. However, the product has various features to limit this risk. 
+Many machine learning problems have fundamental ethics considerations related to the data they use and the consequences of their solutions. For speaker recognition, the data is by definition people's voices. This poses an identity risk if a third party were to gain access to these voices. However, the product has various features to limit this risk 
 
-Firstly, giving the user the choice to store data locally ensures that if desired, their voice recording will never be exposed to the internet. In addition, all processing of their voice is done locally, effectively rendering the Raspberry Pi into an isolated environment. Secondly, giving the user the choice of what to name their recording gives flexibility against using Personally Identifiable Information (PII). For example, instead of using their full name, a user could use an ID number. PII is heavily regulated and thus this consideration is required when using the product.  
+Firstly, giving the user the option to store data locally ensures that if desired, avoid the risk of exposing to the internet. In addition, all processing of their voice is done locally, effectively rendering the Raspberry Pi into an isolated environment. Secondly, giving the user the choice of what to name their recording gives flexibility against using Personally Identifiable Information (PII). For example, instead of using their full name, a user could use an ID number. PII is heavily regulated and thus this consideration is required when using the product.  
 
 ### Sustainability
 The Raspberry Pi in general as a microcontroller is energy efficient when compared to other machine learning systems, for example data centers with many high-power General Processing Unit’s (GPU’s). In terms of storage, the waveforms and spectrogram file sizes are small (as they must be suitable for storage on the Pi!). 
