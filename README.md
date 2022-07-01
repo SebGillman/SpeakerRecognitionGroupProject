@@ -305,4 +305,4 @@ In terms of product upgrades as technology advances, all the code and environmen
 
 [2] - D. Wang and X. Zhang, "THCHS-30 : A Free Chinese Speech Corpus", arXiv.org, 2022. [Online]. Available: https://arxiv.org/abs/1512.01882. [Accessed: 01- Jul- 2022].
 
-[3] - S. Gilman, I. Mohamed, R. El Hassanin, A. Horsler and X. Huang, "SpeakerRecognitionGroupProject", GitHub, 2022. [Online]. Available: https://github.com/SebGillman/SpeakerRecognitionGroupProject/tree/main/TrainingDataGen/Training. [Accessed: 01- Jul- 2022].
+[3] - S. Gillman, I. Mohamed, R. El Hassanin, A. Horsler and X. Huang, "SpeakerRecognitionGroupProject", GitHub, 2022. [Online]. Available: https://github.com/SebGillman/SpeakerRecognitionGroupProject/tree/main/TrainingDataGen/Training. [Accessed: 01- Jul- 2022].
