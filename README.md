@@ -43,15 +43,19 @@ The applications of our product are quite open to interpretation by the user. We
 
 The software is available on this GitHub repository, which can be used to view the complete software development history of the project. The data used for training and testing includes a combination of public datasets and the group’s own. The group’s own dataset can be found here the GitHub in `TrainingDataGen`. The product should be functional on all microcontrollers that meet the minimum specification as outlined in the Hardware section, however development and testing was only conducted on a Raspberry Pi 4, thus this is the recommended microcontroller for guaranteeing reproducible results. 
 
+
 </br>
 
 ## Project Structure
 
 ### Gantt Chart
-The project involved 7 weeks of development and the group followed the agile development process, which includes several “sprints” with varying end goals to achieve the final product. 
+The project involved 7 weeks of development and the group followed the Agile development process, which includes several “sprints” with varying end goals to achieve the final product. 
 
 The Gantt chart below illustrates these sprints and how the project advanced, from start to finish, across the 7 weeks of development. 
 
+<p align="center">
+  <img src="./images/gantt.png" alt="gantt"/>
+</p>
 
 ### Flowchart
 The flowchart below shows how the various components of the product interact with each other. 
@@ -74,6 +78,30 @@ Discussions were held between the group and client, who was a representative fro
 |     Microcontroller-isolated   environment for input and output    |     Maximize portability between microcontrollers                            |
 
 ###	Initial Approach
+The first component of the project involved experimenting with the [group’s own dataset](./TrainingDataGen/Training) and understanding the type and quantity of data required for a successful product. 
+
+For speaker recognition, the spectrogram of each audio has to be obtained. A spectrogram is a visual representation of the change in distribution of energy among different frequencies over time.  They contain rich information as their various shapes displayed reveal the features of voice. For example, they can be used to distinguish the natural frequencies of people's tones. 
+
+Image recognition has seen major advances in accuracy and practicality thanks to the introduction of convolutional neural networks. As the spectrograms are treated as images, the group focused on CNN ML models. The Keras framework was used to define and compile each model due to its inherited compatibility with TensorFlow.
+
+The initial approach was to create a classification CNN that would distinguish the group members by extracting and analysing the features from the spectrograms created. The architecture consisted of three 2D convolutional layers, each followed by a batch normalization and max pooling layer. The output layers involve two dense layers in order to classify the 5 group members in the dataset during training. The model was trained with a sparse categorical cross-entropy loss in order to differentiate the speakers in the training set. 
+
+As seen in the picture below, it is evident that the model learns the training set well as its loss decreases rapidly, from ~3.5 at epoch zero to ~0.25 at epoch 5. However, the validation loss does not decrease, and even increases on some epochs. This suggests that the model suffers from overfitting, a condition whereby a model begins to learn the noise in the data as opposed to the underlying features.
+
+<p align="center">
+  <img src="./images/custom_CNN.png" alt="custom_CNN" />
+</p>
+
+When the trained model was experimented on the test set, the group found that it struggled to learn the patterns necessary for speaker recognition as a result of the overfitting. This is shown in the bar chart below. Despite correctly classifying the speaker as “Riccardo”, the other members in the database “Adam” and “Xixian” also achieved high scores. Ideally, only “Riccardo” would have a high prediction score.
+ 
+<p align="center">
+  <img src="./images/prediction.png" alt="prediction" />
+</p>
+
+A huge flaw that was observed with this method is that it would require retraining each time a new user was added. This CNN model is more for a classification purpose and is used to classified only group members.
+
+A new method was drawn up where voice feature extraction would be learned on a large dataset using a more complex CNN and this feature extraction would allow the recognition of a new user to be done after registering them with just one voice sample.
+
 ### Data Aquisition
 
 The first component of the project involved experimenting with different datasets and understanding the type and quantity of data required for a successful product. The group focused on a combination of public datasets, 
@@ -82,7 +110,10 @@ After the initial experimentation, the group decided to expand the dataset used 
 
 The group has decided to combine the zhvoice corpus dataset with our own group dataset, which resulted in a total of 3253 people’s speech data. These audio files add up to around 900 hours in total and are clips of voice samples at maximum of 3 seconds. The different speakers are labelled into different integers, in the range of 0-3252.
 
-As the zhvoice corpus contains audios in MP3 format sampled at 16kHz, we have created a python script `src/create_data.py` that converts all the audios to WAV format. Additionally, the program creates a list containing the file path to each audio and its corresponding classification label (the unique ID of the speaker). This data list is mainly for the convenience of passing each labeled voice through the preprocessing and training process. 
+As the zhvoice corpus contains audios in MP3 format sampled at 16kHz, we have created a python script `create_data.py` that converts all the audios to WAV format. 
+
+Additionally, the program creates a `.txt` file containing a list with the file path to each audio and its corresponding classification label (the unique ID of the speaker). This data list is mainly for the convenience of passing each labelled voice through the pre-processing and training process. 
+
 
 Below are three example of waveforms from the group dataset
 <p align="center">
@@ -90,13 +121,13 @@ Below are three example of waveforms from the group dataset
 </p>
 
 ### Data Preprocessing
-With the data list created, the spectrogram of each audio can be obtained. A spectrogram is a visual representation of the change on distribution of energy among different frequencies over time.  They contain rich information as their various shape displayed reveal the features of voice. For example, they can be used to distinguish the natural frequencies of people's tones. 
+With the data list created, the spectrogram of each audio can be obtained. A spectrogram is a visual representation of the change in distribution of energy among different frequencies over time.  They contain rich information as their various shapes displayed reveal the features of voice. For example, they can be used to distinguish the natural frequencies of people's tones. 
 
 The preprocessing of the WAV audios has multiple stages to make it more suitable and faster to process for the ML model. It was discussed whether to use linear-frequencies, mel-frequencies spectrograms or mel-frequencies cepstral coefficients spectrograms as they are more used in speech recognition, but after a first round of testing it was decided that linear-frequency spectrograms were satisfactory enough to extract the voiceprint of the speakers. 
 
 Therefore, the waveforms are converted into linear-frequency spectrograms using Short Time Fourier Transforms (STFT). The APIs used for this task are `librosa.stft()` and `librosa.magphase()`. This can be shown in the python script `src/utils/reader.py`.
 
-During training, data augmentation, such as random flip stitching, random cropping, frequency masking, is used. After processing the data, spectrograms with the shape of 257x257 are obtained. 
+During training, data augmentation methods such as random flip stitching, random cropping, frequency masking are used. After processing the data, spectrograms with the shape of 257x257 are obtained. 
 
 Finally, the spectrograms are split into training and test sets, with a 90:10 ratio. Two example spectrograms are shown in the figures below:
 
@@ -119,6 +150,11 @@ The specification of preprocessing data samples is listed in the table below:
 
 When using `create_data.py` to process mp3 audio files into wav format, the code also removes samples that are below 1.3 seconds. This is because on the subsequent data preprocessing stage, each audio they are all converted using short time fourier transfer. As shown on the table above, we have a sample rate of 16k, window length is 400 with a separation (hop length) of 160. Since the input shape is 257x257, the least time required to process transform is 1/16000*(400+160*256) = 2.585 seconds. When preprocessing the data, the audios are flipped and concatenated, so the least speaking duration should be half, which is 1.3 s. 
 ### Model Selection
+When looking to decide what network architecture would be best in order to fulfil our design specification, it was clear that the initial architecture was not suited to deal with larger datasets as it requires retraining. In addition, it contains the problem of over-fitting when samples are not enough. When comparing different well-known CNN architecture in Computer Vision we found that ResNet50 would be the best model for use case given its features. As shown in Figure 5, the ResNet50 architecture is made from ‘residual blocks’. These blocks introduced skip connections, which in allowing the gradient to backpropagate easily allow for the allow for the training on large datasets with a lower complexity than other architectures such as VGGNet. Thus, we chose for it be the model for our use case.
+
+<p align="center">
+  <img src="./images/ResNet50.png" alt="ResNet50" />
+</p>
 
 ### Model Training
 After processing the data into 257x257 spectrograms, we fed them into our Resnet50 network. As seen in `src/train.py`, the data input layer is [None,1,257,257] which matches the shape of spectrograms. For training, we use a stochastic gradient descent optimizer with a learning rate is 0.001 and the number of epochs is set to be 50. The loss function chosen is Additive Angular Margin Loss (ArcFace Loss). This loss function is used to normalize the features vector and weights, making the predictions only depend on the angle between the feature and the weight where an additive angular margin penalty m is added to θ (angle between weights and the features)
@@ -136,6 +172,7 @@ A dense layer with 3252 classes was added at the end of the ResNet5o model, in o
   <img src="./images/loss.JPG" width="502"/> 
 </p>
 
+During training the script will also create a ‘model_weight.h5’ file after every epoch. This can be used to resume training from the latest checkpoint. After training a `.h5` model is saved containing the the fully trained model that can be used later on. 
 ### Final Model Architecture 
 Since features extraction from the spectrograms is an invaluable stage of the recognition process, the final dense layers of the ResNet50 are removed as they were used to classify those 3253 people during training. For the inference algorithm, the previous layers of the model are used as they extract the relevant features of the inputs. The final architecture for the Resnet50 is shown below: 
 
@@ -151,12 +188,15 @@ When visualizing the output of the last latent layer, the group found that the i
 
 From the Figure, some voices have more distinct features, so they can be better distinguished than others. For example, red, purple, and green samples are well clustered, whereas orange isn’t. 
 ### Model Evaluation
-After training, the program `src/eval.py` was used to evaluate the trained network. Since the CNN is used to extract the audio features, they can be used to determine the similarity between each voice in the test set. A cosine similarity metric is employed to perform pairwise comparisons between each audio feature vector in the hyperplane and determine how close those voices are from each other. 
+After training, the program `src/eval.py` was used to evaluate the trained network in terms of accuracy. Since the CNN is used to extract the audio features, they can be used to determine the similarity between each voice in the test set. A cosine similarity metric is employed to perform pairwise comparisons between each audio feature vector in the hyperplane and determine the distance for how close those voices are from each other. It is defined as shown below where A and B are two feature vectors under comparison.
+
+<p align="center">
+  <img src="./images/similarity.png" alt="similarity" width="400"/>
+</p>
 
 If the program outputs a high cosine similarity above a certain threshold, it indicates that those features are from the same speaker and thus if the labels are identical then the person speaking is indeed the same and the trained model was successful. Therefore, the program sets multiple thresholds to determine at which value the best accuracy of the model is achieved. 
 
-It was found that the accuracy of the model on the test set was of 90% when the threshold was set to 0.8. This threshold value is used in the subsequent speaker recognition algorithm.
-
+`src/eval.py` will output the accuracy for the trained network and the best threshold needed to be set to achieve the greatest accuracy on the test set. It was found that the accuracy of the model on the test set is above of 90% when the threshold was set to 0.8. This threshold value is used in the subsequent speaker recognition algorithm.
 
 ### Summary
 Exploratory Data Analysis has shown the proof-of-concept of speaker recognition using ML with a clearly defined implementation, from input to output. By finetuning the ResNet model, the salient features of the input spectrograms can be learned effectively, allowing a high-grade generalization to the user’s database. 
@@ -168,15 +208,18 @@ For the Resnet model, it is more robust than the custom one. As it is trained on
 
 ## Inference Algorithm
 ### Database
-Given that a cosine similarity metric is used to determine the similitude between two feature vectors of two speaker voices, one of those two audios must be labelled in order for the recognition algorithm to output the name of the speaker. Therefore, a local database for the user’s members is created. The user’s voice will be recorded and stored in the in the folder `audio_db/` which will serve as the local database in the embedded device. 
+Given that a cosine similarity metric is used to determine the similitude between two feature vectors of two speaker voices, one of those two audios must be labelled for the recognition algorithm to output the name of the speaker.  Therefore, a local database for the user’s members is created. The user’s voice will be recorded and stored in the folder `audio_db/` which will serve as the local database in the embedded device. 
 
 This allows the users to register new members in the database without having to re-train the whole model to classify them. Therefore, with the following recognition algorithm, the user can recognize a new voice immediately after registering it in the database, thus allowing for a custom-tailored database. 
 ### Algorithm
-The speaker recognition algorithm developed can be found in `src/infer_recognition.py`. At the initialization of the program, it firstly loads the audios of the registered users from the database and, for each element, produces the corresponding spectrograms. These are fed into the trained CNN model and the significant features are extracted. The program then adds the extracted features and labels of each audio to the library (arrays), ready for comparison. 
+The speaker recognition algorithm developed can be found in `src/infer_recognition.py`. At the initialization of the program, it firstly loads the audios of the registered users from the database and, for each element, produces the corresponding spectrograms. These are fed into the trained CNN model and the significant features are extracted. The program then adds the extracted features and labels of each audio to the arrays, ready for comparison. 
 
-After the program is initialized, the user can speak into the microphone and record his/her voice for a total of 3 seconds. The recording is converted to a spectrogram and the features are then extracted using the trained CNN model. 
+After the program is initialized, the user can speak into the microphone and record his/her voice for a total of 3 seconds – as seen in `src/record.py` the library used to record the speakers is `pyaudio` and uses a sample rate of 16kHz (the same as the dataset inputs used for training). The recording is converted to a spectrogram and the features are then extracted using the trained CNN model. 
 
-The algorithm then calculates all the cosine similarities between the microphone’s input features and each audio features vector in the database and chooses the highest value to output. A prediction is made depending on whether the similarity is above or below the set threshold of 0.8. If the cosine similarity is above the threshold, it indicates that those features are from the same speaker, which means it recognizes that the one currently speaking is one of the members in the database and therefore the program shows the name of that speaker as its output. Otherwise, if the output is below the threshold, it shows that the current speaker is treated as a different person who is not inside the database. The figure below showcases the above algorithm. 
+The algorithm then calculates all the cosine similarities between the microphone’s input features and each audio features vector in the database and chooses the highest value to output. 
+The algorithm then calculates all the cosine similarities between the feature vector of the audio to be recognised and each of the feature vectors of the audio files in the database. It vchooses the highest similarity value to output and 
+
+A prediction is made depending on whether the similarity is above or below the set threshold of 0.8. If the cosine similarity is above the threshold, it indicates that those features are from the same speaker, which means it recognizes that the one currently speaking is one of the members in the database and therefore the program shows the name of that speaker as its output. Otherwise, if the output is below the threshold, it shows that the current speaker is treated as a different person who is not inside the database. The figure below showcases the above algorithm. 
 
 <p align="center">
   <img src="./images/flow.drawio.png" alt="algorithm" />
