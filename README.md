@@ -62,7 +62,7 @@ The flowchart below shows how the various components of the product interact wit
 
 </br>
 
-## Colab Notebook
+## Exploratory Data Analysis
 
 ### Problem Formulation
 Discussions were held between the group and client, who was a representative from ARM. The initial functional and non-functional requirements were given to the group and are outlined in the table below.
