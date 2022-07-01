@@ -119,7 +119,7 @@ The specification of preprocessing data samples is listed in the table below:
 For the Resnet model, after processing the data into 257x257 spectrograms, we fed them into our CNN network. As seen in `src/train.py`, the data input layer is [None,1,257,257] which matches the shape of spectrograms. For training, we use a stochastic gradient descent optimizer with a learning rate is 0.001 and the number of epochs is set to be 50. The loss function chosen is Additive Angular Margin Loss (ArcFace Loss). This loss function is used to normalize the features vector and weights, making the predictions only depend on the angle between the feature and the weight where an additive angular margin penalty m is added to θ (angle between weights and the features)
 
 <p align="center">
-  <img src="./images/loss_function.png" alt="loss" width="200"/>
+  <img src="./images/loss_function.png" alt="loss" width="400"/>
 </p>
 
 Overall, the ArcFace loss helps the model to maximize the margin which is the decision boundary on the hyperplane. It obtains discriminative features for speaker recognition and helps the model to calculate the geodesic distance between features on the hyperplane.
